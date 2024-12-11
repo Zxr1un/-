@@ -1,0 +1,182 @@
+#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <windows.h>
+using namespace std;
+
+//интерфейсы
+void interface_end_screen(); 
+void interface_Main_menu();
+void interface_rules();
+void interface_start();
+void interface_game();
+void interface_end_screen();
+
+
+int normal_command_input(int min_command, int max_command);
+// метка 
+
+void rules()
+{
+    interface_rules();
+    system("pause");
+    system("cls");
+}
+// правила
+int Main_menu()
+{
+    while (true)
+    {
+        interface_Main_menu();
+        cout << "\nВведите \n 1--Начать партию \n 2--Правила \n 0--Выйти\n";
+        int command;
+        command = normal_command_input(0, 2);
+        if (command == 2)
+        {
+            system("cls");
+            rules();
+        }
+        else if (command == 0)
+        {
+            system("cls");
+            return command;
+        }
+        else
+        {
+            system("cls");
+            return command;
+        }
+        system("cls");
+
+    }
+   
+}
+// главное меню (начало)
+void start()
+{
+    interface_start();
+    system("pause");
+    system("cls");
+}
+// начало игры (ввод количества игроков)
+void game()
+{
+    interface_game();
+    system("pause");
+    system("cls");
+}
+// сама игра
+int end_screen()
+{
+    interface_end_screen();
+    system("pause");
+    cout << "\n Игра закончены. Введите \n 1--Сыграть ещё партейку \n 0--Выйти\n";
+    int command;
+    command = normal_command_input(0,1);
+    system("cls");
+    return command;
+}
+// конец игры и статистика
+
+
+//MAIN
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    /*
+    значения status:
+    0--завершение работы
+    1--нормальная работа
+    */
+    int status = 1;
+
+    while (status == 1)
+    {
+        status = Main_menu();
+        if (status == 0)
+        {
+            break;
+        }
+
+        start();
+
+        game();
+
+        status = end_screen();
+
+    }
+  
+   
+    return 0;
+}
+
+//MAIN
+
+
+int normal_command_input(int min_command, int max_command)
+{
+    // функция ввода комманд
+    // первое значение -- с какой цифры
+    // второе значение -- по какую цифру
+    //должна вводится числовая комманда
+    cout << endl;
+    int command;
+    cin >> command;
+    while (min_command > command or max_command < command)
+    {
+        cout << "\n\nНеверный ввод. Введите число от " << min_command << " до " << max_command << ": ";
+        cin >> command;
+    }
+    return command;
+
+}
+// проверка ввода для команд
+
+
+//интерфейсы
+void interface_line()
+{
+    cout << "\n\n";
+    cout << "========================================================================================================================";
+    cout << "\n\n";
+}
+// просто строка из = на всю консоль
+void interface_Main_menu()
+{
+    interface_line();
+    cout << "\n                                            ИГРА \"ЭРУДИТ\" \n";
+    interface_line();
+
+}
+
+void interface_rules()
+{
+    interface_line();
+    cout << "\n                                             This is rules \n";
+    interface_line();
+}
+
+void interface_start()
+{
+    interface_line();
+    cout << "\n                                             This is start \n";
+    interface_line();
+}
+
+void interface_game()
+{
+    interface_line();
+    cout << "\n                                             This is game \n";
+    interface_line();
+}
+
+void interface_end_screen()
+{
+    interface_line();
+    cout << "\n                                             This is end \n";
+    interface_line();
+}
+
