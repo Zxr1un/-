@@ -1,17 +1,11 @@
 ﻿#include <iostream>
 #include <string>
-<<<<<<< HEAD
 #include <fstream>
 #include <Windows.h>
 
 using namespace std;
-char aplha_zaplonenie(char a[132]);
-void checkfile(const string& search, ifstream& fin);
-=======
-
-using namespace std;
-char aplha_zaplonenie(char a[132]);
->>>>>>> 4f99d2f028a30813643ff20c73f2f2321f9eb071
+void alphabet_zapolnenie(char alphabet[]);
+void checkfile(string search, fstream& fin);
 
 char alpha[132]{};
 
@@ -24,18 +18,19 @@ struct Player {
 
 int main()
 {
+	char alphabet[132];
 	setlocale(LC_ALL, "russian");
-<<<<<<< HEAD
 	SetConsoleCP(1251);
-	const int range = 132;
-	int counter = 192;
-	char alpha[range]{};
-	ifstream fin;
+	fstream fin;
 	fin.open("russian.txt");
 	checkfile("СИЛИКОН", fin);
+	alphabet_zapolnenie(alphabet);
+	for (char c : alphabet) {
+		cout << c << "\n";
+	}
 }
 
-void checkfile(const string& search, ifstream& fin)
+void check_in_file(string search, fstream& fin)
 {
 	using In = istream_iterator<string>;
 	auto pos = find(In(fin), In(), search);
@@ -46,35 +41,22 @@ void checkfile(const string& search, ifstream& fin)
 	fin.close();
 }
 
-/*static char alpha_zapolnenie(char a[132]) {
-=======
-	const int range = 132;
+void alphabet_zapolnenie(char alphabet[]) {
 	int counter = 192;
-	char alpha[range]{};
-	
-}
-
-static char alpha_zapolnenie(char a[132]) {
->>>>>>> 4f99d2f028a30813643ff20c73f2f2321f9eb071
-	int counter = 192;
-	for (unsigned i{}; i < 132; i++) {
+	for (short i{}; i < 132; i++) {
 		if (counter == 197) {
-			a[i] = counter;
-			a[i + 1] = 'Ё';
+			alphabet[i] = counter;
+			alphabet[i + 1] = 'Ё';
 			i++;
 			counter++;
 		}
 		else if (counter == 223) {
-			a[i] = counter;
+			alphabet[i] = counter;
 			counter = 192;
 		}
 		else {
-			a[i] = counter;
+			alphabet[i] = counter;
 			counter++;
 		}
 	}
-<<<<<<< HEAD
-}*/
-=======
 }
->>>>>>> 4f99d2f028a30813643ff20c73f2f2321f9eb071
