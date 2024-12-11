@@ -17,12 +17,11 @@ bool checkfile(string search, fstream& fin);
 char check_for_user_word(string user_word, Player current_player);
 //скелеты функций
 
-int main()
+void ddmain()
 {
-
 	setlocale(LC_ALL, "russian");
 	SetConsoleCP(1251);
-	Player player1;
+	Player player1{};
 	char letters[10] = {'А','Р','К','А','Р','А','Р','К','А','Р'};
 	for (unsigned short i{}; i < 10; i++) {
 		player1.letters[i] = letters[i];
@@ -45,7 +44,6 @@ int main()
 			cout << "Человек ввёл пустую строку";
 		// пропуск хода
 	}
-	system("pause");
 }
 
 char check_for_user_word(string user_word, Player current_player) {
@@ -80,7 +78,7 @@ char check_for_user_word(string user_word, Player current_player) {
 		return 'o';
 }
 
-bool check_in_file(string search, fstream& fin)
+bool checkfile(string search, fstream& fin)
 // функция проверяет есть ли такое слово в нашем словаре
 {
 	using In = istream_iterator<string>;
