@@ -1,5 +1,4 @@
-#include <suppress.h>
-#pragma warning( disable:219)
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -75,13 +74,6 @@ int main()
 }
 
 
-void rules()
-{
-    interface_rules();
-    system("pause");
-    system("cls");
-}
-// правила
 int Main_menu()
 {
     while (true)
@@ -114,6 +106,7 @@ int Main_menu()
 void start()
 {
     interface_start();
+    getting_letters_for_players(input_count_of_players(), players, massive_alphabet_public);
     system("pause");
     system("cls");
 }
@@ -121,7 +114,6 @@ void start()
 void game()
 {
     interface_game();
-    getting_letters_for_players(input_count_of_players(), players, massive_alphabet_public);
     //функция с интерфейсом игры, можно вызвать и в getting letters
     while (letters_in_alphabet(massive_alphabet_public)) {
 
@@ -131,82 +123,26 @@ void game()
     system("cls");
 }
 // сама игра
-int end_screen()
-{
-    interface_end_screen();
-    system("pause");
-    cout << "\n Игра закончены. Введите \n 1--Сыграть ещё партейку \n 0--Выйти\n";
-    int command;
-    command = normal_command_input(0, 1);
-    system("cls");
-    return command;
-}
-// конец игры и статистика
 
-int normal_command_input(int min_command, int max_command)
-{
-    // функция ввода комманд
-    // первое значение -- с какой цифры
-    // второе значение -- по какую цифру
-    //должна вводится числовая комманда
-    cout << endl;
-    int command;
-    cin >> command;
-    while (min_command > command or max_command < command)
-    {
-        cout << "\n\nНеверный ввод. Введите число от " << min_command << " до " << max_command << ": ";
-        cin >> command;
+int input_count_of_players() {
+    int number_of_players{};
+    cout << "input number of players: ";
+    cin >> number_of_players;
+    return number_of_players;
+}
+
+void enter_the_word() {
+    string word;
+    while (true) {
+        cout << "введите слова из представленных букв: ";
+        getline(cin, word);
+        fstream fin;
+        fin.open("russian.txt");
+        if (check_in_file(word, fin)) {
+            check_for_user_word(word, players[1]);
+        }
     }
-    return command;
-
 }
-// проверка ввода для команд
-
-
-//интерфейсы
-void interface_line()
-{
-    cout << "\n\n";
-    cout << "========================================================================================================================";
-    cout << "\n\n";
-}
-// просто строка из = на всю консоль
-void interface_Main_menu()
-{
-    interface_line();
-    cout << "\n                                            ИГРА \"ЭРУДИТ\" \n";
-    interface_line();
-
-}
-
-void interface_rules()
-{
-    interface_line();
-    cout << "\n                                             This is rules \n";
-    interface_line();
-}
-
-void interface_start()
-{
-    interface_line();
-    cout << "\n                                             This is start \n";
-    interface_line();
-}
-
-void interface_game()
-{
-    interface_line();
-    cout << "\n                                             This is game \n";
-    interface_line();
-}
-
-void interface_end_screen()
-{
-    interface_line();
-    cout << "\n                                             This is end \n";
-    interface_line();
-}
-
 
 int intermediate_value = { 0 };
 
@@ -216,8 +152,7 @@ int getRandomNumber(int i, int min, int max, int old_time_random)
     if (i == 0)
     {
         time_t now = time(0);
-        time_t long_time;
-        tm* ltm = localtime_s(&now, &long_time);
+        tm* ltm = localtime(&now);
         time_random = 1 + ltm->tm_sec;
         time_random = ((time_random + 354) * 64 - 74) / 8;
     }
@@ -252,6 +187,7 @@ void alpha_zapolnenie(char massive_alphabet[])
         }
     }
 }
+
 void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]) {
 
     alpha_zapolnenie(massive_alphabet);
@@ -341,27 +277,7 @@ void getting_letters_for_players(int amount_players, Player players[], char mass
 
 }
 
-int input_count_of_players() {
-    int number_of_players{};
-    cout << "input number of players: ";
-    cin >> number_of_players;
-    return number_of_players;
-}
-
-void enter_the_word() {
-    string word;
-    while (true) {
-        cout << "введите слова из представленных букв: ";
-        getline(cin, word);
-        fstream fin;
-        fin.open("russian.txt");
-        if (check_in_file(word, fin)) {
-            check_for_user_word(word, players[1]);
-        }
-    }
-}
-
-void ssmain()
+/*void ssmain()
 {
 
     setlocale(LC_ALL, "russian");
@@ -390,8 +306,92 @@ void ssmain()
         // пропуск хода
     }
     system("pause");
+}*/
+
+
+int end_screen()
+{
+    interface_end_screen();
+    system("pause");
+    cout << "\n Игра закончены. Введите \n 1--Сыграть ещё партейку \n 0--Выйти\n";
+    int command;
+    command = normal_command_input(0, 1);
+    system("cls");
+    return command;
+}
+// конец игры и статистика
+
+//интерфейсы
+void interface_line()
+{
+    cout << "\n\n";
+    cout << "========================================================================================================================";
+    cout << "\n\n";
+}
+// просто строка из = на всю консоль
+void interface_Main_menu()
+{
+    interface_line();
+    cout << "\n                                            ИГРА \"ЭРУДИТ\" \n";
+    interface_line();
+
 }
 
+void interface_rules()
+{
+    interface_line();
+    cout << "\n                                             This is rules \n";
+    interface_line();
+}
+
+void interface_start()
+{
+    interface_line();
+    cout << "\n                                             This is start \n";
+    interface_line();
+}
+
+void interface_game()
+{
+    interface_line();
+    cout << "\n                                             This is game \n";
+    interface_line();
+}
+
+void interface_end_screen()
+{
+    interface_line();
+    cout << "\n                                             This is end \n";
+    interface_line();
+}
+
+void rules()
+{
+    interface_rules();
+    system("pause");
+    system("cls");
+}
+// правила
+
+// проверки
+int normal_command_input(int min_command, int max_command)
+{
+    // функция ввода комманд
+    // первое значение -- с какой цифры
+    // второе значение -- по какую цифру
+    //должна вводится числовая комманда
+    cout << endl;
+    int command;
+    cin >> command;
+    while (min_command > command or max_command < command)
+    {
+        cout << "\n\nНеверный ввод. Введите число от " << min_command << " до " << max_command << ": ";
+        cin >> command;
+    }
+    return command;
+
+}
+// проверка ввода для команд
 char check_for_user_word(string user_word, Player current_player) {
     // возвращает код
     // с - correct
