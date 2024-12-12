@@ -1,3 +1,5 @@
+#include <suppress.h>
+#pragma warning( disable:219)
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -7,7 +9,19 @@
 
 using namespace std;
 
+struct Player {
+    // структура с буквами пользователя, его айдишником, последним словом, и баллы
+    int id;
+    char letters[10];
+    string last_world;
+    int points;
+};
+
 //интерфейсы
+void start();
+void game();
+int end_screen();
+int Main_menu();
 void interface_end_screen();
 void interface_Main_menu();
 void interface_rules();
@@ -19,17 +33,13 @@ int normal_command_input(int min_command, int max_command);
 // метка 
 bool check_in_file(string search, fstream& fin);
 char check_for_user_word(string user_word, Player current_player);
-//скелеты функций
 int input_count_of_players();
-int letters_in_alphbet(char alphabet[]);
+void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]);
+int letters_in_alphabet(char alphabet[]);
+//скелеты функций
 
-struct Player {
-    // структура с буквами пользователя, его айдишником, последним словом, и баллы
-    int id;
-    char letters[10];
-    string last_world;
-    int points;
-};
+char massive_alphabet_public[132]{};
+Player players[4]{};
 
 //MAIN
 
@@ -110,11 +120,12 @@ void start()
 // начало игры (ввод количества игроков)
 void game()
 {
-    Player players[4]{};
     interface_game();
-    getting_letters(input_count_of_players(),players);
+    getting_letters_for_players(input_count_of_players(), players, massive_alphabet_public);
     //функция с интерфейсом игры, можно вызвать и в getting letters
-    
+    while (letters_in_alphabet(massive_alphabet_public)) {
+
+    }
     enter_the_word();
     system("pause");
     system("cls");
@@ -205,7 +216,8 @@ int getRandomNumber(int i, int min, int max, int old_time_random)
     if (i == 0)
     {
         time_t now = time(0);
-        tm* ltm = localtime(&now);
+        time_t long_time;
+        tm* ltm = localtime_s(&now, &long_time);
         time_random = 1 + ltm->tm_sec;
         time_random = ((time_random + 354) * 64 - 74) / 8;
     }
@@ -240,11 +252,8 @@ void alpha_zapolnenie(char massive_alphabet[])
         }
     }
 }
+void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]) {
 
-void getting_letters(int amount_players, Player players[])
-{
-
-    char massive_alphabet[132];
     alpha_zapolnenie(massive_alphabet);
     Player player1;
     player1.id = 1;
@@ -347,7 +356,7 @@ void enter_the_word() {
         fstream fin;
         fin.open("russian.txt");
         if (check_in_file(word, fin)) {
-            check_for_user_word(word,)
+            check_for_user_word(word, players[1]);
         }
     }
 }
@@ -429,5 +438,6 @@ bool check_in_file(string search, fstream& fin)
 }
 
 int letters_in_alphabet(char alphabet[]) {
-
+    int a{};
+    return a;
 }
