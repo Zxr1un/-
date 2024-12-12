@@ -50,7 +50,7 @@ void alpha_zapolnenie(char massive_alphabet[])
     }
 }
 
-void game(int amount_players)
+void getting_letters(int amount_players)
 {
     char massive_alphabet[132];
     alpha_zapolnenie(massive_alphabet);
@@ -132,9 +132,9 @@ void game(int amount_players)
 
 }
 
-int main()
+int ssmain()
 {
     setlocale(LC_ALL, "RU");
-    game(2);
+    getting_letters(2);
 
 }
