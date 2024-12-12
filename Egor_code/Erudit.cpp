@@ -80,7 +80,7 @@ char check_for_user_word(string user_word, Player current_player) {
 		return 'o';
 }
 
-bool check_in_file(string search, fstream& fin)
+bool checkfile(string search, fstream& fin)
 // функция проверяет есть ли такое слово в нашем словаре
 {
 	using In = istream_iterator<string>;
