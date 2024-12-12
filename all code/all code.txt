@@ -3,6 +3,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 #include <fstream>
 #include <Windows.h>
 
@@ -45,6 +46,7 @@ Player players[4]{};
 
 int main()
 {
+    srand(time(0));
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     /*
@@ -164,6 +166,10 @@ int getRandomNumber(int i, int min, int max, int old_time_random)
     return time_random % 132;
 }
 
+int getRandomNumber() {
+    return rand() % 133;
+}
+
 void alpha_zapolnenie(char massive_alphabet[])
 {
     int counter = 192;
@@ -190,11 +196,8 @@ void alpha_zapolnenie(char massive_alphabet[])
 }
 
 void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]) {
-
+   char massive_alphabet[132];
     alpha_zapolnenie(massive_alphabet);
-    Player player1;
-    player1.id = 1;
-    players[0] = player1;
     int old_time_random = 0;
     for (int i{}; i < 10; i++)
     {
@@ -202,77 +205,13 @@ void getting_letters_for_players(int amount_players, Player players[], char mass
         old_time_random = intermediate_value;
         if (massive_alphabet[intermediate_value] != 0)
         {
-            player1.letters[i] = massive_alphabet[intermediate_value];
+            player.letters[i] = massive_alphabet[intermediate_value];
             massive_alphabet[intermediate_value] = 0;
-            cout << i + 1 << " буква в букваре 1 игрока это " << player1.letters[i] << endl;
+            cout << i + 1 << " буква в букваре 1 игрока это " << player.letters[i] << endl;
         }
         else
         {
             i--;
-        }
-    }
-    if (amount_players >= 2)
-    {
-        Player player2;
-        player2.id = 2;
-        players[1] = player2;
-        for (int i{}; i < 10; i++)
-        {
-            intermediate_value = getRandomNumber(i, 0, 132, old_time_random);
-            old_time_random = intermediate_value;
-            if (massive_alphabet[intermediate_value] != 0)
-            {
-                player2.letters[i] = massive_alphabet[intermediate_value];
-                massive_alphabet[intermediate_value] = 0;
-                cout << i + 1 << " буква в букваре 2 игрока это " << player2.letters[i] << endl;
-            }
-            else
-            {
-                i--;
-            }
-
-        }
-        if (amount_players >= 3)
-        {
-            Player player3;
-            player3.id = 3;
-            players[2] = player3;
-            for (int i{}; i < 10; i++)
-            {
-                intermediate_value = getRandomNumber(i, 0, 132, old_time_random);
-                old_time_random = intermediate_value;
-                if (massive_alphabet[intermediate_value] != 0)
-                {
-                    player3.letters[i] = massive_alphabet[intermediate_value];
-                    massive_alphabet[intermediate_value] = 0;
-                    cout << i + 1 << " буква в букваре 3 игрока это " << player3.letters[i] << endl;
-                }
-                else
-                {
-                    i--;
-                }
-            }
-            if (amount_players == 4)
-            {
-                Player player4;
-                player4.id = 4;
-                players[3] = player4;
-                for (int i{}; i < 10; i++)
-                {
-                    intermediate_value = getRandomNumber(i, 0, 132, old_time_random);
-                    old_time_random = intermediate_value;
-                    if (massive_alphabet[intermediate_value] != 0)
-                    {
-                        player4.letters[i] = massive_alphabet[intermediate_value];
-                        massive_alphabet[intermediate_value] = 0;
-                        cout << i + 1 << " буква в букваре 4 игрока это " << player4.letters[i] << endl;
-                    }
-                    else
-                    {
-                        i--;
-                    }
-                }
-            }
         }
     }
 
