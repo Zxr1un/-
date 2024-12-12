@@ -35,12 +35,15 @@ int normal_command_input(int min_command, int max_command);
 bool check_in_file(string search, fstream& fin);
 char check_for_user_word(string user_word, Player current_player);
 int input_count_of_players();
-void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]);
+void getting_letters_for_players(Player player, char massive_alphabet[]);
 int letters_in_alphabet(char alphabet[]);
+void vuvod_igrokof(Player players[]);
 //скелеты функций
 
 char massive_alphabet_public[132]{};
 Player players[4]{};
+short* array_id = new short[132];
+short counter = 132;
 
 //MAIN
 
@@ -49,6 +52,9 @@ int main()
     srand(time(0));
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+    for (unsigned short i{}; i < 132; i++) {
+        array_id[i] = i;
+    }
     /*
     значения status:
     0--завершение работы
@@ -109,7 +115,9 @@ int Main_menu()
 void start()
 {
     interface_start();
-    getting_letters_for_players(input_count_of_players(), players, massive_alphabet_public);
+    for (unsigned i{}; i < input_count_of_players(); i++) {
+       getting_letters_for_players(players[i], massive_alphabet_public);
+    }
     system("pause");
     system("cls");
 }
@@ -118,8 +126,8 @@ void game()
 {
     interface_game();
     //функция с интерфейсом игры, можно вызвать и в getting letters
-    while (letters_in_alphabet(massive_alphabet_public)) {
-
+    while (letters_in_alphabet(massive_alphabet_public)>0) {
+        vuvod_igrokof(players);
     }
     enter_the_word();
     system("pause");
@@ -149,7 +157,7 @@ void enter_the_word() {
 
 int intermediate_value = { 0 };
 
-int getRandomNumber(int i, int min, int max, int old_time_random)
+/*int getRandomNumber(int i, int min, int max, int old_time_random)
 {
     int time_random;
     if (i == 0)
@@ -164,10 +172,10 @@ int getRandomNumber(int i, int min, int max, int old_time_random)
         time_random = ((old_time_random + 354) * 64 - 74) / 8 + 34;
     }
     return time_random % 132;
-}
+}*/
 
 int getRandomNumber() {
-    return rand() % 133;
+    return rand() % counter + 1;
 }
 
 void alpha_zapolnenie(char massive_alphabet[])
@@ -195,19 +203,17 @@ void alpha_zapolnenie(char massive_alphabet[])
     }
 }
 
-void getting_letters_for_players(int amount_players, Player players[], char massive_alphabet[]) {
-   char massive_alphabet[132];
-    alpha_zapolnenie(massive_alphabet);
-    int old_time_random = 0;
+void getting_letters_for_players(Player player, char massive_alphabet[]) {
+    char massive_alphabet[132];
+    alpha_zapolnenie(massive_alphabet);;
     for (int i{}; i < 10; i++)
     {
-        intermediate_value = getRandomNumber(i, 0, 132, old_time_random);
-        old_time_random = intermediate_value;
-        if (massive_alphabet[intermediate_value] != 0)
+        int random_number = getRandomNumber();
+        if (massive_alphabet[random_number] != 0)
         {
-            player.letters[i] = massive_alphabet[intermediate_value];
-            massive_alphabet[intermediate_value] = 0;
-            cout << i + 1 << " буква в букваре 1 игрока это " << player.letters[i] << endl;
+            player.letters[i] = massive_alphabet[random_number];
+            massive_alphabet[random_number] = 0;
+           // cout << i + 1 << " буква в букваре 1 игрока это " << player.letters[i] << endl;
         }
         else
         {
@@ -230,7 +236,7 @@ void getting_letters_for_players(int amount_players, Player players[], char mass
     //26-29 вводится список букв игрока, он должен рандомам вводится
     fstream fin;
     fin.open("russian.txt");//открытие файла с библиотекой
-    if (check_in_file("прикол", fin)) {//тут должно вводиться 
+    if (check_in_file("прикол", fin)) {//тут должно вводиться
         char check = check_for_user_word("АРКА", player1);
         if (check == 'c')
             cout << "человек ввёл правильное слово";
@@ -248,6 +254,11 @@ void getting_letters_for_players(int amount_players, Player players[], char mass
     system("pause");
 }*/
 
+void vuvod_igrokof(Player players[]){
+    for (unsigned short i{}; i < 4; i++) {
+
+    }
+}
 
 int end_screen()
 {
@@ -379,5 +390,11 @@ bool check_in_file(string search, fstream& fin)
 
 int letters_in_alphabet(char alphabet[]) {
     int a{};
+    for (unsigned i{}; i < 132; i++) {
+        if (alphabet[i] != '0')
+            a++;
+        else
+            counter--;
+    }
     return a;
 }
