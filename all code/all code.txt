@@ -12,9 +12,9 @@ using namespace std;
 struct Player {
     // структура с буквами пользователя, его айдишником, последним словом, и баллы
     int id;
-    char letters[10];
-    string last_world;
-    int points;
+    char letters[10]{};
+    string last_world = " ";
+    int points = 0;
 };
 
 //интерфейсы
@@ -29,21 +29,24 @@ void interface_rules();
 void interface_start();
 void interface_game();
 void interface_end_screen();
-void enter_the_word();
+void enter_the_word(Player player, Player previous_player);
 int normal_command_input(int min_command, int max_command);
 // метка 
 bool check_in_file(string search, fstream& fin);
 char check_for_user_word(string user_word, Player current_player);
 int input_count_of_players();
-void getting_letters_for_players(Player player, char massive_alphabet[]);
-int letters_in_alphabet(char alphabet[]);
+Player getting_letters_for_players(short id);
+int letters_in_alphabet();
 void vuvod_igrokof(Player players[]);
+void points(Player current_player, string last_played_word);
+void alpha_zapolnenie(char massive_alphabet[]);
 //скелеты функций
 
 char massive_alphabet_public[132]{};
 Player players[4]{};
 short* array_id = new short[132];
 short counter = 132;
+short players_in_game{};
 
 //MAIN
 
@@ -52,6 +55,7 @@ int main()
     srand(time(0));
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
+    alpha_zapolnenie(massive_alphabet_public);
     for (unsigned short i{}; i < 132; i++) {
         array_id[i] = i;
     }
@@ -115,8 +119,9 @@ int Main_menu()
 void start()
 {
     interface_start();
-    for (unsigned i{}; i < input_count_of_players(); i++) {
-       getting_letters_for_players(players[i], massive_alphabet_public);
+    players_in_game = input_count_of_players();
+    for (unsigned short i{}; i < players_in_game; i++) {
+        players[i] = getting_letters_for_players(i);
     }
     system("pause");
     system("cls");
@@ -126,10 +131,10 @@ void game()
 {
     interface_game();
     //функция с интерфейсом игры, можно вызвать и в getting letters
-    while (letters_in_alphabet(massive_alphabet_public)>0) {
+    while (letters_in_alphabet() > 0) {
         vuvod_igrokof(players);
+        enter_the_word(players[0], players[players_in_game-1]);
     }
-    enter_the_word();
     system("pause");
     system("cls");
 }
@@ -142,7 +147,7 @@ int input_count_of_players() {
     return number_of_players;
 }
 
-void enter_the_word() {
+void enter_the_word(Player player, Player previous_player) {
     string word;
     while (true) {
         cout << "введите слова из представленных букв: ";
@@ -150,12 +155,24 @@ void enter_the_word() {
         fstream fin;
         fin.open("russian.txt");
         if (check_in_file(word, fin)) {
-            check_for_user_word(word, players[1]);
+            if (check_for_user_word(word, player) == 'c') {
+                player.last_world = word;
+                points(player, previous_player.last_world);
+                Player buffer;
+                buffer = players[0];
+                players[0] = players[players_in_game - 1];
+                players[players_in_game - 1] = buffer;
+                break;
+            }
+            else if (check_for_user_word(word,player) == 'e') {
+                cout << "Введите корректное слово!!!";
+            }
+            else {
+
+            }
         }
     }
 }
-
-int intermediate_value = { 0 };
 
 /*int getRandomNumber(int i, int min, int max, int old_time_random)
 {
@@ -174,8 +191,8 @@ int intermediate_value = { 0 };
     return time_random % 132;
 }*/
 
-int getRandomNumber() {
-    return rand() % counter + 1;
+void points(Player current_player, string last_played_word) {
+
 }
 
 void alpha_zapolnenie(char massive_alphabet[])
@@ -203,24 +220,25 @@ void alpha_zapolnenie(char massive_alphabet[])
     }
 }
 
-void getting_letters_for_players(Player player, char massive_alphabet[]) {
-    char massive_alphabet[132];
-    alpha_zapolnenie(massive_alphabet);;
+Player getting_letters_for_players(short id) {
+    srand(time(0));
+    Player player;
+    player.id = id + 1;
     for (int i{}; i < 10; i++)
     {
-        int random_number = getRandomNumber();
-        if (massive_alphabet[random_number] != 0)
+        int random_number = rand() % counter + 1;
+        if (massive_alphabet_public[random_number] != 0)
         {
-            player.letters[i] = massive_alphabet[random_number];
-            massive_alphabet[random_number] = 0;
-           // cout << i + 1 << " буква в букваре 1 игрока это " << player.letters[i] << endl;
+            player.letters[i] = massive_alphabet_public[random_number];
+            massive_alphabet_public[random_number] = 0;
+            // cout << i + 1 << " буква в букваре 1 игрока это " << player.letters[i] << endl;
         }
         else
         {
             i--;
         }
     }
-
+    return player;
 }
 
 /*void ssmain()
@@ -254,9 +272,13 @@ void getting_letters_for_players(Player player, char massive_alphabet[]) {
     system("pause");
 }*/
 
-void vuvod_igrokof(Player players[]){
-    for (unsigned short i{}; i < 4; i++) {
-
+void vuvod_igrokof(Player players[]) {
+    for (short i = players_in_game - 1; i >= 0; i--) {
+        cout << "Игрок " << players[i].id << "\n" << "Буквы: ";
+        for (char c : players->letters) {
+            cout << c << ", ";
+        }
+        cout << "\nБаллы: " << players[i].points << "\n\n";
     }
 }
 
@@ -356,7 +378,7 @@ char check_for_user_word(string user_word, Player current_player) {
             player_letters[i] = current_player.letters[i];
         }
         for (char c : user_word) {
-            if (isdigit(c) || ispunct(c) || isspace(c))
+            if (!(c >= 'А' && c <= 'Я') || !(c == 'Ё'))
                 return 'e';
             for (unsigned short i{}; i < 10; i++) {
                 if (c == player_letters[i] && !alredy_was_used) {
@@ -388,10 +410,10 @@ bool check_in_file(string search, fstream& fin)
     fin.close();
 }
 
-int letters_in_alphabet(char alphabet[]) {
+int letters_in_alphabet() {
     int a{};
     for (unsigned i{}; i < 132; i++) {
-        if (alphabet[i] != '0')
+        if (massive_alphabet_public[i] != '0')
             a++;
         else
             counter--;
