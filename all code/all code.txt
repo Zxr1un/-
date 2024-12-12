@@ -19,6 +19,7 @@ struct Player {
 //интерфейсы
 void start();
 void game();
+void rules();
 int end_screen();
 int Main_menu();
 void interface_end_screen();
