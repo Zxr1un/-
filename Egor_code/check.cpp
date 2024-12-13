@@ -47,7 +47,7 @@ string word_input_simpel_check() {
 	return user_word;
 }
 
-void main() {
+void msssain() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	Player player1;

@@ -141,7 +141,11 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                     if (Bank[j] != '0')
                     {
                         pl_letters[i] = Bank[j];
+<<<<<<< HEAD
                         cout << endl << i << " присвоено " << pl_letters[i] << endl;
+=======
+                        cout << endl << "присвоено" << pl_letters[i] << endl;
+>>>>>>> 04c41c9bde45520a09386a0acaa0bb8c988c8cea
                         Bank[j] = '0';
                         break;
                     }
@@ -151,6 +155,10 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                 if (j != 131)
                 {
                     cout << endl << "break" << endl;
+<<<<<<< HEAD
+=======
+                    break;
+>>>>>>> 04c41c9bde45520a09386a0acaa0bb8c988c8cea
                     
                 }
                 while (j >= 0)
@@ -161,7 +169,10 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                         Bank[j] = '0';
                         break;
                     }
+<<<<<<< HEAD
                     j--;
+=======
+>>>>>>> 04c41c9bde45520a09386a0acaa0bb8c988c8cea
                 }
             }
             else
