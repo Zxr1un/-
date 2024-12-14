@@ -1,11 +1,10 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <ctime>
 #include <cmath>
 #include <fstream>
 #include <Windows.h>
-#include <algorithm>
+//#include <algorithm>
 
 using namespace std;
 /*
@@ -32,7 +31,7 @@ struct Player
 {
     /*int id;*/
     char letters[10] = { '0', '0',  '0', '0', '0', '0', '0', '0', '0', '0' };
-    /*int point = 0;*/
+    int bonuces = 0;
     string last_word_of_player = "0";
 };
 
@@ -42,20 +41,24 @@ struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понад
     string names[7];
 };
 
+
+int bonuses(Player player, string word);
 string input_players_name(short which_player);
 int input_number_of_players();
 void alphabet_zapolnenie(char massive_alphabet[]);
 Statistics game(int players_ammount, Statistics names);
 void add_letters_to_player(char pl_letters[], char Bank[]);
-string word_input_simpel_check();
+string word_input_simpel_check(Player& player);
 bool big_check(string user_word, Player player);
 bool big_check1(string user_word, Player player);
 //bool big_check2(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
 void remove_letters(string word, char letters_bank[]);
-bool opros_players_about_new_word(string word, fstream& fin);
+bool opros_players_about_new_word(string word);
 bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num);
 void Resaults_screen(Statistics full_stat, short ammount_of_players);
+void spizdi_letter();
+void fifty_fifty();
 
 
 
@@ -172,7 +175,7 @@ Statistics game(int players_ammount, Statistics names)
             }
             cout << endl;
             // вывод информации текущему игроку
-            word = word_input_simpel_check();
+            word = word_input_simpel_check(player_arr[id]);
             if (word == "0")
             {
                 player_arr[id].last_word_of_player = "0";
@@ -228,8 +231,8 @@ Statistics game(int players_ammount, Statistics names)
         //    break;
         //}//проверка на то что все пропустили ход
         step++;
-        if(step == 2)
-            break;
+        /*if(step == 2)
+            break;*/
     }
 
     system("pause");
@@ -245,6 +248,47 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     cout << "Игра завершилась, " << full_stat.names[max_score_id] << " набрал большее количество баллов.";
 }
 
+int bonuses(Player player, string word) {
+    if (word.empty()) {
+        if (player.bonuces == 0) {
+            cout << "У вас есть возможность использовать 2 бонуса( 1 для 50 на 50, 2 для помощь друга).\n";
+        }
+        else if (player.bonuces == 1) {
+            cout << "У вас осталось только помощь друг, если хотите использовать бонус введите 2.\n";
+        }
+        else if (player.bonuces == 2) {
+            cout << "У вас осталось только 50 на 50, если хотите использовать бонус введите 1.\n";
+        }
+        else {
+            cout << "У вас не осталось подсказок\n";
+        }
+        return 0;
+    }
+    else{
+        int counter{};
+        for (char c : word) {
+            if (!(c >= 'а' && c <= 'я') && !(c == 'ё') && (isdigit(c) || isspace(c))) {
+                counter++;
+            }
+        }
+        if (counter == word.length()) {
+            switch (stoi(word)) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+            default:
+                return 3;
+            }
+        }
+    }
+}
+void fifty_fifty() {
+    cout << "50 na 50\n";
+}
+void spizdi_letter() {
+    cout << "spizdi bukvu\n";
+}
 // функция для проверки на конец из-за недостатка букв (из 2 букв почти невозможно составить слово, 
 // поэтому если в общем банке 0 букв и у каждого игрока не более чем 2 игра считается оконченной
 bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num) {
@@ -339,24 +383,51 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         }
     }
 }
-string word_input_simpel_check() {
+string word_input_simpel_check(Player& player) {
     string user_word{};
     bool check_complited = false, already_dumb = false;
     while (!check_complited) {
+        user_word = "";
+        bonuses(player, user_word);
         if (!already_dumb)
-            cout << "Введите слово из ваших 10-ти букв: ";
+            cout << "Введите слово из ваших 10-ти букв или номер бонуса: ";
         getline(cin, user_word);
         if (user_word.empty()) {
             return "0";
         }
+        switch (bonuses(player, user_word)) {
+        case 1:
+            if (player.bonuces == 0) {
+                player.bonuces = 1;
+                fifty_fifty();
+            }
+            else if (player.bonuces == 2) {
+                fifty_fifty();
+                player.bonuces = 3;
+            }
+            continue;
+        case 2:
+            if (player.bonuces == 0) {
+                player.bonuces = 2;
+                spizdi_letter();
+            }
+            else if (player.bonuces == 1) {
+                spizdi_letter();
+                player.bonuces = 3;
+            }
+            continue;
+        case 3:
+            cout << "Введите слово из ваших 10-ти букв или номер бонуса: ";
+            continue;
+        }
         for (char c : user_word) {
             if (user_word.length() > 10) {
-                cout << "Слово должно состоять из не более чем 10-ти букв: ";
+                cout << "Слово должно состоять из не более чем 10-ти букв или номер бонуса: ";
                 already_dumb = true;
                 break;
             }
             if (!(c >= 'а' && c <= 'я') /*&& !(c == 'Ё')*/ && !(c == 'ё')) {
-                cout << "Введите слово без пробелов и только русскими буквами: ";
+                cout << "Введите слово без пробелов и только строчными русскими буквами или номер бонуса: ";
                 check_complited = false;
                 already_dumb = true;
                 break;
@@ -453,13 +524,18 @@ void remove_letters(string word, char letters_bank[])
         }
     }
 }
-bool opros_players_about_new_word(string word, fstream& fin) {
+bool opros_players_about_new_word(string word) {
     string answ{};
     while (true) {
         cout << "Ситаете ли вы, что слово было правильно правильно(да/нет): ";
         getline(cin, answ);
-        if (answ == "да")
+        if (answ == "да") {
+            ofstream fin;
+            fin.open("russian.txt", ios::app);
+            fin << word << "\n";
+            fin.close();
             return true;
+        }
         else if (answ == "нет")
             return false;
     }
@@ -485,15 +561,17 @@ bool big_check(string user_word, Player player) {
     }
     if (counter == user_word.length()) {
         fstream fin;
-        fin.open("russian.txt");
+        fin.open("russian.txt",ios::app);
         using In = istream_iterator<string>;
         auto pos = find(In(fin), In(), user_word);
-        if (pos != In())
+        if (pos != In()) {
+            fin.close();
             return true;
-        else
-            return opros_players_about_new_word(user_word, fin);
-
-        fin.close();
+        }
+        else {
+            fin.close();
+            return opros_players_about_new_word(user_word);
+        }
     }
     else
         return false;
