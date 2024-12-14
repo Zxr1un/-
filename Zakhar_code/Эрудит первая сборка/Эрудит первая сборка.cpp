@@ -1,4 +1,6 @@
-﻿#include <iostream>
+﻿
+
+#include <iostream>
 #include <string>
 #include <cstdlib>
 #include <ctime>
@@ -14,6 +16,17 @@ using namespace std;
 Егор, я в твоей проверке на словарь и буквы игрока дописал некоторые моменты
 
 +Я добавил структуры Statistics (статистика игры и имена игроков), чтобы потом не мучаться с созданием интерфейса и глобальными переменными
+
+Захар big_check2 я закементил, просто пока он не использовался, я добавил проверки и немного отполировал, всё работает
+надо будет как нибудь занятся бонусами
+--Ок, я его на автомате создал, когда надо было убрать снятие баллов у игрока при слове, введённом не его набором букв.
+Я удаляю её: она полностью идентична твоей проверке.
+
+
+
+++Надо допилить добавление новых слов в словарь (А возможно и отображение новых слов там, но пока не надо)
+
+
 
 
 
@@ -35,21 +48,22 @@ struct Player
 
 struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понадобится
 {
-    int points[4] = {0,0,0,0};
+    int points[4] = { 0,0,0,0 };
     string names[4];
 };
 
-
+int input_number_of_players();
 void alphabet_zapolnenie(char massive_alphabet[]);
 Statistics game(int players_ammount);
 void add_letters_to_player(char pl_letters[], char Bank[]);
 string word_input_simpel_check();
 bool big_check(string user_word, Player player);
 bool big_check1(string user_word, Player player);
-bool big_check2(string user_word, Player player);
+//bool big_check2(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
 void remove_letters(string word, char letters_bank[]);
 bool opros_players_about_new_word(string word, fstream& fin);
+bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num);
 
 
 
@@ -58,11 +72,37 @@ void main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int players_ammount = 4; // количество игроков (задавать будем в другой функции, но пока так)
+    int players_ammount = input_number_of_players(); // количество игроков (задавать будем в другой функции, но пока так)
     Statistics score;
     score = game(players_ammount);
+}
 
-    
+// функция ввода кол-ва игроков
+int input_number_of_players() {
+    string num_of_players{};
+    bool not_dumb = false, already_stupid = false;
+    while (true) {
+        if (!already_stupid)
+            cout << "Пожалуйста введите количество игроков, которые будут участвовать(не более 7 (не менее 2)): ";
+        getline(cin, num_of_players);
+        for (char c : num_of_players) {
+            if ((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё') || !isdigit(c)) {
+                not_dumb = false;
+                already_stupid = true;
+                cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
+                break;
+            }
+            else {
+                not_dumb = true;
+            }
+        }
+        if (not_dumb && stoi(num_of_players) <= 7 && stoi(num_of_players) > 1)
+            return stoi(num_of_players);
+        else if (not_dumb) {
+            already_stupid = true;
+            cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (больше 0)): ";
+        }
+    }
 }
 
 Statistics game(int players_ammount)
@@ -71,11 +111,11 @@ Statistics game(int players_ammount)
     char Bank_of_latters[132]; // банк букв из алфавита по 4 раза
     alphabet_zapolnenie(Bank_of_latters); // заполнение банка букв
 
-    Player player_arr[4];
+    Player player_arr[7];
     string last_word = "0"; //буфер хранящий последнее введённое слово
     string word;
     int step = 0; //номер хода
-    
+
     for (int i = 0; i < players_ammount; i++)
     {
         player_arr[i].last_word_of_player = "1";
@@ -98,33 +138,42 @@ Statistics game(int players_ammount)
                 letters_ammount++;
             }
         }
-        cout << "\nВ банке осталось: " << letters_ammount << " букв\n";  //конец подсчёта оставшихся букв в общем банке
+        if (letters_ammount != 0)
+            cout << "\nВ банке осталось: " << letters_ammount << " букв\n";
+        //конец подсчёта оставшихся букв в общем банке
+        else {
+            if (proverk_na_konec_igru(letters_ammount, player_arr, players_ammount)) {
+                cout << "\nТак как у вас не достаточно букв для продолжения игры, Игра окончена";
+                break;
+            }
+        }
 
         // ход игрока
         while (true)
         {
             int id = (step) % players_ammount;
-            cout << "\n\nХод игрока " << (id + 1) <<"\n\nПоследнее слово: "<< last_word<< "\n\nВаши буквы:  | ";
+            cout << "\n\nХод игрока " << (id + 1) << "\n\nПоследнее слово: " << last_word << "\n\nВаши буквы:  | ";
             for (int i = 0; i < 10; i++)
             {
                 cout << player_arr[id].letters[i] << " | ";
             }
             cout << endl;
-                                    // вывод информации текущему игроку
+            // вывод информации текущему игроку
+
             word = word_input_simpel_check();
             if (word == "0")
             {
                 player_arr[id].last_word_of_player = "0";
                 cout << endl << "...пропуск хода..." << endl;
                 break;
-            }          
-                            //пропуск хода
+            }
+            //пропуск хода
 
             cout << endl << "before: " << score.points[id] << endl; //отладка (сколько баллов было до этого)
             bool check = big_check(word, player_arr[id]);
             if (check)
             {
-                
+
                 score.points[id] += scoring_of_players(check, word, last_word);
                 cout << "\nСлово принято.\nВаши баллы сейчас: " << score.points[id] << " (+" << scoring_of_players(check, word, last_word) << ") " << endl;
                 last_word = word;
@@ -137,22 +186,32 @@ Statistics game(int players_ammount)
                 if (big_check1(word, player_arr[id]))
                 {
                     score.points[id] += scoring_of_players(check, word, last_word);
-                    cout << "\nСлово неверное.\nВаши баллы сейчас: " << score.points[id] <<" ("<< scoring_of_players(check, word, last_word)<<") " << endl;
+                    cout << "\nСлово было введено неверное.\nВаши баллы сейчас: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
+                    break;
                 }
                 else
                 {
-                    cout << "\nВведите слово только из своих букв.\n";
+
+                    score.points[id] += scoring_of_players(check, word, last_word);
+                    cout << "\nВ следующий раз введите слово только из своих букв.\n";
+                    cout << "\nСлово неверное.\nВаши баллы сейчас: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
+                    break;
                 }
-               
             }
         }
 
-
-        if ((player_arr[0].last_word_of_player == "0") and (player_arr[1].last_word_of_player == "0") and (player_arr[2].last_word_of_player == "0") and (player_arr[3].last_word_of_player == "0"))
-        {
+        // переписал проверку на скипы
+        int counter_for_skip_end{};
+        for (unsigned short i{}; i < players_ammount; i++) {
+            if (player_arr[i].last_word_of_player == "0") {
+                counter_for_skip_end++;
+            }
+        }
+        if (counter_for_skip_end == players_ammount) {
             cout << endl << "Все пропустили ход, конец игры." << endl;
             break;
-        }//проверка на то что все пропустили ход
+        }
+        //проверка на то что все пропустили ход
         step++;
     }
 
@@ -160,6 +219,21 @@ Statistics game(int players_ammount)
     return score;
 }
 
+// функция для проверки на конец из-за недостатка букв (из 2 букв почти невозможно составить слово, 
+// поэтому если в общем банке 0 букв и у каждого игрока не более чем 2 игра считается оконченной
+bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num) {
+    for (unsigned short i{}; i < players_num; i++) {
+        short counter{};
+        for (unsigned short j{}; j < 10; j++) {
+            if (player_arr[i].letters[j] != '0')
+                counter++;
+        }
+        if (counter > 2) {
+            return false;
+        }
+    }
+    return true;
+}
 void alphabet_zapolnenie(char massive_alphabet[])
 {
     SetConsoleCP(1251);
@@ -196,8 +270,8 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         {
             int rand_nomb;
             rand_nomb = rand() % 132;
-           /* cout << "Random: ";
-            cout << rand_nomb << ";";*/ //для провекрки рандомайзера
+            /* cout << "Random: ";
+             cout << rand_nomb << ";";*/ //для провекрки рандомайзера
             if (Bank[rand_nomb] == '0')
             {
                 int j = rand_nomb;
@@ -207,16 +281,16 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                     if (Bank[j] != '0')
                     {
                         pl_letters[i] = Bank[j];
-                       /* cout << endl << i << " присвоено " << pl_letters[i] << endl;*/
+                        /* cout << endl << i << " присвоено " << pl_letters[i] << endl;*/
                         Bank[j] = '0';
                         break;
                     }
                     j++;
                 }
-               /* cout << endl << "j: " << j << endl;*/
+                /* cout << endl << "j: " << j << endl;*/
                 if (j == 131)
                 {
-                   /* cout << endl << "break" << endl;*/
+                    /* cout << endl << "break" << endl;*/
                     while (j >= 0)
                     {
                         if (Bank[j] != '0')
@@ -229,7 +303,7 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                     }
 
                 }
-               
+
             }
             else
             {
@@ -267,10 +341,6 @@ string word_input_simpel_check() {
     }
     return user_word;
 }
-
-
-
-
 bool big_check1(string user_word, Player player) {
     //Егор, я дописал тебе костыль
     int counter{};
@@ -294,38 +364,7 @@ bool big_check1(string user_word, Player player) {
     else
         return false;
 }
-bool big_check2(string user_word, Player player) {
-    //Егор, я дописал тебе костыль
-    int counter{};
-    char player_letters[10]{};
-    for (unsigned short i{}; i < 10; i++) {
-        player_letters[i] = player.letters[i];
-    }
-    CharLowerBuffA(player_letters, 10);
-    for (char c : user_word) {
-        for (unsigned short i{}; i < 10; i++) {
-            if (c == player_letters[i]) {
-                counter++;
-                player_letters[i] = '0';
-                break;
-            }
-        }
-    }
-    if (counter == user_word.length()) {
-        fstream fin;
-        fin.open("russian.txt");
-        using In = istream_iterator<string>;
-        auto pos = find(In(fin), In(), user_word);
-        if (pos != In())
-            return true;
-        else
-            return opros_players_about_new_word(user_word, fin);
 
-        fin.close();
-    }
-    else
-        return false;
-}
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player)
 {
     if (correct_answer == true)
@@ -357,26 +396,17 @@ void remove_letters(string word, char letters_bank[])
         }
     }
 }
-
-
 bool opros_players_about_new_word(string word, fstream& fin) {
     string answ{};
-    bool already_dumb = false;
     while (true) {
-        if (!already_dumb)
-            cout << "Ситаете ли вы, что слово было правильно правильно(да/нет): ";
+        cout << "Ситаете ли вы, что слово было правильно правильно(да/нет): ";
         getline(cin, answ);
         if (answ == "да")
             return true;
         else if (answ == "нет")
             return false;
-        else
-            already_dumb = true;
     }
 }
-
-
-
 
 //Проверка Егора (Я костылями разделил её на 2 отдельные)
 bool big_check(string user_word, Player player) {
