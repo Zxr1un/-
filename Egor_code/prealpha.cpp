@@ -18,6 +18,8 @@ using namespace std;
 Захар big_check2 я закементил, просто пока он не использовался, я добавил проверки и немного отполировал, всё работает
 надо будет как нибудь занятся бонусами
 
+добавил функию с вводам имён игроков
+
 */
 
 
@@ -36,13 +38,14 @@ struct Player
 
 struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понадобится
 {
-    int points[4] = { 0,0,0,0 };
-    string names[4];
+    int points[7] = { 0,0,0,0,0,0,0};
+    string names[7];
 };
 
+string input_players_name(short which_player);
 int input_number_of_players();
 void alphabet_zapolnenie(char massive_alphabet[]);
-Statistics game(int players_ammount);
+Statistics game(int players_ammount, Statistics names);
 void add_letters_to_player(char pl_letters[], char Bank[]);
 string word_input_simpel_check();
 bool big_check(string user_word, Player player);
@@ -52,6 +55,7 @@ int scoring_of_players(bool correct_answer, string answer, string answer_previou
 void remove_letters(string word, char letters_bank[]);
 bool opros_players_about_new_word(string word, fstream& fin);
 bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num);
+void Resaults_screen(Statistics full_stat, short ammount_of_players);
 
 
 
@@ -62,9 +66,30 @@ void main()
     SetConsoleOutputCP(1251);
     int players_ammount = input_number_of_players(); // количество игроков (задавать будем в другой функции, но пока так)
     Statistics score;
-    score = game(players_ammount);
+    for (unsigned short i{}; i < players_ammount; i++) {
+        score.names[i] = input_players_name(i);
+    }
+    score = game(players_ammount,score);
+    Resaults_screen(score,players_ammount);
 }
-
+//функция для ввода имён игроков
+string input_players_name(short which_player) {
+    string name;
+    bool check_complited = false;
+    while (!check_complited) {
+        cout << "Игрок " << which_player + 1 << " Введите своё имя(БЕЗ знаков пунктуации и пробелов): ";
+        getline(cin, name);
+        for (char c : name) {
+            if (!((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё')) && (ispunct(c) || isspace(c))) {
+                check_complited = false;
+                break;
+            }
+            else
+                check_complited = true;
+        }
+    }
+    return name;
+}
 // функция ввода кол-ва игроков
 int input_number_of_players() {
     string num_of_players{};
@@ -93,9 +118,9 @@ int input_number_of_players() {
     }
 }
 
-Statistics game(int players_ammount)
+Statistics game(int players_ammount, Statistics names)
 {
-    Statistics score;
+    Statistics score = names;
     char Bank_of_latters[132]; // банк букв из алфавита по 4 раза
     alphabet_zapolnenie(Bank_of_latters); // заполнение банка букв
 
@@ -203,10 +228,21 @@ Statistics game(int players_ammount)
         //    break;
         //}//проверка на то что все пропустили ход
         step++;
+        if(step == 2)
+            break;
     }
 
     system("pause");
     return score;
+}
+
+void Resaults_screen(Statistics full_stat, short ammount_of_players) {
+    short max_score_id{};
+    for (unsigned short i{1}; i < ammount_of_players; i++) {
+        if (full_stat.points[max_score_id] < full_stat.points[i])
+            max_score_id = i;
+    }
+    cout << "Игра завершилась, " << full_stat.names[max_score_id] << " набрал большее количество баллов.";
 }
 
 // функция для проверки на конец из-за недостатка букв (из 2 букв почти невозможно составить слово, 
