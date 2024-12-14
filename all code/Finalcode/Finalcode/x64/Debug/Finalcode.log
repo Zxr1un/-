@@ -1,2 +1,4 @@
 ﻿  Finalcode.cpp
+C:\Users\user\Desktop\OPI\Erudit_ZXR\all code\Finalcode\Finalcode.cpp(52,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\user\Desktop\OPI\Erudit_ZXR\all code\Finalcode\Finalcode.cpp(118,26): warning C4018: <: несоответствие типов со знаком и без знака
   Finalcode.vcxproj -> C:\Users\user\Desktop\OPI\Erudit_ZXR\all code\Finalcode\x64\Debug\Finalcode.exe
