@@ -169,15 +169,14 @@ Statistics game(int players_ammount, Statistics names)
                 letters_ammount++;
             }
         }
-        if (letters_ammount != 0)
-            cout << "\nВ банке осталось: " << letters_ammount << " букв\n";
+        cout << "\nВ банке осталось: " << letters_ammount << " букв\n";
         //конец подсчёта оставшихся букв в общем банке
-        else {
-            if (proverk_na_konec_igru(letters_ammount, player_arr, players_ammount)) {
-                cout << "\nТак как у вас не достаточно букв для продолжения игры, Игра окончена";
-                break;
-            }
-        }
+        //else {
+        //    /*if (proverk_na_konec_igru(letters_ammount, player_arr, players_ammount)) {
+        //        cout << "\nТак как у вас не достаточно букв для продолжения игры, Игра окончена";
+        //        break;
+        //    }*/
+        //}
 
         // ход игрока
         while (true)
@@ -248,12 +247,38 @@ Statistics game(int players_ammount, Statistics names)
 }
 
 void Resaults_screen(Statistics full_stat, short ammount_of_players) {
-    short max_score_id{};
+    short max_score_id[7]{-1,-1,-1,-1,-1,-1,-1}, nulevue{}, max_points = full_stat.points[0], sovpodenie{}, counter{1};
+    max_score_id[0] = 0;
     for (unsigned short i{ 1 }; i < ammount_of_players; i++) {
-        if (full_stat.points[max_score_id] < full_stat.points[i])
-            max_score_id = i;
+        if (full_stat.points[max_score_id[0]] < full_stat.points[i]) {
+            for (unsigned short j{}; j < counter; j++) {
+                max_score_id[j] = -1;
+            }
+            max_score_id[0] = i;
+            counter = 1;
+        }
+        else if (max_points == full_stat.points[i]) {
+            max_score_id[counter] = i;
+            counter++;
+        }
+        else if (full_stat.points[i] == 0)
+            nulevue++;
     }
-    cout << "Игра завершилась, " << full_stat.names[max_score_id] << " набрал большее количество баллов.";
+    if(nulevue == ammount_of_players)
+        cout << "Игра завершилась ничьей.";
+    else if (counter == 1)
+        cout << "Игра завершилась, " << full_stat.names[max_score_id[0]] << " набрал большее количество баллов.";
+    else {
+        cout << "Игра завершилась, победили: " << full_stat.names[max_score_id[0]] << ", " << full_stat.names[max_score_id[1]];
+        if (ammount_of_players > 2) {
+            for (unsigned short i{ 2 }; i < ammount_of_players; i++) {
+                if (max_score_id[i] != -1) {
+                    cout << ", " << full_stat.names[max_score_id[i]];
+
+                }
+            }
+        }
+    }
 }
 
 int bonuses(Player player, string word) {
@@ -356,7 +381,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     while (true) {
         cout << "\nВведите номер игрока с которым хотите помянятсмя одной буквой: ";
         getline(cin, id_str);
-        if (id_str.length() == 1 && !((id_str[0] >= 'а' && id_str[0] <= 'я') || (id_str[0] == 'ё')) && !isalpha(id_str[0])) {
+        if (id_str.length() == 1 && !((id_str[0] >= 'а' && id_str[0] <= 'я') || (id_str[0] == 'ё')) && isdigit(id_str[0])) {
             id = stoi(id_str);
             if (id > 0 && id <= player_ammount && id != player_id + 1) {
                 id--;
@@ -405,21 +430,6 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
         cout << player.letters[i] << " | ";
     }
     cout << endl;
-}
-// функция для проверки на конец из-за недостатка букв (из 2 букв почти невозможно составить слово, 
-// поэтому если в общем банке 0 букв и у каждого игрока не более чем 2 игра считается оконченной
-bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num) {
-    for (unsigned short i{}; i < players_num; i++) {
-        short counter{};
-        for (unsigned short j{}; j < 10; j++) {
-            if (player_arr[i].letters[j] != '0')
-                counter++;
-        }
-        if (counter > 2) {
-            return false;
-        }
-    }
-    return true;
 }
 void alphabet_zapolnenie(char massive_alphabet[])
 {
