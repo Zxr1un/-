@@ -79,19 +79,23 @@ string input_players_name(short which_player, Statistics score) {
         else
             cout << "Игрок " << which_player + 1 << " Введите своё имя(БЕЗ знаков пунктуации и пробелов) и не повторяя имена других игроков: ";
         getline(cin, name);
-        for (char c : name) {
-            if (!((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё')) && (ispunct(c) || isspace(c))) {
-                check_complited = false;
-                break;
+        if (!name.empty()) {
+            for (char c : name) {
+                if (!((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё')) && (ispunct(c) || isspace(c))) {
+                    check_complited = false;
+                    break;
+                }
+                else
+                    check_complited = true;
             }
-            else
-                check_complited = true;
-        }
-        for (string c : score.names) {
-            if (name == c) {
-                check_complited = false;
-                stupid_player = true;
-                break;
+            if (check_complited) {
+                for (string c : score.names) {
+                    if (name == c) {
+                        check_complited = false;
+                        stupid_player = true;
+                        break;
+                    }
+                }
             }
         }
     }
@@ -105,22 +109,26 @@ int input_number_of_players() {
         if (!already_stupid)
             cout << "Пожалуйста введите количество игроков, которые будут участвовать(не более 7 (не менее 2)): ";
         getline(cin, num_of_players);
-        for (char c : num_of_players) {
-            if ((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё') || !isdigit(c)) {
-                not_dumb = false;
-                already_stupid = true;
-                cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
-                break;
+        if (!num_of_players.empty()) {
+            if (num_of_players.length() == 1) {
+                for (char c : num_of_players) {
+                    if ((c >= 'А' && c <= 'я') || (c == 'ё') || (c == 'Ё') || !isdigit(c)) {
+                        not_dumb = false;
+                        already_stupid = true;
+                        cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
+                        break;
+                    }
+                    else {
+                        not_dumb = true;
+                    }
+                }
+                if (not_dumb && stoi(num_of_players) <= 7 && stoi(num_of_players) > 1)
+                    return stoi(num_of_players);
+                else if (not_dumb) {
+                    already_stupid = true;
+                    cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (больше 0)): ";
+                }
             }
-            else {
-                not_dumb = true;
-            }
-        }
-        if (not_dumb && stoi(num_of_players) <= 7 && stoi(num_of_players) > 1)
-            return stoi(num_of_players);
-        else if (not_dumb) {
-            already_stupid = true;
-            cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (больше 0)): ";
         }
     }
 }
@@ -296,13 +304,6 @@ void fifty_fifty(Player& player, char letter_bank[]) {
                 }
                 if (counter == letters.length())
                     stupid_igrok = false;
-                /*if (!(c >= 'а' && c <= 'я') && !(c == 'ё')) {
-                    stupid_igrok = false;
-                    break;
-                }
-                else {
-                    stupid_igrok = true;
-                }*/
             }
         }
     }
@@ -322,7 +323,7 @@ void fifty_fifty(Player& player, char letter_bank[]) {
 }
 void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score,short player_id) {
     short id{}, my_letter_id{}, his_letter_id{};
-    string my_letter{}, his_letter{};
+    string my_letter{}, his_letter{}, id_str{};
     char buffer{};
     for (unsigned short i{}; i < player_ammount; i++) {
         if (i != player_id) {
@@ -337,13 +338,15 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     while (true) {
         cout << "\nВведите номер игрока с которым хотите помянятсмя одной буквой: ";
-        cin >> id;
-        if (id > 0 && id <= player_ammount) {
-            id--;
-            break;
+        getline(cin, id_str);
+        if (id_str.length() == 1 && !((id_str[0] >= 'а' && id_str[0] <= 'я') || (id_str[0] == 'ё')) && !isalpha(id_str[0])) {
+            id = stoi(id_str);
+            if (id > 0 && id <= player_ammount && id != player_id + 1) {
+                id--;
+                break;
+            }
         }
     }
-    getchar();
     while (true) {
         cout << "Ведите букву которую хотите поменять у себя: ";
         getline(cin, my_letter);
@@ -516,7 +519,6 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
             }
             continue;
         case 3:
-            /*cout << "Введите слово из ваших 10-ти букв или номер бонуса: ";*/
             continue;
         }
         for (char c : user_word) {
