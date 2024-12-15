@@ -1,0 +1,9 @@
+﻿  Alpha_code.cpp
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(60,6): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(463,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(598,36): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(600,33): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(604,32): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(609,14): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\Alpha_code.cpp(318,1): warning C4715: bonuses: значение возвращается не при всех путях выполнения
+  Alpha version.vcxproj -> D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Alpha version\x64\Debug\Alpha version.exe
