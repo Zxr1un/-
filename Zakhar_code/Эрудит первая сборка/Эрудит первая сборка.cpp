@@ -1,13 +1,11 @@
-﻿
-
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include <cstdlib>
-#include <ctime>
+//#include <ctime>
 #include <cmath>
 #include <fstream>
 #include <Windows.h>
-#include <algorithm>
+//#include <algorithm>
 
 using namespace std;
 /*
@@ -19,16 +17,6 @@ using namespace std;
 
 Захар big_check2 я закементил, просто пока он не использовался, я добавил проверки и немного отполировал, всё работает
 надо будет как нибудь занятся бонусами
---Ок, я его на автомате создал, когда надо было убрать снятие баллов у игрока при слове, введённом не его набором букв.
-Я удаляю её: она полностью идентична твоей проверке.
-
-
-
-++Надо допилить добавление новых слов в словарь (А возможно и отображение новых слов там, но пока не надо)
-
-
-
-
 
 */
 
@@ -159,7 +147,6 @@ Statistics game(int players_ammount)
             }
             cout << endl;
             // вывод информации текущему игроку
-
             word = word_input_simpel_check();
             if (word == "0")
             {
@@ -191,7 +178,6 @@ Statistics game(int players_ammount)
                 }
                 else
                 {
-
                     score.points[id] += scoring_of_players(check, word, last_word);
                     cout << "\nВ следующий раз введите слово только из своих букв.\n";
                     cout << "\nСлово неверное.\nВаши баллы сейчас: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
@@ -211,7 +197,11 @@ Statistics game(int players_ammount)
             cout << endl << "Все пропустили ход, конец игры." << endl;
             break;
         }
-        //проверка на то что все пропустили ход
+        //if ((player_arr[0].last_word_of_player == "0") and (player_arr[1].last_word_of_player == "0") and (player_arr[2].last_word_of_player == "0") and (player_arr[3].last_word_of_player == "0"))
+        //{
+        //    cout << endl << "Все пропустили ход, конец игры." << endl;
+        //    break;
+        //}//проверка на то что все пропустили ход
         step++;
     }
 
@@ -364,7 +354,38 @@ bool big_check1(string user_word, Player player) {
     else
         return false;
 }
-
+//bool big_check2(string user_word, Player player) {
+//    //Егор, я дописал тебе костыль
+//    int counter{};
+//    char player_letters[10]{};
+//    for (unsigned short i{}; i < 10; i++) {
+//        player_letters[i] = player.letters[i];
+//    }
+//    CharLowerBuffA(player_letters, 10);
+//    for (char c : user_word) {
+//        for (unsigned short i{}; i < 10; i++) {
+//            if (c == player_letters[i]) {
+//                counter++;
+//                player_letters[i] = '0';
+//                break;
+//            }
+//        }
+//    }
+//    if (counter == user_word.length()) {
+//        fstream fin;
+//        fin.open("russian.txt");
+//        using In = istream_iterator<string>;
+//        auto pos = find(In(fin), In(), user_word);
+//        if (pos != In())
+//            return true;
+//        else
+//            return opros_players_about_new_word(user_word, fin);
+//
+//        fin.close();
+//    }
+//    else
+//        return false;
+//}
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player)
 {
     if (correct_answer == true)
