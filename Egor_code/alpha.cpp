@@ -4,7 +4,6 @@
 #include <cmath>
 #include <fstream>
 #include <Windows.h>
-//#include <algorithm>
 
 using namespace std;
 /*
@@ -35,7 +34,6 @@ struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понад
     string names[7];
 };
 
-
 int bonuses(Player player, string word);
 string input_players_name(short which_player, Statistics score);
 int input_number_of_players();
@@ -45,15 +43,12 @@ void add_letters_to_player(char pl_letters[], char Bank[]);
 string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id);
 bool big_check(string user_word, Player player);
 bool big_check1(string user_word, Player player);
-//bool big_check2(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
 void remove_letters(string word, char letters_bank[]);
 bool opros_players_about_new_word(string word);
 void Resaults_screen(Statistics full_stat, short ammount_of_players);
 void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score, short plyer_id);
 void fifty_fifty(Player& player, char letter_bank[]);
-
-
 
 
 void main()
@@ -68,7 +63,6 @@ void main()
     score = game(players_ammount, score);
     Resaults_screen(score, players_ammount);
 }
-//функция для ввода имён игроков
 string input_players_name(short which_player, Statistics score) {
     string name;
     bool check_complited = false, stupid_player = false;
@@ -100,7 +94,6 @@ string input_players_name(short which_player, Statistics score) {
     }
     return name;
 }
-// функция ввода кол-ва игроков
 int input_number_of_players() {
     string num_of_players{};
     bool not_dumb = false, already_stupid = false;
@@ -135,7 +128,6 @@ int input_number_of_players() {
         }
     }
 }
-
 Statistics game(int players_ammount, Statistics names)
 {
     Statistics score = names;
@@ -248,7 +240,6 @@ Statistics game(int players_ammount, Statistics names)
     system("pause");
     return score;
 }
-
 void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     short max_score_id[7]{-1,-1,-1,-1,-1,-1,-1}, nulevue{}, max_points = full_stat.points[0], sovpodenie{}, counter{1};
     max_score_id[0] = 0;
@@ -283,7 +274,6 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
         }
     }
 }
-
 int bonuses(Player player, string word) {
     if (word.empty()) {
         if (player.bonuces == 0) {
@@ -640,8 +630,6 @@ bool opros_players_about_new_word(string word) {
             return false;
     }
 }
-
-//Проверка Егора (Я костылями разделил её на 2 отдельные)
 bool big_check(string user_word, Player player) {
     //Егор, я дописал тебе костыль
     int counter{};
