@@ -300,7 +300,7 @@ int bonuses(Player player, string word) {
     else {
         int counter{};
         for (char c : word) {
-            if (!(c >= 'à' && c <= 'ÿ') && !(c == '¸') && (isdigit(c) || isspace(c))) {
+            if (!(c >= 'À' && c <= 'ÿ') && !(c == '¸') && !(c == '¨') && (isdigit(c) || isspace(c))) {
                 counter++;
             }
         }
