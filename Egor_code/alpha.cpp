@@ -290,7 +290,7 @@ int bonuses(Player player, string word) {
             cout << "У вас есть возможность использовать 2 бонуса( 1 для 50 на 50, 2 для помощь друга).\n";
         }
         else if (player.bonuces == 1) {
-            cout << "У вас осталось только помощь друг, если хотите использовать бонус введите 2.\n";
+            cout << "У вас осталось только помощь друга, если хотите использовать бонус введите 2.\n";
         }
         else if (player.bonuces == 2) {
             cout << "У вас осталось только 50 на 50, если хотите использовать бонус введите 1.\n";
@@ -303,7 +303,7 @@ int bonuses(Player player, string word) {
     else {
         int counter{};
         for (char c : word) {
-            if (!(c >= 'А' && c <= 'я') && !(c == 'ё') && !(c == 'Ё') && (isdigit(c) || isspace(c))) {
+            if (!(c >= 'А' && c <= 'я') && !(c == 'ё') && !(c == 'Ё') && isdigit(c)) {
                 counter++;
             }
         }
@@ -627,7 +627,7 @@ void remove_letters(string word, char letters_bank[])
 bool opros_players_about_new_word(string word) {
     string answ{};
     while (true) {
-        cout << "Ситаете ли вы, что слово было правильно правильно(да/нет): ";
+        cout << "Ситаете ли вы, что слово было правильно(да/нет): ";
         getline(cin, answ);
         if (answ == "да") {
             ofstream fin;
@@ -660,7 +660,7 @@ bool big_check(string user_word, Player player) {
         }
     }
     if (counter == user_word.length()) {
-        fstream fin;
+        fstream fin,fin2;
         fin.open("russian.txt");
         using In = istream_iterator<string>;
         auto pos = find(In(fin), In(), user_word);
