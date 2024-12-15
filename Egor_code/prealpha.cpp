@@ -31,7 +31,7 @@ struct Player
 
 struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понадобится
 {
-    int points[7] = { 0,0,0,0,0,0,0};
+    int points[7] = { 0,0,0,0,0,0,0 };
     string names[7];
 };
 
@@ -64,17 +64,17 @@ void main()
     int players_ammount = input_number_of_players(); // количество игроков (задавать будем в другой функции, но пока так)
     Statistics score;
     for (unsigned short i{}; i < players_ammount; i++) {
-        score.names[i] = input_players_name(i,score);
+        score.names[i] = input_players_name(i, score);
     }
-    score = game(players_ammount,score);
-    Resaults_screen(score,players_ammount);
+    score = game(players_ammount, score);
+    Resaults_screen(score, players_ammount);
 }
 //функция для ввода имён игроков
 string input_players_name(short which_player, Statistics score) {
     string name;
     bool check_complited = false, stupid_player = false;
     while (!check_complited) {
-        if(!stupid_player)
+        if (!stupid_player)
             cout << "Игрок " << which_player + 1 << " Введите своё имя(БЕЗ знаков пунктуации и пробелов): ";
         else
             cout << "Игрок " << which_player + 1 << " Введите своё имя(БЕЗ знаков пунктуации и пробелов) и не повторяя имена других игроков: ";
@@ -166,8 +166,8 @@ Statistics game(int players_ammount, Statistics names)
                 letters_ammount++;
             }
         }
-        if(letters_ammount != 0)
-            cout << "\nВ банке осталось: " << letters_ammount << " букв\n";  
+        if (letters_ammount != 0)
+            cout << "\nВ банке осталось: " << letters_ammount << " букв\n";
         //конец подсчёта оставшихся букв в общем банке
         else {
             if (proverk_na_konec_igru(letters_ammount, player_arr, players_ammount)) {
@@ -187,7 +187,7 @@ Statistics game(int players_ammount, Statistics names)
             }
             cout << endl;
             // вывод информации текущему игроку
-            word = word_input_simpel_check(player_arr[id], player_arr, Bank_of_latters,players_ammount,names,id);
+            word = word_input_simpel_check(player_arr[id], player_arr, Bank_of_latters, players_ammount, names, id);
             if (word == "0")
             {
                 player_arr[id].last_word_of_player = "0";
@@ -246,7 +246,7 @@ Statistics game(int players_ammount, Statistics names)
 
 void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     short max_score_id{};
-    for (unsigned short i{1}; i < ammount_of_players; i++) {
+    for (unsigned short i{ 1 }; i < ammount_of_players; i++) {
         if (full_stat.points[max_score_id] < full_stat.points[i])
             max_score_id = i;
     }
@@ -269,7 +269,7 @@ int bonuses(Player player, string word) {
         }
         return 0;
     }
-    else{
+    else {
         int counter{};
         for (char c : word) {
             if (!(c >= 'а' && c <= 'я') && !(c == 'ё') && (isdigit(c) || isspace(c))) {
@@ -293,14 +293,22 @@ void fifty_fifty(Player& player, char letter_bank[]) {
     bool stupid_igrok = true;
     short counter{};
     char player_letters[5]{};
+
     while (stupid_igrok) {
         cout << "Напишите 5 букв(без пробелов и знаков припенанию) из своего набора, которые вы хотите заменить: ";
         getline(cin, letters);
-        if (letters.length() == 5) {
-            for (char c : letters) {
-                for (char k : player.letters) {
-                    if (c == k) {
+        for (int i = 0; i < 10; i++)        // буферизация букв игрока
+        {
+            player_letters[i] = player.letters[i];
+        }
+        if (letters.length() == 5)
+        {
+            for (int i; i < 5; i++) {
+                for (int j; j < 10; j++)
+                {
+                    if (letters[i] == player_letters[j]) {
                         counter++;
+                        player_letters[j] = 0;
                         break;
                     }
                 }
@@ -309,10 +317,10 @@ void fifty_fifty(Player& player, char letter_bank[]) {
             }
         }
     }
-   /* for (unsigned short i{}; i < 5; i++) {
-        letters[i] = player.letters[i];
-    }*/
-    for (char c: letters) {
+    /* for (unsigned short i{}; i < 5; i++) {
+         letters[i] = player.letters[i];
+     }*/
+    for (char c : letters) {
         for (unsigned short i{}; i < 10; i++) {
             if (c == player.letters[i]) {
                 player.letters[i] = '0';
@@ -327,7 +335,7 @@ void fifty_fifty(Player& player, char letter_bank[]) {
     }
     cout << endl;
 }
-void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score,short player_id) {
+void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score, short player_id) {
     short id{}, my_letter_id{}, his_letter_id{};
     string my_letter{}, his_letter{}, id_str{};
     char buffer{};
@@ -358,7 +366,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
         getline(cin, my_letter);
         if (my_letter.length() == 1) {
             bool correct_letter = false;
-            for (unsigned short i{}; i < 10;i++) {
+            for (unsigned short i{}; i < 10; i++) {
                 if (player.letters[i] == my_letter[0]) {
                     my_letter_id = i;
                     correct_letter = true;
@@ -398,7 +406,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
 // функция для проверки на конец из-за недостатка букв (из 2 букв почти невозможно составить слово, 
 // поэтому если в общем банке 0 букв и у каждого игрока не более чем 2 игра считается оконченной
 bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num) {
-    for (unsigned short i{}; i < players_num;i++) {
+    for (unsigned short i{}; i < players_num; i++) {
         short counter{};
         for (unsigned short j{}; j < 10; j++) {
             if (player_arr[i].letters[j] != '0')
@@ -517,10 +525,10 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
         case 2:
             if (player.bonuces == 0) {
                 player.bonuces = 2;
-                spizdi_letter(player, player_arr, player_ammount, score,player_id);
+                spizdi_letter(player, player_arr, player_ammount, score, player_id);
             }
             else if (player.bonuces == 1) {
-                spizdi_letter(player, player_arr, player_ammount, score,player_id);
+                spizdi_letter(player, player_arr, player_ammount, score, player_id);
                 player.bonuces = 3;
             }
             continue;
