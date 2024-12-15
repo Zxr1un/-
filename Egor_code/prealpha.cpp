@@ -137,6 +137,9 @@ Statistics game(int players_ammount, Statistics names)
 {
     Statistics score = names;
     char Bank_of_latters[132]; // банк букв из алфавита по 4 раза
+    for (unsigned short i{}; i < 132; i++) {
+        Bank_of_latters[i] = '0';
+    }
     alphabet_zapolnenie(Bank_of_latters); // заполнение банка букв
 
     Player player_arr[7];
@@ -292,7 +295,7 @@ void fifty_fifty(Player& player, char letter_bank[]) {
     string letters;
     bool stupid_igrok = true;
     short counter{};
-    char player_letters[5]{};
+    char player_letters[10]{};
 
     while (stupid_igrok) {
         cout << "Напишите 5 букв(без пробелов и знаков припенанию) из своего набора, которые вы хотите заменить: ";
@@ -303,12 +306,12 @@ void fifty_fifty(Player& player, char letter_bank[]) {
         }
         if (letters.length() == 5)
         {
-            for (int i; i < 5; i++) {
-                for (int j; j < 10; j++)
+            for (unsigned short i{}; i < 5; i++) {
+                for (unsigned short j{}; j < 10; j++)
                 {
                     if (letters[i] == player_letters[j]) {
                         counter++;
-                        player_letters[j] = 0;
+                        player_letters[j] = '0';
                         break;
                     }
                 }
@@ -472,18 +475,19 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                     j++;
                 }
                 /* cout << endl << "j: " << j << endl;*/
-                if (j == 131)
+                if (j == 132)
                 {
                     /* cout << endl << "break" << endl;*/
-                    while (j >= 0)
+                    while (j > 0)
                     {
+                        j--;
                         if (Bank[j] != '0')
                         {
                             pl_letters[i] = Bank[j];
                             Bank[j] = '0';
                             break;
                         }
-                        j--;
+
                     }
 
                 }
