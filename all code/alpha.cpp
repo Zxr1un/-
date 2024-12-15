@@ -49,7 +49,6 @@ bool big_check1(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
 void remove_letters(string word, char letters_bank[]);
 bool opros_players_about_new_word(string word);
-bool proverk_na_konec_igru(int letters_ammount, Player player_arr[], int players_num);
 void Resaults_screen(Statistics full_stat, short ammount_of_players);
 void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score, short plyer_id);
 void fifty_fifty(Player& player, char letter_bank[]);
@@ -128,6 +127,10 @@ int input_number_of_players() {
                     already_stupid = true;
                     cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
                 }
+            }
+            else {
+                already_stupid = true;
+                cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
             }
         }
     }
@@ -300,7 +303,7 @@ int bonuses(Player player, string word) {
     else {
         int counter{};
         for (char c : word) {
-            if (!(c >= 'а' && c <= 'я') && !(c == 'ё') && (isdigit(c) || isspace(c))) {
+            if (!(c >= 'А' && c <= 'я') && !(c == 'ё') && !(c == 'Ё') && (isdigit(c) || isspace(c))) {
                 counter++;
             }
         }
