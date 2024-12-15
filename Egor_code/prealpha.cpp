@@ -126,7 +126,7 @@ int input_number_of_players() {
                     return stoi(num_of_players);
                 else if (not_dumb) {
                     already_stupid = true;
-                    cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (больше 0)): ";
+                    cout << "Введите ЧИСЛО игроков, которые будут участвовать(не более 7 (не менее 2)): ";
                 }
             }
         }
@@ -292,8 +292,7 @@ void fifty_fifty(Player& player, char letter_bank[]) {
     string letters;
     bool stupid_igrok = true;
     short counter{};
-   /* char player_letters{};
-    for (unsigned short i{})*/
+    char player_letters[5]{};
     while (stupid_igrok) {
         cout << "Напишите 5 букв(без пробелов и знаков припенанию) из своего набора, которые вы хотите заменить: ";
         getline(cin, letters);
@@ -310,10 +309,14 @@ void fifty_fifty(Player& player, char letter_bank[]) {
             }
         }
     }
-    for (char c : letters) {
+   /* for (unsigned short i{}; i < 5; i++) {
+        letters[i] = player.letters[i];
+    }*/
+    for (char c: letters) {
         for (unsigned short i{}; i < 10; i++) {
             if (c == player.letters[i]) {
                 player.letters[i] = '0';
+                break;
             }
         }
     }
