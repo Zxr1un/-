@@ -292,6 +292,8 @@ void fifty_fifty(Player& player, char letter_bank[]) {
     string letters;
     bool stupid_igrok = true;
     short counter{};
+   /* char player_letters{};
+    for (unsigned short i{})*/
     while (stupid_igrok) {
         cout << "Напишите 5 букв(без пробелов и знаков припенанию) из своего набора, которые вы хотите заменить: ";
         getline(cin, letters);
@@ -300,6 +302,7 @@ void fifty_fifty(Player& player, char letter_bank[]) {
                 for (char k : player.letters) {
                     if (c == k) {
                         counter++;
+                        break;
                     }
                 }
                 if (counter == letters.length())
