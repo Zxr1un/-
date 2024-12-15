@@ -34,13 +34,13 @@ struct Statistics //возможно обойдёмся без этой структуры, но Андрею может понад
     string names[7];
 };
 
-int bonuses(Player player, string word);
+int bonuses(Player player, string word, short letter_ammount);
 string input_players_name(short which_player, Statistics score);
 int input_number_of_players();
 void alphabet_zapolnenie(char massive_alphabet[]);
 Statistics game(int players_ammount, Statistics names);
 void add_letters_to_player(char pl_letters[], char Bank[]);
-string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id);
+string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letters_in_bank);
 bool big_check(string user_word, Player player);
 bool big_check1(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
@@ -184,7 +184,7 @@ Statistics game(int players_ammount, Statistics names)
             }
             cout << endl;
             // вывод информации текущему игроку
-            word = word_input_simpel_check(player_arr[id], player_arr, Bank_of_latters, players_ammount, names, id);
+            word = word_input_simpel_check(player_arr[id], player_arr, Bank_of_latters, players_ammount, names, id, letters_ammount);
             if (word == "0")
             {
                 player_arr[id].last_word_of_player = "0";
@@ -274,15 +274,18 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
         }
     }
 }
-int bonuses(Player player, string word) {
+int bonuses(Player player, string word, short letter_ammount) {
     if (word.empty()) {
-        if (player.bonuces == 0) {
+        if (player.bonuces == 0 && letter_ammount != 0) {
             cout << "У вас есть возможность использовать 2 бонуса( 1 для 50 на 50, 2 для помощь друга).\n";
+        }
+        else if (player.bonuces == 0) {
+            cout << "У вас осталось только помощь друга, если хотите использовать бонус введите 2.\n";
         }
         else if (player.bonuces == 1) {
             cout << "У вас осталось только помощь друга, если хотите использовать бонус введите 2.\n";
         }
-        else if (player.bonuces == 2) {
+        else if (player.bonuces == 2 && letter_ammount != 0) {
             cout << "У вас осталось только 50 на 50, если хотите использовать бонус введите 1.\n";
         }
         else {
@@ -504,12 +507,12 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         }
     }
 }
-string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id) {
+string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letters_in_bank) {
     string user_word{};
     bool check_complited = false, already_dumb = false;
     while (!check_complited) {
         user_word = "";
-        bonuses(player, user_word);
+        bonuses(player, user_word, letters_in_bank);
         if (!already_dumb && player.bonuces != 3)
             cout << "Введите слово из ваших 10-ти букв или номер бонуса: ";
         else
@@ -518,9 +521,9 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
         if (user_word.empty()) {
             return "0";
         }
-        switch (bonuses(player, user_word)) {
+        switch (bonuses(player, user_word, letters_in_bank)) {
         case 1:
-            if (player.bonuces == 0) {
+            if (player.bonuces == 0 && letters_in_bank != 0) {
                 player.bonuces = 1;
                 fifty_fifty(player, letter_bank);
             }
