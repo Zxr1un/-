@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 using namespace std;
 
@@ -22,12 +23,13 @@ char massive_alphabet[132];
 int i = { 0 };
 
 
+void enter_names(Player players[], int count_of_players);
 int getRandomNumber(int i, int old_time_random); // Функция для получения случайных элементов которые используется для случайного взятия букв из банка букв
 void alpha_filling(char massive_alphabet[]); // Заполняет банк букв 4 алфавитами
 void getting_letters(int amount_players, Player players[]); // Обновляет список букв всем игрокам у кого их нет
 void play(); // Основная функция игры
 string enter_words(Player players[], int i); // Функция ввода слова игрока также идёт проверка на то были ли использованы буквы из букв игрока
-bool check_correct_answer(Player player[], int i); // Проверяет существование такого слова в списке слов и вынесенея вопроса об существовании слова если такого слова не было найдено в списке возможных слов
+bool check_correct_answer(Player player[], int i, int count_of_players); // Проверяет существование такого слова в списке слов и вынесенея вопроса об существовании слова если такого слова не было найдено в списке возможных слов
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player); // Присвоение очков игроку
 bool opros_players_about_propusk_hoda(Player players[], int now_player); // Опрос игроков нужно ли им пропустить сейчас ход (из за невозможности составить слово)
 bool opros_players_about_new_word(Player players[], int count_players, int now_player); // Опрос игроков о добавлении нового слова в список слов
@@ -39,6 +41,8 @@ void settings();
 int main()
 {
     setlocale(LC_ALL, "RU");
+    SetConsoleCP(1251); // Ввод в консоль русских символов
+    SetConsoleOutputCP(1251); // Вывод в консоли русских символов
     while (true)
     {
         int main_menu_otvet = main_menu();
@@ -62,24 +66,33 @@ void play()
     int kol_players;
     cout << "Введите количество игроков: ";
     cin >> kol_players;
+    enter_names(players, kol_players);
     alpha_filling(massive_alphabet);
     while (true)
     {
         for (int i = 0; i < kol_players; i++)
         {
-            bool correct_answ;
             getting_letters(kol_players, players); //Выводит буквы красиво
             enter_words(players, i); // Ввод слова
-            correct_answ = check_correct_answer(players, i);
             if (i == 0)
             {
-                scoring_of_players(correct_answ, players[i].last_word, players[kol_players - 1].last_word);
+                scoring_of_players(check_correct_answer(players, i, kol_players), players[i].last_word, players[kol_players - 1].last_word);
             }
             else
             {
-                scoring_of_players(correct_answ, players[i].last_word, players[i - 1].last_word);
+                scoring_of_players(check_correct_answer(players, i, kol_players), players[i].last_word, players[i - 1].last_word);
             }
+            
         }
+    }
+}
+
+void enter_names(Player players[], int count_of_players)
+{
+    for (int i = 0; i < count_of_players; i++)
+    {
+        cout << "Игрок под номером " << i + 1 << " введите своё имя или никнейм который будет использоваться в игре: ";
+        cin >> players[i].name;
     }
 }
 
@@ -166,9 +179,11 @@ string enter_words(Player players[], int i)
     }
     cin >> players[i].last_word;
     count_answer = players[i].last_word.length();
+    for (int j = 0; j < count_answer; j++)
+        players[i].last_word[j] = toupper(players[i].last_word[j]);
     for (int j = 0; j < 10; j++)
     {
-        for (int k = 0; k < 10; k++)
+        for (int k = 0; k < count_answer; k++)
         {
             if (players[i].letters[j] == players[i].last_word[k])
             {
@@ -184,11 +199,11 @@ string enter_words(Player players[], int i)
     else
     {
         cout << "Вы ввели неправильное слово которое не соответствует вашим буквам, пропуск хода" << endl;
-        players[i].last_word = "kk";
+        return players[i].last_word + "6";
     }
 }
 
-bool check_correct_answer(Player player[], int i)
+bool check_correct_answer(Player player[], int i, int count_of_players)
 {
     int counter{};
     string stroka;
@@ -199,8 +214,11 @@ bool check_correct_answer(Player player[], int i)
         if (stroka == player[i].last_word)
             return true;
     }
-    if (opros_players_about_new_word(players, 1, 1) != true)
-        return false;
+    if (player[i].last_word[player[i].last_word.length()] != 6)
+    {
+        if (opros_players_about_new_word(players, count_of_players, i) != true)
+            return false;
+    }
 }
 
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player)
@@ -214,14 +232,43 @@ int scoring_of_players(bool correct_answer, string answer, string answer_previou
             return answer.length();
     }
     else
-        return answer.length() * -1;
+        return (answer.length() - 1) * -1;
 }
-
+    
 bool opros_players_about_new_word(Player players[], int count_players, int now_player)
 {
+    int count_of_plus = { 0 };
+    string answer;
     for (int i = 0; i < count_players; i++)
     {
+        if (i != now_player)
+        {
+            cout << "Игрок " << players[i].name << " согласны ли вы с тем что слово " << players[now_player].last_word << " должно войти в словарь и засчитаться игроку " << players[now_player].name << ": ";
+            cin >> answer;
+            if (answer == "да" or "+" or "Да")
+            {
+                count_of_plus += 1;
+            }
+            else if (answer == "нет" or "-" or "Нет")
+            {
+                count_of_plus += 0;
+            }
+            else
+            {
+                cout << "Введенно неккоректное значение пожалуйста переголосуйте " << endl;
+                i--;
+            }
+        }
+    }
+    if (count_of_plus == count_players - 1)
+    {
+        ofstream out("russian.txt", ios::app);
+        out << players[now_player].last_word << "\n";
         return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
