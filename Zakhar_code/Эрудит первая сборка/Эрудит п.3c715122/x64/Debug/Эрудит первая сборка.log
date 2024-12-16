@@ -1,9 +1,0 @@
-﻿  Эрудит первая сборка.cpp
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(73,6): warning C4326: возвращаемый тип "main" должен быть "int", а не "void"
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(361,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(497,36): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(499,33): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(503,32): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(509,14): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\Эрудит первая сборка.cpp(306,1): warning C4715: bonuses: значение возвращается не при всех путях выполнения
-  Эрудит первая сборка.vcxproj -> D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\Zakhar_code\Эрудит первая сборка\x64\Debug\Эрудит первая сборка.exe
