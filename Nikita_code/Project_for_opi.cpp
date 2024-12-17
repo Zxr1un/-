@@ -11,31 +11,39 @@ using namespace std;
 
 struct Player {
     // структура с буквами пользователя, его айдишником, последним словом, и баллы
-    char letters[10]{};
+    char letters[10]{' ',' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
     string last_word = " ";
     int points = 0;
     string name;
+    bool skip_enter = false;
+    int bonus50 = 1;
+    int bonusswap = 1;
 };
 
 
 Player players[6];
-char massive_alphabet[132];
+char massive_alphabet[172];
 int i = { 0 };
+int main_menu_otvet;
 
 
 void enter_names(Player players[], int count_of_players);
 int getRandomNumber(int i, int old_time_random); // Функция для получения случайных элементов которые используется для случайного взятия букв из банка букв
-void alpha_filling(char massive_alphabet[]); // Заполняет банк букв 4 алфавитами
-void getting_letters(int amount_players, Player players[]); // Обновляет список букв всем игрокам у кого их нет
+void alpha_filling(char massive_alphabet[]); // Заполняет банк букв
+void getting_letters(Player players[], int now_player); // Обновляет список букв игроку
 void play(); // Основная функция игры
-string enter_words(Player players[], int i); // Функция ввода слова игрока 
+void enter_words(Player players[], int now_player, int count_of_players); // Функция ввода слова игрока 
 bool check_correct_answer(Player player[], int i, int count_of_players); // Проверяет существование такого слова в списке слов и вынесенея вопроса об существовании слова если такого слова не было найдено в списке возможных слов также идёт проверка на то были ли использованы буквы из букв игрока
-int scoring_of_players(bool correct_answer, string answer, string answer_previous_player); // Присвоение очков игроку
-//bool opros_players_about_propusk_hoda(Player players[], int now_player); // Опрос игроков нужно ли им пропустить сейчас ход (из за невозможности составить слово)
+void scoring_of_players(Player players[], int now_player, bool correct_answer, string answer_previous_player); // Присвоение очков игроку
 bool opros_players_about_new_word(Player players[], int count_players, int now_player); // Опрос игроков о добавлении нового слова в список слов
+void bonus5050(Player players[], int now_player, int count_of_players); // Игрок выбирает половину букв которые ему нужно заменить на новые буквы из словаря
+bool bonus_swap_char(Player players[], int now_player, int count_of_players); // Игрок обменивается буквой с другим игроком
+bool check_end_game(Player players[], int count_of_players); // Проверяет пропустили ли ходы все игроки и если да то завершает программу
 
 int main_menu();
 void settings();
+
+
 
 
 int main()
@@ -58,34 +66,43 @@ int main()
         {
             break;
         }
+        else
+        {
+            continue;
+        }
     }
 }
+
 
 void play()
 {
     int kol_players;
     cout << "Введите количество игроков: ";
     cin >> kol_players;
-    enter_names(players, kol_players);
     alpha_filling(massive_alphabet);
-    while (true)
+    enter_names(players, kol_players);
+    while (check_end_game(players, kol_players) == false)
     {
-        for (int i = 0; i < kol_players; i++)
+        for (int now_player = 0; now_player < kol_players; now_player++)
         {
-            getting_letters(kol_players, players); //Выводит буквы красиво
-            enter_words(players, i); // Ввод слова
-            if (i == 0)
+            getting_letters(players, now_player);
+        }
+        for (int now_player = 0; now_player < kol_players; now_player++)
+        {
+            enter_words(players, now_player, kol_players); // Ввод слова
+            if (now_player == 0)
             {
-                scoring_of_players(check_correct_answer(players, i, kol_players), players[i].last_word, players[kol_players - 1].last_word);
+                scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[kol_players - 1].last_word);
             }
             else
             {
-                scoring_of_players(check_correct_answer(players, i, kol_players), players[i].last_word, players[i - 1].last_word);
+                scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[now_player - 1].last_word);
             }
-            
+            cout << "Количество очков игрока " << players[now_player].name << " равно " << players[now_player].points << endl << endl;
         }
     }
 }
+
 
 void enter_names(Player players[], int count_of_players)
 {
@@ -96,121 +113,131 @@ void enter_names(Player players[], int count_of_players)
     }
 }
 
+
 int getRandomNumber(int i, int old_time_random)
 {
     int time_random;
     if (i == 0)
-    {
         srand(time(0));
-        time_random = rand();
-    }
-    else
-    {
-        time_random = ((old_time_random + rand()) * 8 - 15024) / 8;
-    }
-    return time_random % 132;
+    time_random = rand();
+    return time_random % 172;
 }
 
 
 void alpha_filling(char massive_alphabet[])
 {
-    int counter = 192;
-    for (unsigned i{}; i < 132; i++)
-    {
-        if (counter == 197)
-        {
-            massive_alphabet[i] = counter;
-            massive_alphabet[i + 1] = 'Ё';
-            i++;
-            counter++;
+    char c[23] = { 'б','в','г','д','ж','з','й','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ','ь','ъ' };
+    char g[10] = { 'а','е','ё','и','о','у','ы','э','ю','я' };
+    short counter{};
+    for (unsigned short i{ 1 }; i < 13; i++) {
+        if (i % 3 == 0) {
+            for (unsigned short j{}; j < 23; j++) {
+                massive_alphabet[counter] = c[j];
+                counter++;
+            }
         }
-        else if (counter == 223)
-        {
-            massive_alphabet[i] = counter;
-            counter = 192;
-        }
-        else
-        {
-            massive_alphabet[i] = counter;
-            counter++;
-        }
-    }
-    for (int i = 0; i < counter; i++)
-    {
-        massive_alphabet[i] = tolower(massive_alphabet[i]);
-    }
-}
-
-void getting_letters(int amount_players, Player players[])
-{
-    int intermediate_value = {};
-    for (int j = 0; j < amount_players; j++)
-    {
-        int old_time_random = 0;
-        for (int i{}; i < 10; i++)
-        {
-            if (players[j].letters[i] != 1)
-            {
-                intermediate_value = getRandomNumber(i, old_time_random);
-                old_time_random = intermediate_value;
-                if (massive_alphabet[intermediate_value] != 1)
-                {
-                    players[j].letters[i] = massive_alphabet[intermediate_value];
-                    massive_alphabet[intermediate_value] = 1;
-                }
-                else
-                {
-                    i--;
-                }
+        else {
+            for (unsigned short j{}; j < 10; j++) {
+                massive_alphabet[counter] = g[j];
+                counter++;
             }
         }
     }
 }
 
-string enter_words(Player players[], int i)
+
+void getting_letters(Player players[], int now_player)
 {
-    //Количество букв в ответе и количество совпавших букв этого ответа с списком букв у игрока
-    cout << "Игрок под номером " << i + 1 << " (" << players[i].name << ") попробуйте составить слово из представленных букв, если вы не можете это сделать нажмите на пропуск хода (введите 1) " << endl;
+    int intermediate_value = {};
+    int old_time_random = 0;
+    for (int i{}; i < 10; i++)
+    {
+        if (players[now_player].letters[i] == ' ')
+        {
+            intermediate_value = getRandomNumber(i, old_time_random);
+            old_time_random = intermediate_value;
+            if (massive_alphabet[intermediate_value] != ' ')
+            {
+                players[now_player].letters[i] = massive_alphabet[intermediate_value];
+                massive_alphabet[intermediate_value] = ' ';
+            }
+            else
+            {
+                i--;
+            }
+        }
+    }
+}
+
+
+void enter_words(Player players[], int now_player, int count_of_players)
+{
+    string nothing = "";
+    cout << "Игрок под номером " << now_player + 1 << " (" << players[now_player].name << ") попробуйте составить слово из представленных букв, если вы не можете это сделать нажмите на пропуск хода (ничего не вводите) " << endl;
     cout << "Далее представлены ваши буквы: ";
     for (int j = 0; j < 10; j++)
     {
-        cout << players[i].letters[j] << " ";
+        cout << players[now_player].letters[j] << ' ';
     }
-    cin >> players[i].last_word;
-    return players[i].last_word;
+    cout << endl;
+    if (players[now_player].bonus50 == 1)
+    {
+        cout << "Вы имеете бонус замены половины букв (-2 балла), чтобы его активировать введите '50'" << endl;
+    }
+    if (players[now_player].bonusswap == 1)
+    {
+        cout << "Вы имеете бонус обмена 1 буквы с любым игроком, чтобы его активировать введите 'обменбукв'" << endl;
+    }
+    cin >> players[now_player].last_word;
+    if (players[now_player].last_word == "50" and players[now_player].bonus50 == 1)
+    {
+        bonus5050(players, now_player, count_of_players);
+    }
+    else if (players[now_player].last_word == "обменбукв")
+    {
+        bonus_swap_char(players, now_player, count_of_players);
+    }
+    else if (players[now_player].last_word == nothing)
+    {
+        cout << "Вы пропустили ход " << endl;
+        players[now_player].skip_enter = true;
+    }
 }
 
-bool check_correct_answer(Player player[], int i, int count_of_players)
+
+bool check_correct_answer(Player player[], int now_player, int count_of_players)
 {
     int counter{};
     int count_answer, count_good_chars = { 0 };
-    string stroka;
+    string stroka, answer;
     fstream fin;
     fin.open("russian.txt");
-    count_answer = players[i].last_word.length();
-    for (int j = 0; j < count_answer; j++)
-        players[i].last_word[j] = tolower(players[i].last_word[j]);
-    for (int j = 0; j < 10; j++)
+    answer = players[now_player].last_word;
+    count_answer = players[now_player].last_word.length();
+    for (int k = 0; k < count_answer; k++)
     {
-        for (int k = 0; k < count_answer; k++)
+        for (int j = 0; j < 10; j++)
         {
-            if (players[i].letters[j] == players[i].last_word[k])
+            if (players[now_player].letters[j] == answer[k])
             {
                 count_good_chars += 1;
-                players[i].letters[j] = 1;
+                players[now_player].letters[j] = ' ';
+                answer[k] = '!';
             }
         }
     }
-    if (count_answer == count_good_chars)
+    if (count_answer <= count_good_chars)
     {
         while (getline(fin, stroka))
         {
-            if (stroka == player[i].last_word)
+            if (stroka == player[now_player].last_word)
+            {
                 return true;
+            }
         }
-        if (opros_players_about_new_word(players, count_of_players, i) != true)
+        if (opros_players_about_new_word(players, count_of_players, now_player) != true)
         {
-            cout << "Всенародным голосованием слово " << player[i].last_word << " не было принято ";
+            cout << "Всенародным голосованием слово " << player[now_player].last_word << " не было принято ";
             return false;
         }
         else
@@ -218,25 +245,35 @@ bool check_correct_answer(Player player[], int i, int count_of_players)
     }
     else
     {
-        cout << "Буквы в слове не соответствуют буквам в словаре игрока";
+        cout << "Буквы в слове не соответствуют буквам в словаре игрока" << endl;
         return false;
     }
 }
 
-int scoring_of_players(bool correct_answer, string answer, string answer_previous_player)
-{
 
+void scoring_of_players(Player players[], int now_player, bool correct_answer, string answer_previous_player)
+{
     if (correct_answer == true)
     {
-        if (answer[answer.length() - 1] == answer_previous_player[1])
-            return answer.length() * 2;
+        if (players[now_player].last_word[0] == answer_previous_player[answer_previous_player.length() - 1])
+        {
+            cout << "Количество ваших очков стало увеличилось на " << players[now_player].last_word.length() * 2 << endl;
+            players[now_player].points += players[now_player].last_word.length() * 2;
+        }
         else
-            return answer.length();
+        {
+            
+            players[now_player].points += players[now_player].last_word.length();
+            cout << "Количество ваших очков стало увеличилось на " << players[now_player].last_word.length() << endl;
+        }
     }
     else
-        return answer.length() * -1;
+    {
+        cout << "Количество ваших очков стало уменьшилось на " << players[now_player].last_word.length() << endl;
+        players[now_player].points += players[now_player].last_word.length() * (-1);
+    }
 }
-    
+
 bool opros_players_about_new_word(Player players[], int count_players, int now_player)
 {
     int count_of_plus = { 0 };
@@ -274,14 +311,89 @@ bool opros_players_about_new_word(Player players[], int count_players, int now_p
     }
 }
 
-void bonus5050()
-{
 
+void bonus5050(Player players[], int now_player, int count_of_players)
+{
+    string answer;
+    cout << "Перечислите без пробелов набор букв (5 штук) которые хотите заменить: ";
+    cin >> answer;
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            if (players[now_player].letters[i] == answer[j])
+                players[now_player].letters[i] = ' ';
+        }
+    }
+    players[now_player].points -= 2;
+    players[now_player].bonus50 -= 1;
+    getting_letters(players, now_player);
+    cout << "\033[2J\033[1;1H"; // почистить консоль
+    enter_words(players, now_player, count_of_players);
 }
 
-void bonus_help_friend()
-{
 
+bool bonus_swap_char(Player players[], int now_player, int count_of_players)
+{
+    string answer;
+    char answer1, answer2;
+    for (int i = 0; i < count_of_players; i++)
+    {
+        if (i != now_player)
+        {
+            cout << players[i].name << " имееет буквы: ";
+            for (int j = 0; j < 10; j++)
+                cout << players[i].letters[j] << " ";
+            cout << endl;
+        }
+    }
+    while (true)
+    {
+        int index_of_player = 8;
+        cout << "Введите игрока (имя или номер) с которым вы хотите обменятся буквами: ";
+        cin >> answer;
+        for (int i = 0; i < count_of_players; i++)
+        {
+            if (answer == players[i].name or (i + 1))
+                index_of_player = i;
+        }
+        if (index_of_player != 8)
+        {
+            cout << "Выберете свою букву которую вы хотите изменить: ";
+            cin >> answer1;
+            cout << "Выберите букву своего товарища которую вы хотите изъять: ";
+            cin >> answer2;
+            for (int j = 0; j < 10; j++)
+            {
+                for (int k = 0; k < 10; k++)
+                {
+                    if (players[now_player].letters[j] == answer1 and players[index_of_player].letters[k] == answer2)
+                    {
+                        swap(players[now_player].letters[j], players[index_of_player].letters[j]);
+                        players[now_player].bonusswap -= 1;
+                        cout << "\033[2J\033[1;1H"; // почистить консоль
+                        enter_words(players, now_player, count_of_players);
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+bool check_end_game(Player players[], int count_of_players)
+{
+    int exit_counts = 0;
+    for (int i = 0; i < count_of_players; i++)
+    {
+        if (players[i].skip_enter == true)
+            exit_counts += 1;
+    }
+    if (exit_counts == count_of_players)
+        return true;
+    else
+        return false;
 }
 
 
@@ -300,6 +412,7 @@ int main_menu()
     cout << "\033[2J\033[1;1H"; // почистить консоль
     return main_menu_otvet;
 }
+
 
 void settings()
 {
