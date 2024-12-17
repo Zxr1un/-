@@ -28,10 +28,10 @@ int getRandomNumber(int i, int old_time_random); // Функция для пол
 void alpha_filling(char massive_alphabet[]); // Заполняет банк букв 4 алфавитами
 void getting_letters(int amount_players, Player players[]); // Обновляет список букв всем игрокам у кого их нет
 void play(); // Основная функция игры
-string enter_words(Player players[], int i); // Функция ввода слова игрока также идёт проверка на то были ли использованы буквы из букв игрока
-bool check_correct_answer(Player player[], int i, int count_of_players); // Проверяет существование такого слова в списке слов и вынесенея вопроса об существовании слова если такого слова не было найдено в списке возможных слов
+string enter_words(Player players[], int i); // Функция ввода слова игрока 
+bool check_correct_answer(Player player[], int i, int count_of_players); // Проверяет существование такого слова в списке слов и вынесенея вопроса об существовании слова если такого слова не было найдено в списке возможных слов также идёт проверка на то были ли использованы буквы из букв игрока
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player); // Присвоение очков игроку
-bool opros_players_about_propusk_hoda(Player players[], int now_player); // Опрос игроков нужно ли им пропустить сейчас ход (из за невозможности составить слово)
+//bool opros_players_about_propusk_hoda(Player players[], int now_player); // Опрос игроков нужно ли им пропустить сейчас ход (из за невозможности составить слово)
 bool opros_players_about_new_word(Player players[], int count_players, int now_player); // Опрос игроков о добавлении нового слова в список слов
 
 int main_menu();
@@ -98,19 +98,15 @@ void enter_names(Player players[], int count_of_players)
 
 int getRandomNumber(int i, int old_time_random)
 {
-    int time_random, time_random_min, time_random_hour;
+    int time_random;
     if (i == 0)
     {
-        time_t now = time(0);
-        tm* ltm = localtime(&now);
-        time_random = 1 + ltm->tm_sec;
-        time_random_min = 1 + ltm->tm_min;
-        time_random_hour = 1 + ltm->tm_hour;
-        time_random = ((time_random + time_random_min + time_random_hour + 354) * 8 - 73) / 8;
+        srand(time(0));
+        time_random = rand();
     }
     else
     {
-        time_random = ((old_time_random + 354) * 8 - 73) / 8;
+        time_random = ((old_time_random + rand()) * 8 - 15024) / 8;
     }
     return time_random % 132;
 }
@@ -139,6 +135,10 @@ void alpha_filling(char massive_alphabet[])
             counter++;
         }
     }
+    for (int i = 0; i < counter; i++)
+    {
+        massive_alphabet[i] = tolower(massive_alphabet[i]);
+    }
 }
 
 void getting_letters(int amount_players, Player players[])
@@ -157,7 +157,6 @@ void getting_letters(int amount_players, Player players[])
                 {
                     players[j].letters[i] = massive_alphabet[intermediate_value];
                     massive_alphabet[intermediate_value] = 1;
-                    cout << i + 1 << " буква в букваре " << j + 1 << " игрока это " << players[j].letters[i] << endl;
                 }
                 else
                 {
@@ -170,7 +169,7 @@ void getting_letters(int amount_players, Player players[])
 
 string enter_words(Player players[], int i)
 {
-    int count_answer, count_good_chars = { 0 }; //Количество букв в ответе и количество совпавших букв этого ответа с списком букв у игрока
+    //Количество букв в ответе и количество совпавших букв этого ответа с списком букв у игрока
     cout << "Игрок под номером " << i + 1 << " (" << players[i].name << ") попробуйте составить слово из представленных букв, если вы не можете это сделать нажмите на пропуск хода (введите 1) " << endl;
     cout << "Далее представлены ваши буквы: ";
     for (int j = 0; j < 10; j++)
@@ -178,9 +177,19 @@ string enter_words(Player players[], int i)
         cout << players[i].letters[j] << " ";
     }
     cin >> players[i].last_word;
+    return players[i].last_word;
+}
+
+bool check_correct_answer(Player player[], int i, int count_of_players)
+{
+    int counter{};
+    int count_answer, count_good_chars = { 0 };
+    string stroka;
+    fstream fin;
+    fin.open("russian.txt");
     count_answer = players[i].last_word.length();
     for (int j = 0; j < count_answer; j++)
-        players[i].last_word[j] = toupper(players[i].last_word[j]);
+        players[i].last_word[j] = tolower(players[i].last_word[j]);
     for (int j = 0; j < 10; j++)
     {
         for (int k = 0; k < count_answer; k++)
@@ -194,30 +203,23 @@ string enter_words(Player players[], int i)
     }
     if (count_answer == count_good_chars)
     {
-        return players[i].last_word;
+        while (getline(fin, stroka))
+        {
+            if (stroka == player[i].last_word)
+                return true;
+        }
+        if (opros_players_about_new_word(players, count_of_players, i) != true)
+        {
+            cout << "Всенародным голосованием слово " << player[i].last_word << " не было принято ";
+            return false;
+        }
+        else
+            return true;
     }
     else
     {
-        cout << "Вы ввели неправильное слово которое не соответствует вашим буквам, пропуск хода" << endl;
-        return players[i].last_word + "6";
-    }
-}
-
-bool check_correct_answer(Player player[], int i, int count_of_players)
-{
-    int counter{};
-    string stroka;
-    fstream fin;
-    fin.open("russian.txt");
-    while (getline(fin, stroka))
-    {
-        if (stroka == player[i].last_word)
-            return true;
-    }
-    if (player[i].last_word[player[i].last_word.length()] != 6)
-    {
-        if (opros_players_about_new_word(players, count_of_players, i) != true)
-            return false;
+        cout << "Буквы в слове не соответствуют буквам в словаре игрока";
+        return false;
     }
 }
 
@@ -232,7 +234,7 @@ int scoring_of_players(bool correct_answer, string answer, string answer_previou
             return answer.length();
     }
     else
-        return (answer.length() - 1) * -1;
+        return answer.length() * -1;
 }
     
 bool opros_players_about_new_word(Player players[], int count_players, int now_player)
@@ -272,10 +274,16 @@ bool opros_players_about_new_word(Player players[], int count_players, int now_p
     }
 }
 
-bool opros_players_about_propusk_hoda(Player players[], int now_player)
+void bonus5050()
 {
-    return true;
+
 }
+
+void bonus_help_friend()
+{
+
+}
+
 
 int main_menu()
 {
