@@ -959,17 +959,16 @@ void remove_letters(string word, char letters_bank[])
     }
 } 
 
-
 bool opros_players_about_new_word(string word) {
     string answ{};
     while (true) {
         cout << endl;
         cout << setw(105) << "Ситаете ли вы, что слово было правильно правильно(да/нет):  ";
-        cout << setw(127) << " ";  
+        cout << setw(127) << " ";
         getline(cin, answ);
         if (answ == "да") {
             ofstream fin;
-            fin.open("russian.txt", ios::app);
+            fin.open("user_words.txt", ios::app);
             fin << word << "\n";
             fin.close();
             return true;
@@ -979,9 +978,7 @@ bool opros_players_about_new_word(string word) {
     }
 }
 
-//Проверка Егора (Я костылями разделил её на 2 отдельные)
 bool big_check(string user_word, Player player) {
-    //Егор, я дописал тебе костыль
     int counter{};
     char player_letters[10]{};
     for (unsigned short i{}; i < 10; i++) {
@@ -998,18 +995,43 @@ bool big_check(string user_word, Player player) {
         }
     }
     if (counter == user_word.length()) {
-        fstream fin;
-        fin.open("russian.txt");
-        using In = istream_iterator<string>;
-        auto pos = find(In(fin), In(), user_word);
-        if (pos != In()) {
-            fin.close();
-            return true;
+        fstream file;
+        file.open("singular_and_plural.txt");
+        string out;
+
+        while (getline(file, out))
+        {
+
+            if (out[0] == user_word[0])
+            {
+                if (user_word == out)
+                {
+                    file.close();
+                    return true;
+                }
+
+            }
         }
-        else {
-            fin.close();
-            return opros_players_about_new_word(user_word);
+        file.close();
+        fstream file2;
+        file2.open("user_words.txt");
+
+        while (getline(file2, out))
+        {
+
+            if (out[0] == user_word[0])
+            {
+                if (user_word == out)
+                {
+                    file2.close();
+                    return true;
+                }
+
+            }
         }
+        file2.close();
+        return opros_players_about_new_word(user_word);
+
     }
     else
         return false;
