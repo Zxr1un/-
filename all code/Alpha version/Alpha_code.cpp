@@ -74,6 +74,7 @@ int main() {
     cout << " ";
     system("cls");
     maxsc();
+    system("mode con cols=300 lines=100");
     cout << " ";
     system("cls");
     printHeading();
