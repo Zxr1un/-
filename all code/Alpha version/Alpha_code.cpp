@@ -44,7 +44,7 @@ int input_number_of_players();
 void alphabet_zapolnenie(char massive_alphabet[]);
 Statistics game(int players_ammount, Statistics names);
 void add_letters_to_player(char pl_letters[], char Bank[]);
-string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letter_ammount, string last_word);
+string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics& score, short player_id, short letter_ammount, string last_word);
 bool big_check(string user_word, Player player);
 bool big_check1(string user_word, Player player);
 //bool big_check2(string user_word, Player player);
@@ -53,7 +53,7 @@ void remove_letters(string word, char letters_bank[]);
 bool opros_players_about_new_word(string word);
 void Resaults_screen(Statistics full_stat, short ammount_of_players);
 void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score, short player_id, string last_word); 
-void fifty_fifty(Player& player, char letter_bank[], string last_word, short id, Statistics names); 
+void fifty_fifty(Player& player, char letter_bank[], string last_word, short id, Statistics& names); 
 void maxsc();
 void printHeading();
 void Rules();
@@ -74,7 +74,6 @@ int main() {
     cout << " ";
     system("cls");
     maxsc();
-    system("mode con cols=300 lines=100");
     cout << " ";
     system("cls");
     printHeading();
@@ -381,8 +380,8 @@ Statistics game(int players_ammount, Statistics names)
 {
     const int width = 156;
     Statistics score = names;
-    char Bank_of_latters[132]{}; // банк букв из алфавита по 4 раза
-    for (unsigned short i{}; i < 132; i++) {
+    char Bank_of_latters[172]{}; // банк букв из алфавита по 4 раза
+    for (unsigned short i{}; i < 172; i++) {
         Bank_of_latters[i] = '-';
     }
     alphabet_zapolnenie(Bank_of_latters); // заполнение банка букв
@@ -410,7 +409,7 @@ Statistics game(int players_ammount, Statistics names)
         cout << endl;
         printBorder(width);
 
-        for (int i = 0; i < 132; i++)
+        for (int i = 0; i < 172; i++)
         {
             if (Bank_of_latters[i] != '-')
             {
@@ -602,7 +601,7 @@ int bonuses(Player player, string word, short letter_ammount, bool player_with_l
         }
     }
 }
-void fifty_fifty(Player& player, char letter_bank[], string last_word, short id, Statistics names) {
+void fifty_fifty(Player& player, char letter_bank[], string last_word, short id, Statistics& names) {
     string letters;
     bool stupid_igrok = true;
     short counter{};
@@ -647,6 +646,7 @@ void fifty_fifty(Player& player, char letter_bank[], string last_word, short id,
         }
     }
     add_letters_to_player(player.letters, letter_bank);
+    names.points[id] = names.points[id] -2;
     const int width = 156;
     vuvod_igroka( false, names, id, last_word);   ////////////////////////////////////////////////////////////////////////////////
     cout << endl;
@@ -710,7 +710,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     while (true) {
         cout << endl;
-        cout <<  "                                            Ведите букву которую хотите поменять у выбранного вами пользователя\n ";
+        cout << "                                            Ведите букву которую хотите поменять у выбранного вами пользователя\n ";
         cout << setw(76) << " ";
         getline(cin, his_letter);
         if (his_letter.length() == 1) {
@@ -726,7 +726,6 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
                 break;
         }
     }
-    cin.ignore(); 
     clearScreen();
     buffer = his_letter[0];
     player_arr[id].letters[his_letter_id] = my_letter[0];
@@ -746,25 +745,21 @@ void alphabet_zapolnenie(char massive_alphabet[])
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int counter = 224;
-    for (unsigned i{}; i < 132; i++)
-    {
-        if (counter == 227)
-        {
-            massive_alphabet[i] = counter;
-            massive_alphabet[i + 1] = 'ё';
-            i++;
-            counter++;
+    char c[] = { 'б','в','г','д','ж','з','й','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ','ь','ъ'};
+    char g[] = { 'а','е','ё','и','о','у','ы','э','ю','я' };
+    short counter{};
+    for (unsigned short i{1}; i < 13; i++) {
+        if (i % 3 == 0) {
+            for (unsigned short j{}; j < 23; j++) {
+                massive_alphabet[counter] = c[j];
+                counter++;
+            }
         }
-        else if (counter == 255)
-        {
-            massive_alphabet[i] = counter;
-            counter = 224;
-        }
-        else
-        {
-            massive_alphabet[i] = counter;
-            counter++;
+        else {
+            for (unsigned short j{}; j < 10; j++) {
+                massive_alphabet[counter] = g[j];
+                counter++;
+            }
         }
     }
 }
@@ -778,13 +773,13 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         if (pl_letters[i] == '-')
         {
             int rand_nomb;  
-            rand_nomb = rand() % 132;
+            rand_nomb = rand() % 172;
             /* cout << "Random: ";
              cout << rand_nomb << ";";*/ //для провекрки рандомайзера
             if (Bank[rand_nomb] == '-')
             {
                 int j = rand_nomb;
-                while (j < 132)
+                while (j < 172)
                 {
                     /*cout << endl << "j1: " << j << endl;*/
                     if (Bank[j] != '-')
@@ -797,7 +792,7 @@ void add_letters_to_player(char pl_letters[], char Bank[])
                     j++;
                 }
                 /* cout << endl << "j: " << j << endl;*/
-                if (j == 132)
+                if (j == 172)
                 {
                     /* cout << endl << "break" << endl;*/
                     while (j > 0)
@@ -825,7 +820,7 @@ void add_letters_to_player(char pl_letters[], char Bank[])
 }
 
 
-string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letter_ammount, string last_word) { 
+string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics& score, short player_id, short letter_ammount, string last_word) { 
     string user_word{};
     const int width = 156;
     bool check_complited = false, already_dumb = false, players_with_letters = true;
@@ -964,17 +959,16 @@ void remove_letters(string word, char letters_bank[])
     }
 } 
 
-
 bool opros_players_about_new_word(string word) {
     string answ{};
     while (true) {
         cout << endl;
         cout << setw(105) << "Ситаете ли вы, что слово было правильно правильно(да/нет):  ";
-        cout << setw(127) << " ";  
+        cout << setw(127) << " ";
         getline(cin, answ);
         if (answ == "да") {
             ofstream fin;
-            fin.open("russian.txt", ios::app);
+            fin.open("user_words.txt", ios::app);
             fin << word << "\n";
             fin.close();
             return true;
@@ -984,9 +978,7 @@ bool opros_players_about_new_word(string word) {
     }
 }
 
-//Проверка Егора (Я костылями разделил её на 2 отдельные)
 bool big_check(string user_word, Player player) {
-    //Егор, я дописал тебе костыль
     int counter{};
     char player_letters[10]{};
     for (unsigned short i{}; i < 10; i++) {
@@ -1003,18 +995,43 @@ bool big_check(string user_word, Player player) {
         }
     }
     if (counter == user_word.length()) {
-        fstream fin;
-        fin.open("russian.txt");
-        using In = istream_iterator<string>;
-        auto pos = find(In(fin), In(), user_word);
-        if (pos != In()) {
-            fin.close();
-            return true;
+        fstream file;
+        file.open("singular_and_plural.txt");
+        string out;
+
+        while (getline(file, out))
+        {
+
+            if (out[0] == user_word[0])
+            {
+                if (user_word == out)
+                {
+                    file.close();
+                    return true;
+                }
+
+            }
         }
-        else {
-            fin.close();
-            return opros_players_about_new_word(user_word);
+        file.close();
+        fstream file2;
+        file2.open("user_words.txt");
+
+        while (getline(file2, out))
+        {
+
+            if (out[0] == user_word[0])
+            {
+                if (user_word == out)
+                {
+                    file2.close();
+                    return true;
+                }
+
+            }
         }
+        file2.close();
+        return opros_players_about_new_word(user_word);
+
     }
     else
         return false;
