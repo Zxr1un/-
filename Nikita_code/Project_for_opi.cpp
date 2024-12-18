@@ -39,6 +39,7 @@ bool opros_players_about_new_word(Player players[], int count_players, int now_p
 void bonus5050(Player players[], int now_player, int count_of_players); // Игрок выбирает половину букв которые ему нужно заменить на новые буквы из словаря
 bool bonus_swap_char(Player players[], int now_player, int count_of_players); // Игрок обменивается буквой с другим игроком
 bool check_end_game(Player players[], int count_of_players); // Проверяет пропустили ли ходы все игроки и если да то завершает программу
+void final_results(Player players[], int count_of_players);
 
 int main_menu();
 void settings();
@@ -77,6 +78,7 @@ int main()
 void play()
 {
     int kol_players;
+    string answer;
     cout << "Введите количество игроков: ";
     cin >> kol_players;
     alpha_filling(massive_alphabet);
@@ -90,17 +92,26 @@ void play()
         for (int now_player = 0; now_player < kol_players; now_player++)
         {
             enter_words(players, now_player, kol_players); // Ввод слова
-            if (now_player == 0)
+            answer = players[now_player].last_word;
+            if (answer.empty())
             {
-                scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[kol_players - 1].last_word);
+                cout << "Пропуск хода" << endl;
             }
             else
             {
-                scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[now_player - 1].last_word);
+                if (now_player == 0)
+                {
+                    scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[kol_players - 1].last_word);
+                }
+                else
+                {
+                    scoring_of_players(players, now_player, check_correct_answer(players, now_player, kol_players), players[now_player - 1].last_word);
+                }
+                cout << "Количество очков игрока " << players[now_player].name << " равно " << players[now_player].points << endl << endl;
             }
-            cout << "Количество очков игрока " << players[now_player].name << " равно " << players[now_player].points << endl << endl;
         }
     }
+    final_results(players, kol_players);
 }
 
 
@@ -150,7 +161,7 @@ void getting_letters(Player players[], int now_player)
 {
     int intermediate_value = {};
     int old_time_random = 0;
-    for (int i{}; i < 10; i++)
+    for (int i{0}; i < 10; i++)
     {
         if (players[now_player].letters[i] == ' ')
         {
@@ -172,7 +183,6 @@ void getting_letters(Player players[], int now_player)
 
 void enter_words(Player players[], int now_player, int count_of_players)
 {
-    string nothing = "";
     cout << "Игрок под номером " << now_player + 1 << " (" << players[now_player].name << ") попробуйте составить слово из представленных букв, если вы не можете это сделать нажмите на пропуск хода (ничего не вводите) " << endl;
     cout << "Далее представлены ваши буквы: ";
     for (int j = 0; j < 10; j++)
@@ -188,7 +198,7 @@ void enter_words(Player players[], int now_player, int count_of_players)
     {
         cout << "Вы имеете бонус обмена 1 буквы с любым игроком, чтобы его активировать введите 'обменбукв'" << endl;
     }
-    cin >> players[now_player].last_word;
+    getline(cin, players[now_player].last_word);
     if (players[now_player].last_word == "50" and players[now_player].bonus50 == 1)
     {
         bonus5050(players, now_player, count_of_players);
@@ -197,10 +207,14 @@ void enter_words(Player players[], int now_player, int count_of_players)
     {
         bonus_swap_char(players, now_player, count_of_players);
     }
-    else if (players[now_player].last_word == nothing)
+    if (players[now_player].last_word.empty())
     {
-        cout << "Вы пропустили ход " << endl;
-        players[now_player].skip_enter = true;
+        getline(cin, players[now_player].last_word);
+        if (players[now_player].last_word.empty())
+        {
+            cout << "Вы пропустили ход " << endl;
+            players[now_player].skip_enter = true;
+        }
     }
 }
 
@@ -394,6 +408,26 @@ bool check_end_game(Player players[], int count_of_players)
         return true;
     else
         return false;
+}
+
+void final_results(Player players[], int count_of_players)
+{
+    int massive_of_players[6] = {0,1,2,3,4,5};
+    int best_player = 0;
+        for (int now_player = 0; now_player < count_of_players; now_player++)
+        {
+            if (players[now_player].points > players[now_player - 1].points)
+            {
+                best_player = now_player;
+            }
+        }
+    
+    cout << "\033[2J\033[1;1H"; // почистить консоль
+    for (int now_player = 0; now_player < count_of_players; now_player++)
+    {
+        cout << "Очки игрока " << players[massive_of_players[now_player]].name << " равны " << players[massive_of_players[now_player]].points << endl;
+    }
+    cout << "Победил игрок " << players[best_player].name << endl;;
 }
 
 
