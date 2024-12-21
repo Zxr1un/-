@@ -79,6 +79,26 @@ int main() {
     const int width = 156;
 
     string choice;
+    Statistics names{};
+    short nam = 7;
+    names.names[0] = "1";
+    names.names[1] = "2";
+    names.names[2] = "3";
+    names.names[3] = "4";
+    names.names[4] = "5";
+    names.names[5] = "6";
+    names.names[6] = "7";
+
+    names.points[0] = 12;
+    names.points[1] = 13;
+    names.points[2] = 12;
+    names.points[3] = 13;
+    names.points[4] = 12;
+    names.points[5] = 12;
+    names.points[6] = 13;
+
+    Resaults_screen(names, nam);
+
 
     do {
         Menu();
@@ -504,20 +524,18 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     cin.ignore();
     clearScreen();
     const int width = 156;
-    short max_score_id[7]{ 0,-1,-1,-1,-1,-1,-1 }, nulevue{}, max_points = full_stat.points[0], sovpodenie{ 1 }, counter{ 1 };
-    for (unsigned short i{ 1 }; i < ammount_of_players; i++) {
-        if (full_stat.points[max_score_id[0]] < full_stat.points[i]) {
-            for (unsigned short j{}; j < counter; j++) {
+    short max_score_id[7]{ 0,-1,-1,-1,-1,-1,-1 }, nulevue{}, sovpodenie{ 1 };
+    for (unsigned short i{ 1 }; i < ammount_of_players; i++) { 
+        if (full_stat.points[max_score_id[0]] < full_stat.points[i]) { 
+            for (unsigned short j{}; j < sovpodenie; j++) {
                 max_score_id[j] = -1;
             }
             max_score_id[0] = i;
-            counter = 1;
             sovpodenie = 1;
         }
-        else if (max_points == full_stat.points[i]) {
-            max_score_id[counter] = i;
+        else if (full_stat.points[max_score_id[0]] == full_stat.points[i]) {
+            max_score_id[sovpodenie] = i;
             sovpodenie++;
-            counter++;
         }
         else if (full_stat.points[i] == 0)
             nulevue++;
@@ -530,11 +548,10 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     if (nulevue == ammount_of_players || sovpodenie == ammount_of_players) {
         cout << setw(96) << "*** Игра завершилась ничьей ***\n\n\n";
     }
-    else if (counter == 1)
+    else if (sovpodenie == 1)
         cout << setw(87) << "*** Игра завершилась, победил " << full_stat.names[max_score_id[0]] << " ***\n\n";
     else {
         cout << setw(87) << "*** Игра завершилась, победили: " << full_stat.names[max_score_id[0]] << ", " << full_stat.names[max_score_id[1]];
-        cout << " ***\n\n\n";
         if (ammount_of_players > 2) {
             for (unsigned short i{ 2 }; i < ammount_of_players; i++) {
                 if (max_score_id[i] != -1) {
@@ -543,6 +560,7 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
                 }
             }
         }
+        cout << " ***\n\n\n";
     }
     for (int i{}; i < ammount_of_players; i++) {
         cout << setw(60) << i + 1 << ". Игрок " << full_stat.names[i] << " набрал: " << full_stat.points[i] << " балла(-ов)\n";
