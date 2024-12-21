@@ -741,28 +741,6 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     cout << "\n\n";
 }
-//void alphabet_zapolnenie(char massive_alphabet[])
-//{
-//    SetConsoleCP(1251);
-//    SetConsoleOutputCP(1251);
-//    char c[] = { 'б','в','г','д','ж','з','й','к','л','м','н','п','р','с','т','ф','х','ц','ч','ш','щ','ь','ъ' };
-//    char g[] = { 'а','е','Є','и','о','у','ы','э','ю','€' };
-//    short counter{};
-//    for (unsigned short i{ 1 }; i < 13; i++) {
-//        if (i % 3 == 0) {
-//            for (unsigned short j{}; j < 23; j++) {
-//                massive_alphabet[counter] = c[j];
-//                counter++;
-//            }
-//        }
-//        else {
-//            for (unsigned short j{}; j < 10; j++) {
-//                massive_alphabet[counter] = g[j];
-//                counter++;
-//            }
-//        }
-//    }
-//}
 void alphabet_zapolnenie(char massive_alphabet[])
 {
     SetConsoleCP(1251);
@@ -808,56 +786,8 @@ void alphabet_zapolnenie(char massive_alphabet[])
 
 }
 
+
 //ѕереписано по плану
-//void add_letters_to_player(char pl_letters[], char Bank[])
-//{
-//    srand(time(0));
-//    const int Bank_size = 173;
-//    for (int i = 0; i < 10; i++)
-//    {
-//        /*cout << endl;
-//        for (int a = 0; a < 10; a++)
-//        {
-//            cout << pl_letters[a] << " ";
-//        }
-//        cout << endl;*/ //отладка
-//        if (pl_letters[i] == '-')
-//        {
-//            //сортировка банка
-//            for (int j = 0; j < Bank_size; j++)
-//            {
-//                if (Bank[j] == '-')
-//                {
-//                    for (int k = j; k < Bank_size - 1; k++)
-//                    {
-//                        Bank[k] = Bank[k + 1];
-//                    }
-//                }
-//            }
-//            /*cout << endl;
-//            for (int j = 0; j < Bank_size; j++)
-//            {
-//                cout << Bank[j] << " ";
-//            }*/  //отладка
-//
-//            int letters_ammount = 0;
-//            //подсчЄт оставшихс€ букв
-//            for (int j = 0; j < Bank_size and Bank[j] != '-'; j++)
-//            {
-//                letters_ammount++;
-//            }
-//            /*cout << endl << letters_ammount << endl;*/ //отладка
-//            if (letters_ammount != 0)
-//            {
-//                int rand_nomb;
-//                rand_nomb = rand() % letters_ammount;
-//                /*cout << "\n Rand nomb: " << rand_nomb << endl;*/ //отладка
-//                pl_letters[i] = Bank[rand_nomb];
-//                Bank[rand_nomb] = '-';
-//            }
-//        }
-//    }
-//}
 void add_letters_to_player(char pl_letters[], char Bank[])
 {
     const int Bank_size = 173;
@@ -879,6 +809,7 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         }
     }
 }
+
 
 string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letter_ammount, string last_word) {
     string user_word{};
