@@ -929,16 +929,15 @@ bool opros_players_about_new_word(string word, Statistics names, short player_am
         {
             if (i != id)
             {
-                cout << "»грок " << names.names[i] << " согласны ли вы с тем что слово " << word << " должно войти в словарь и засчитатьс€ игроку " << names.names[id] << ": ";
+                cout << "»грок " << names.names[i] << " согласны ли вы с тем что слово " << word << " должно войти в словарь и засчитатьс€ игроку " << names.names[id] << " (да/нет): ";
                 getline(cin, answer);
-                if (answer == "да" or "+" or "ƒа")
+                if (answer == "да")
                 {
                     count_of_plus += 1;
                 }
-                else if (answer == "нет" or "-" or "Ќет")
+                else if (answer == "нет")
                 {
                     return false;
-                    break;
                 }
                 else
                 {
@@ -991,7 +990,7 @@ bool big_check(string user_word, Statistics names, short player_ammount, short i
     if (counter == user_word.length()) {
         fstream fin;
         string stroka{};
-        if (user_word[0] >= 'а' && user_word[0] < 'з') {
+        if (user_word[0] >= 'а' && user_word[0] < 'з' || user_word[0] == 'Є') {
             fin.open("russian1.txt");
             while (getline(fin, stroka)) {
                 if (stroka == user_word)
