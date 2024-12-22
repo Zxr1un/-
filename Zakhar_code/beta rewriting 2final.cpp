@@ -1,22 +1,24 @@
-#include <iostream>
+Ôªø#include <iostream>
 #include <string>
 #include <cstdlib>
 #include <cmath>
 #include <fstream>
 #include <Windows.h>
 #include <iomanip>
+#include <cstdint>
+#include <intrin.h>
 //#include <algorithm>
 
 using namespace std;
 /*
-Ã≈—“Œ ƒÀﬂ —ŒŒ¡Ÿ≈Õ»…
+–ú–ï–°–¢–û –î–õ–Ø –°–û–û–ë–©–ï–ù–ò–ô
 
-–‡ÁÏÂ ·‡ÌÍ‡ ÒÂÈ˜‡Ò 173 ‰Îˇ ‡·ÓÚ˚ ‡Ì‰ÓÏ‡ÈÁÂ˚ (ÔÓÒÎÂ‰ÌËÈ ÒËÏ‚ÓÎ ÔÛÒÚÓÈ ) ‰Îˇ Á‡ÏÂÌ˚ ‡ÁÏÂ‡ ·‡ÌÍ‡ ÔÂÂ‰ ÙÛÌÍˆËˇÏË ÒÚÓˇÚ ÍÓÌÒÚ‡ÌÚ˚ Bank_size
-»ÁÏÂÌÂÌÓ:
-1) «‡ÔÓÎÌÂÌËÂ ‡ÎÙ‡‚ËÚ‡
-2) Big_check Ë ÓÔÓÒ Ë„ÓÍÓ‚ Ó Ó‚ÓÏ ÒÎÓ‚Â (‡·ÓÚ‡ Ò ÌÓ‚˚ÏË Ù‡ÈÎ‡ÏË Ë ·˚ÒÚ‡ˇ ÔÓ‚ÂÍ‡)
-3) »ÒÔ‡‚ËÎ Á‡ÎËÔ‡ÌËÂ ‚ end_screen ‚ ÍÓÌˆÂ
-4) ÔÂÂÔËÒ‡Î ‡Ì‰ÓÏ‡ÈÁÂ (ÚÂÔÂ¸ ˜∏ÚÍËÈ ‡Ì‰ÓÏ Ë ÒÓÚËÓ‚Í‡ ÒËÏ‚ÓÎÓ‚ (ÏÓÊÌÓ ‰‡ÊÂ ÛÔÓÒÚËÚ¸ ÔÓ‰Ò˜∏Ú ·ÛÍ‚ ‚ game))
+–†–∞–∑–º–µ—Ä –±–∞–Ω–∫–∞ —Å–µ–π—á–∞—Å 173 –¥–ª—è —Ä–∞–±–æ—Ç—ã —Ä–∞–Ω–¥–æ–º–∞–π–∑–µ—Ä—ã (–ø–æ—Å–ª–µ–¥–Ω–∏–π —Å–∏–º–≤–æ–ª –ø—É—Å—Ç–æ–π ) –¥–ª—è –∑–∞–º–µ–Ω—ã —Ä–∞–∑–º–µ—Ä–∞ –±–∞–Ω–∫–∞ –ø–µ—Ä–µ–¥ —Ñ—É–Ω–∫—Ü–∏—è–º–∏ —Å—Ç–æ—è—Ç –∫–æ–Ω—Å—Ç–∞–Ω—Ç—ã Bank_size
+–ò–∑–º–µ–Ω–µ–Ω–æ:
+1) –ó–∞–ø–æ–ª–Ω–µ–Ω–∏–µ –∞–ª—Ñ–∞–≤–∏—Ç–∞
+2) Big_check –∏ –æ–ø—Ä–æ—Å –∏–≥—Ä–æ–∫–æ–≤ –æ –æ–≤–æ–º —Å–ª–æ–≤–µ (—Ä–∞–±–æ—Ç–∞ —Å –Ω–æ–≤—ã–º–∏ —Ñ–∞–π–ª–∞–º–∏ –∏ –±—ã—Å—Ç—Ä–∞—è –ø—Ä–æ–≤–µ—Ä–∫–∞)
+3) –ò—Å–ø—Ä–∞–≤–∏–ª –∑–∞–ª–∏–ø–∞–Ω–∏–µ –≤ end_screen –≤ –∫–æ–Ω—Ü–µ
+4) –ø–µ—Ä–µ–ø–∏—Å–∞–ª —Ä–∞–Ω–¥–æ–º–∞–π–∑–µ—Ä (—Ç–µ–ø–µ—Ä—å —á—ë—Ç–∫–∏–π —Ä–∞–Ω–¥–æ–º –∏ —Å–æ—Ä—Ç–∏—Ä–æ–≤–∫–∞ —Å–∏–º–≤–æ–ª–æ–≤ (–º–æ–∂–Ω–æ –¥–∞–∂–µ —É–ø—Ä–æ—Å—Ç–∏—Ç—å –ø–æ–¥—Å—á—ë—Ç –±—É–∫–≤ –≤ game))
 
 */
 
@@ -29,7 +31,7 @@ struct Player
     bool bank_null = false;
 };
 
-struct Statistics //‚ÓÁÏÓÊÌÓ Ó·ÓÈ‰∏ÏÒˇ ·ÂÁ ˝ÚÓÈ ÒÚÛÍÚÛ˚, ÌÓ ¿Ì‰Â˛ ÏÓÊÂÚ ÔÓÌ‡‰Ó·ËÚÒˇ
+struct Statistics //–≤–æ–∑–º–æ–∂–Ω–æ –æ–±–æ–π–¥—ë–º—Å—è –±–µ–∑ —ç—Ç–æ–π —Å—Ç—Ä—É–∫—Ç—É—Ä—ã, –Ω–æ –ê–Ω–¥—Ä–µ—é –º–æ–∂–µ—Ç –ø–æ–Ω–∞–¥–æ–±–∏—Ç—Å—è
 {
     int points[7] = { 0,0,0,0,0,0,0 };
     string names[7];
@@ -43,12 +45,12 @@ void alphabet_zapolnenie(char massive_alphabet[]);
 Statistics game(int players_ammount, Statistics names);
 void add_letters_to_player(char pl_letters[], char Bank[]);
 string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letter_ammount, string last_word);
-bool big_check(string user_word, Player player);
+bool big_check(string user_word, Statistics names, short player_ammount, short id, Player player);
 bool big_check1(string user_word, Player player);
 //bool big_check2(string user_word, Player player);
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player);
 void remove_letters(string word, char letters_bank[]);
-bool opros_players_about_new_word(string word);
+bool opros_players_about_new_word(string word, Statistics names, short player_ammount, short id);
 void Resaults_screen(Statistics full_stat, short ammount_of_players);
 void spizdi_letter(Player& player, Player player_arr[], short player_ammount, Statistics score, short player_id, string last_word);
 void fifty_fifty(Player& player, char letter_bank[], string last_word, short id, Statistics names);
@@ -83,12 +85,12 @@ int main() {
         getline(cin, choice);
 
         clearConsole();
-        if (choice.length() == 1 && !((choice[0] >= '¿' && choice[0] <= 'ˇ') || (choice[0] == '∏') || (choice[0] == '®') || !isdigit(choice[0]))) {
+        if (choice.length() == 1 && !((choice[0] >= '–ê' && choice[0] <= '—è') || (choice[0] == '—ë') || (choice[0] == '–Å') || !isdigit(choice[0]))) {
             switch (stoi(choice)) {
             case 1:
                 printBorder(width);
                 cout << endl;
-                cout << setw(88) << "Õ‡˜ËÌ‡ÂÏ Ë„Û...\n\n";
+                cout << setw(88) << "–ù–∞—á–∏–Ω–∞–µ–º –∏–≥—Ä—É...\n\n";
                 printBorder(width);
                 Start();
                 break;
@@ -97,12 +99,12 @@ int main() {
                 break;
             case 3:
                 if (confirmExit()) {
-                    cout << "¬˚ıÓ‰...\n";
-                    return 0; // ¬˚ıÓ‰ ËÁ ÔÓ„‡ÏÏ˚
+                    cout << "–í—ã—Ö–æ–¥...\n";
+                    return 0; // –í—ã—Ö–æ–¥ –∏–∑ –ø—Ä–æ–≥—Ä–∞–º–º—ã
                 }
                 break;
             default:
-                cout << "ÕÂ‚ÂÌ˚È ‚˚·Ó. œÓÊ‡ÎÛÈÒÚ‡, ÔÓÔÓ·ÛÈÚÂ ÒÌÓ‚‡.\n";
+                cout << "–ù–µ–≤–µ—Ä–Ω—ã–π –≤—ã–±–æ—Ä. –ü–æ–∂–∞–ª—É–π—Å—Ç–∞, –ø–æ–ø—Ä–æ–±—É–π—Ç–µ —Å–Ω–æ–≤–∞.\n";
             }
         }
     } while (true);
@@ -114,10 +116,10 @@ void vuvod_igroka(bool first_round, Statistics names, short id, string last_word
     const int width = 156;
     printBorder(width);
     cout << endl;
-    cout << setw(79) << "~~~ ’Ó‰ Ë„ÓÍ‡: " << names.names[id] << " ~~~\n\n";
+    cout << setw(79) << "~~~ –•–æ–¥ –∏–≥—Ä–æ–∫–∞: " << names.names[id] << " ~~~\n\n";
     printBorder(width);
     /* if (!first_round)*/
-    cout << "\n\n    œÓÒÎÂ‰ÌÂÂ ÒÎÓ‚Ó: " << last_word;
+    cout << "\n\n    –ü–æ—Å–ª–µ–¥–Ω–µ–µ —Å–ª–æ–≤–æ: " << last_word;
     first_round = false;
 }
 
@@ -149,19 +151,19 @@ bool confirmExit() {
     string confirmation{};
     do {
         printBorder(width);
-        cout << setw(90) << "¬˚ ÚÓ˜ÌÓ ıÓÚËÚÂ ‚˚ÈÚË?\n\n";
-        cout << setw(89) << "‰‡             ÌÂÚ\n";
+        cout << setw(90) << "–í—ã —Ç–æ—á–Ω–æ —Ö–æ—Ç–∏—Ç–µ –≤—ã–π—Ç–∏?\n\n";
+        cout << setw(89) << "–¥–∞             –Ω–µ—Ç\n";
         cout << setw(77) << " ";
         getline(cin, confirmation);
 
         clearConsole();
 
-        if (confirmation == "‰‡")
+        if (confirmation == "–¥–∞")
             return true;
-        else if (confirmation == "ÌÂÚ")
+        else if (confirmation == "–Ω–µ—Ç")
             return false;
         else
-            cout << "ÕÂ‚ÂÌ˚È ‚˚·Ó. œÓÊ‡ÎÛÈÒÚ‡, ÔÓÔÓ·ÛÈÚÂ ÒÌÓ‚‡.\n";
+            cout << "–ù–µ–≤–µ—Ä–Ω—ã–π –≤—ã–±–æ—Ä. –ü–æ–∂–∞–ª—É–π—Å—Ç–∞, –ø–æ–ø—Ä–æ–±—É–π—Ç–µ —Å–Ω–æ–≤–∞.\n";
     } while (true);
 }
 
@@ -184,13 +186,13 @@ void Menu() {
     const int width = 156;
     printBorder(width);
     cout << endl;
-    cout << setw(90) << "~~~~~¬€¡≈–»“≈~~~~~\n\n";
+    cout << setw(90) << "~~~~~–í–´–ë–ï–†–ò–¢–ï~~~~~\n\n";
     printBorder(width);
     cout << endl;
-    cout << setw(92) << "~~~ 1. Õ‡˜‡Ú¸ Ë„Û  ~~~\n\n";
-    cout << setw(94) << "~~~ 2. œÓ˜ËÚ‡Ú¸ Ô‡‚ËÎ‡ ~~~\n\n";
-    cout << setw(88) << "~~~ 3. ¬˚ÈÚË ~~~\n\n\n";
-    cout << setw(84) << "¬˚·ÂËÚÂ: ";
+    cout << setw(92) << "~~~ 1. –ù–∞—á–∞—Ç—å –∏–≥—Ä—É  ~~~\n\n";
+    cout << setw(94) << "~~~ 2. –ü—Ä–æ—á–∏—Ç–∞—Ç—å –ø—Ä–∞–≤–∏–ª–∞ ~~~\n\n";
+    cout << setw(88) << "~~~ 3. –í—ã–π—Ç–∏ ~~~\n\n\n";
+    cout << setw(84) << "–í—ã–±–µ—Ä–∏—Ç–µ: ";
 }
 
 
@@ -199,7 +201,7 @@ void printHeading()
     const int width = 156;
 
     printBorder(width);
-    cout << setw(90) << "ƒÓ·Ó ÔÓÊ‡ÎÓ‚‡Ú¸ ‚ Ë„Û ›Û‰ËÚ" << endl;
+    cout << setw(90) << "–î–æ–±—Ä–æ –ø–æ–∂–∞–ª–æ–≤–∞—Ç—å –≤ –∏–≥—Ä—É –≠—Ä—É–¥–∏—Ç" << endl;
     printBorder(width);
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
@@ -212,7 +214,7 @@ void printHeading()
 
     cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
-    cout << setw(90) << "œÓ‰ÓÎÊËÚ¸..." << endl;
+    cout << setw(90) << "–ü—Ä–æ–¥–æ–ª–∂–∏—Ç—å..." << endl;
     printBorder(width);
 
     cin.ignore();
@@ -223,50 +225,50 @@ void Rules() {
     const int width = 156;
 
     printBorder(width);
-    cout << setw(90) << "~~~~~œ–¿¬»À¿~~~~~\n\n";
+    cout << setw(90) << "~~~~~–ü–†–ê–í–ò–õ–ê~~~~~\n\n";
 
-    cout << "                                    || 1. ÷ÂÎ¸ Ë„˚:                                                                         ||\n";
-    cout << "                                    ||    - —Ó·‡Ú¸ Í‡Í ÏÓÊÌÓ ·ÓÎ¸¯Â Ó˜ÍÓ‚, ÒÓÒÚ‡‚Îˇˇ ÒÎÓ‚‡ Ì‡ Ë„Ó‚ÓÏ ÔÓÎÂ.                 ||\n";
+    cout << "                                    || 1. –¶–µ–ª—å –∏–≥—Ä—ã:                                                                         ||\n";
+    cout << "                                    ||    - –°–æ–±—Ä–∞—Ç—å –∫–∞–∫ –º–æ–∂–Ω–æ –±–æ–ª—å—à–µ –æ—á–∫–æ–≤, —Å–æ—Å—Ç–∞–≤–ª—è—è —Å–ª–æ–≤–∞ –Ω–∞ –∏–≥—Ä–æ–≤–æ–º –ø–æ–ª–µ.                 ||\n";
     cout << "                                    ||                                                                                       ||\n";
-    cout << "                                    || 2. Õ‡˜‡ÎÓ Ë„˚:                                                                       ||\n";
-    cout << "                                    ||    -  ‡Ê‰˚È Ë„ÓÍ ÔÓÎÛ˜‡ÂÚ ÔÓ 10 ‚˚·‡ÌÌ˚ı ÒÎÛ˜‡ÈÌ˚Ï Ó·‡ÁÓÏ ·ÛÍ‚.                    ||\n";
+    cout << "                                    || 2. –ù–∞—á–∞–ª–æ –∏–≥—Ä—ã:                                                                       ||\n";
+    cout << "                                    ||    - –ö–∞–∂–¥—ã–π –∏–≥—Ä–æ–∫ –ø–æ–ª—É—á–∞–µ—Ç –ø–æ 10 –≤—ã–±—Ä–∞–Ω–Ω—ã—Ö —Å–ª—É—á–∞–π–Ω—ã–º –æ–±—Ä–∞–∑–æ–º –±—É–∫–≤.                    ||\n";
     cout << "                                    ||                                                                                       ||\n";
-    cout << "                                    || 3. ’Ó‰ Ë„ÓÍ‡:                                                                        ||\n";
-    cout << "                                    ||    - »„ÓÍ ÒÓÒÚ‡‚ÎˇÂÚ ÒÎÓ‚Ó ËÁ Ò‚ÓËı ·ÛÍ‚.                                            ||\n";
-    cout << "                                    ||    - ≈ÒÎË ÒÎÓ‚Ó ÒÓÒÚ‡‚ÎÂÌÓ ‚ÂÌÓ, ÚÓ Ë„ÓÍÛ ÔËÒÛÊ‰‡˛ÚÒˇ Ó˜ÍË,                        ||\n";
-    cout << "                                    ||      ‡‚Ì˚Â ÍÓÎË˜ÂÒÚ‚Û ·ÛÍ‚ ‚ ÒÎÓ‚Â.                                                  ||\n";
-    cout << "                                    ||    - ≈ÒÎË ÒÎÓ‚Ó Ë„ÓÍ‡ Ì‡˜ËÌ‡ÂÚÒˇ Ò ÚÓÈ ÊÂ ·ÛÍ‚˚, Ì‡ ÍÓÚÓÛ˛                          ||\n";
-    cout << "                                    ||      Á‡Í‡Ì˜Ë‚‡ÎÓÒ¸ ÒÎÓ‚Ó ÔÂ‰˚‰Û˘Â„Ó Ë„ÓÍ‡, ÚÓ ÍÓÎË˜ÂÒÚ‚Ó                            ||\n";
-    cout << "                                    ||      Ó˜ÍÓ‚ Û‚ÂÎË˜Ë‚‡ÂÚÒˇ.                                                             ||\n";
-    cout << "                                    ||    - —ÎÓ‚Ó ÒÓÒÚ‡‚ÎÂÌÓ ÌÂ‚ÂÌÓ, ÂÒÎË ‚ ÌÂ„Ó ‚ıÓ‰ˇÚ ·ÛÍ‚˚, ÌÂ                           ||\n";
-    cout << "                                    ||      ‚ıÓ‰ˇ˘ËÂ ‚ Ì‡·Ó ·ÛÍ‚ Ë„ÓÍ‡.                                                    ||\n";
-    cout << "                                    ||    œ–»Ã≈◊¿Õ»≈:                                                                        ||\n";
-    cout << "                                    ||    - Œ‰ÌÛ Ë ÚÛ ÊÂ ·ÛÍ‚Û ËÁ Ì‡·Ó‡ ÌÂÎ¸Áˇ ËÒÔÓÎ¸ÁÓ‚‡Ú¸ ÌÂÒÍÓÎ¸ÍÓ ‡Á.                  ||\n";
-    cout << "                                    ||    - ≈ÒÎË ÒÎÓ‚Ó ÒÓÒÚ‡‚ÎÂÌÓ ÌÂ‚ÂÌÓ, ÚÓ ËÁ Ó·˘ÂÈ ÒÛÏÏ˚ Ó˜ÍÓ‚                           ||\n";
-    cout << "                                    ||      ‚˚˜ËÚ‡ÂÚÒˇ ˜ËÒÎÓ Ó˜ÍÓ‚, ‡‚ÌÓÂ ÍÓÎË˜ÂÒÚ‚Û ·ÛÍ‚ ‚ ÒÎÓ‚Â.                          ||\n";
-    cout << "                                    ||    - œÓÒÎÂ ÚÓ„Ó, Í‡Í Í‡Ê‰˚È Ë„ÓÍ Ò‰ÂÎ‡Î Ò‚ÓÈ ıÓ‰, ÂÏÛ ‰Ó·‡‚Îˇ˛ÚÒˇ ÌÂ‰ÓÒÚ‡˛˘ËÂ ·ÛÍ‚˚. ||\n";
+    cout << "                                    || 3. –•–æ–¥ –∏–≥—Ä–æ–∫–∞:                                                                        ||\n";
+    cout << "                                    ||    - –ò–≥—Ä–æ–∫ —Å–æ—Å—Ç–∞–≤–ª—è–µ—Ç —Å–ª–æ–≤–æ –∏–∑ —Å–≤–æ–∏—Ö –±—É–∫–≤.                                            ||\n";
+    cout << "                                    ||    - –ï—Å–ª–∏ —Å–ª–æ–≤–æ —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–æ –≤–µ—Ä–Ω–æ, —Ç–æ –∏–≥—Ä–æ–∫—É –ø—Ä–∏—Å—É–∂–¥–∞—é—Ç—Å—è –æ—á–∫–∏,                        ||\n";
+    cout << "                                    ||      —Ä–∞–≤–Ω—ã–µ –∫–æ–ª–∏—á–µ—Å—Ç–≤—É –±—É–∫–≤ –≤ —Å–ª–æ–≤–µ.                                                  ||\n";
+    cout << "                                    ||    - –ï—Å–ª–∏ —Å–ª–æ–≤–æ –∏–≥—Ä–æ–∫–∞ –Ω–∞—á–∏–Ω–∞–µ—Ç—Å—è —Å —Ç–æ–π –∂–µ –±—É–∫–≤—ã, –Ω–∞ –∫–æ—Ç–æ—Ä—É—é                          ||\n";
+    cout << "                                    ||      –∑–∞–∫–∞–Ω—á–∏–≤–∞–ª–æ—Å—å —Å–ª–æ–≤–æ –ø—Ä–µ–¥—ã–¥—É—â–µ–≥–æ –∏–≥—Ä–æ–∫–∞, —Ç–æ –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ                            ||\n";
+    cout << "                                    ||      –æ—á–∫–æ–≤ —É–≤–µ–ª–∏—á–∏–≤–∞–µ—Ç—Å—è.                                                             ||\n";
+    cout << "                                    ||    - –°–ª–æ–≤–æ —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–æ –Ω–µ–≤–µ—Ä–Ω–æ, –µ—Å–ª–∏ –≤ –Ω–µ–≥–æ –≤—Ö–æ–¥—è—Ç –±—É–∫–≤—ã, –Ω–µ                           ||\n";
+    cout << "                                    ||      –≤—Ö–æ–¥—è—â–∏–µ –≤ –Ω–∞–±–æ—Ä –±—É–∫–≤ –∏–≥—Ä–æ–∫–∞.                                                    ||\n";
+    cout << "                                    ||    –ü–†–ò–ú–ï–ß–ê–ù–ò–ï:                                                                        ||\n";
+    cout << "                                    ||    - –û–¥–Ω—É –∏ —Ç—É –∂–µ –±—É–∫–≤—É –∏–∑ –Ω–∞–±–æ—Ä–∞ –Ω–µ–ª—å–∑—è –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –Ω–µ—Å–∫–æ–ª—å–∫–æ —Ä–∞–∑.                  ||\n";
+    cout << "                                    ||    - –ï—Å–ª–∏ —Å–ª–æ–≤–æ —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–æ –Ω–µ–≤–µ—Ä–Ω–æ, —Ç–æ –∏–∑ –æ–±—â–µ–π —Å—É–º–º—ã –æ—á–∫–æ–≤                           ||\n";
+    cout << "                                    ||      –≤—ã—á–∏—Ç–∞–µ—Ç—Å—è —á–∏—Å–ª–æ –æ—á–∫–æ–≤, —Ä–∞–≤–Ω–æ–µ –∫–æ–ª–∏—á–µ—Å—Ç–≤—É –±—É–∫–≤ –≤ —Å–ª–æ–≤–µ.                          ||\n";
+    cout << "                                    ||    - –ü–æ—Å–ª–µ —Ç–æ–≥–æ, –∫–∞–∫ –∫–∞–∂–¥—ã–π –∏–≥—Ä–æ–∫ —Å–¥–µ–ª–∞–ª —Å–≤–æ–π —Ö–æ–¥, –µ–º—É –¥–æ–±–∞–≤–ª—è—é—Ç—Å—è –Ω–µ–¥–æ—Å—Ç–∞—é—â–∏–µ –±—É–∫–≤—ã. ||\n";
     cout << "                                    ||                                                                                       ||\n";
-    cout << "                                    || 4. ¡ÓÌÛÒ˚:                                                                            ||\n";
-    cout << "                                    ||    - ´50-Ì‡-50ª -- Ë„ÓÍ ÏÓÊÂÚ ÔÂÂ˜ËÒÎËÚ¸ 5 ·ÛÍ‚, ÍÓÚÓ˚Â ÓÌ ıÓÚÂÎ ·˚ Á‡ÏÂÌËÚ¸.      ||\n";
-    cout << "                                    ||    œ–»Ã≈◊¿Õ»≈:                                                                        ||\n";
-    cout << "                                    ||   - «‡ÏÂÌÂÌÌ˚Â ·ÛÍ‚˚ Ò˜ËÚ‡˛ÚÒˇ ÓÚ˚„‡‚¯ËÏË, ‡ ÒÛÏÏ‡ Ó˜ÍÓ‚                             ||\n";
-    cout << "                                    ||      Ë„ÓÍ‡ ÛÏÂÌ¸¯‡ÂÚÒˇ Ì‡ 2.                                                         ||\n";
-    cout << "                                    ||    - ´œŒÃŒŸ‹ ƒ–”√¿ª -- Ë„ÓÍ ÏÓÊÂÚ Á‡ÏÂÌËÚ¸ ´ÌÂÌÛÊÌÛ˛ª ÂÏÛ                            ||\n";
-    cout << "                                    ||      ·ÛÍ‚Û ËÁ Ò‚ÓÂ„Ó Ì‡·Ó‡ Ì‡ ´ÔÓÌ‡‚Ë‚¯Û˛Òˇª ÂÏÛ ·ÛÍ‚Û ËÁ Ì‡·Ó‡ ·ÛÍ‚ ÒÓÔÂÌËÍ‡.    ||\n";
-    cout << "                                    ||    œ–»Ã≈◊¿Õ»≈:                                                                        ||\n";
-    cout << "                                    ||    - —Ó„Î‡ÒËÂ ‚ÚÓÓ„Ó Ë„ÓÍ‡ ÌÂ ÚÂ·ÛÂÚÒˇ Ë ÒÛÏÏ‡ Ó˜ÍÓ‚ ÌÂ ÛÏÂÌ¸¯‡ÂÚÒˇ.               ||\n";
+    cout << "                                    || 4. –ë–æ–Ω—É—Å—ã:                                                                            ||\n";
+    cout << "                                    ||    - ¬´50-–Ω–∞-50¬ª -- –∏–≥—Ä–æ–∫ –º–æ–∂–µ—Ç –ø–µ—Ä–µ—á–∏—Å–ª–∏—Ç—å 5 –±—É–∫–≤, –∫–æ—Ç–æ—Ä—ã–µ –æ–Ω —Ö–æ—Ç–µ–ª –±—ã –∑–∞–º–µ–Ω–∏—Ç—å.      ||\n";
+    cout << "                                    ||    –ü–†–ò–ú–ï–ß–ê–ù–ò–ï:                                                                        ||\n";
+    cout << "                                    ||   - –ó–∞–º–µ–Ω–µ–Ω–Ω—ã–µ –±—É–∫–≤—ã —Å—á–∏—Ç–∞—é—Ç—Å—è –æ—Ç—ã–≥—Ä–∞–≤—à–∏–º–∏, –∞ —Å—É–º–º–∞ –æ—á–∫–æ–≤                             ||\n";
+    cout << "                                    ||      –∏–≥—Ä–æ–∫–∞ —É–º–µ–Ω—å—à–∞–µ—Ç—Å—è –Ω–∞ 2.                                                         ||\n";
+    cout << "                                    ||    - ¬´–ü–û–ú–û–©–¨ –î–†–£–ì–ê¬ª -- –∏–≥—Ä–æ–∫ –º–æ–∂–µ—Ç –∑–∞–º–µ–Ω–∏—Ç—å ¬´–Ω–µ–Ω—É–∂–Ω—É—é¬ª –µ–º—É                            ||\n";
+    cout << "                                    ||      –±—É–∫–≤—É –∏–∑ —Å–≤–æ–µ–≥–æ –Ω–∞–±–æ—Ä–∞ –Ω–∞ ¬´–ø–æ–Ω—Ä–∞–≤–∏–≤—à—É—é—Å—è¬ª –µ–º—É –±—É–∫–≤—É –∏–∑ –Ω–∞–±–æ—Ä–∞ –±—É–∫–≤ —Å–æ–ø–µ—Ä–Ω–∏–∫–∞.    ||\n";
+    cout << "                                    ||    –ü–†–ò–ú–ï–ß–ê–ù–ò–ï:                                                                        ||\n";
+    cout << "                                    ||    - –°–æ–≥–ª–∞—Å–∏–µ –≤—Ç–æ—Ä–æ–≥–æ –∏–≥—Ä–æ–∫–∞ –Ω–µ —Ç—Ä–µ–±—É–µ—Ç—Å—è –∏ —Å—É–º–º–∞ –æ—á–∫–æ–≤ –Ω–µ —É–º–µ–Ω—å—à–∞–µ—Ç—Å—è.               ||\n";
     cout << "                                    ||                                                                                       ||\n";
-    cout << "                                    || 5. ŒÍÓÌ˜‡ÌËÂ Ë„˚:                                                                    ||\n";
-    cout << "                                    ||    - »„‡ Á‡Í‡Ì˜Ë‚‡ÂÚÒˇ, ÍÓ„‰‡ ‚ÒÂ Ë„ÓÍË ÔÓÔÛÒÚˇÚ ıÓ‰.                              ||\n";
+    cout << "                                    || 5. –û–∫–æ–Ω—á–∞–Ω–∏–µ –∏–≥—Ä—ã:                                                                    ||\n";
+    cout << "                                    ||    - –ò–≥—Ä–∞ –∑–∞–∫–∞–Ω—á–∏–≤–∞–µ—Ç—Å—è, –∫–æ–≥–¥–∞ –≤—Å–µ –∏–≥—Ä–æ–∫–∏ –ø—Ä–æ–ø—É—Å—Ç—è—Ç —Ö–æ–¥.                              ||\n";
     cout << "                                    ||                                                                                       ||\n";
-    cout << "                                    || 6. œÓ·Â‰‡:                                                                            ||\n";
-    cout << "                                    ||    - ¬˚Ë„˚‚‡ÂÚ ÚÓÚ Ë„ÓÍ, ÍÓÚÓ˚È Ì‡·‡Î ·ÓÎ¸¯ÂÂ ˜ËÒÎÓ ·‡ÎÎÓ‚.                       ||\n";
+    cout << "                                    || 6. –ü–æ–±–µ–¥–∞:                                                                            ||\n";
+    cout << "                                    ||    - –í—ã–∏–≥—Ä—ã–≤–∞–µ—Ç —Ç–æ—Ç –∏–≥—Ä–æ–∫, –∫–æ—Ç–æ—Ä—ã–π –Ω–∞–±—Ä–∞–ª –±–æ–ª—å—à–µ–µ —á–∏—Å–ª–æ –±–∞–ª–ª–æ–≤.                       ||\n";
     cout << "                                    ||                                                                                       ||\n\n";
 
-    cout << setw(90) << "~~~~~”ƒ¿◊ÕŒ… »√–€!~~~~~\n";
+    cout << setw(90) << "~~~~~–£–î–ê–ß–ù–û–ô –ò–ì–†–´!~~~~~\n";
     printBorder(width);
     cout << endl;
-    cout << "Õ‡ÊÏËÚÂ Enter ‰Îˇ ‚ÓÁ‚‡˘ÂÌËˇ ‚ ÏÂÌ˛...";
+    cout << "–ù–∞–∂–º–∏—Ç–µ Enter –¥–ª—è –≤–æ–∑–≤—Ä–∞—â–µ–Ω–∏—è –≤ –º–µ–Ω—é...";
     cin.ignore();
     clearScreen();
 }
@@ -276,7 +278,7 @@ void Start() {
 
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int players_ammount = input_number_of_players(); // ÍÓÎË˜ÂÒÚ‚Ó Ë„ÓÍÓ‚ (Á‡‰‡‚‡Ú¸ ·Û‰ÂÏ ‚ ‰Û„ÓÈ ÙÛÌÍˆËË, ÌÓ ÔÓÍ‡ Ú‡Í)
+    int players_ammount = input_number_of_players(); // –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ –∏–≥—Ä–æ–∫–æ–≤ (–∑–∞–¥–∞–≤–∞—Ç—å –±—É–¥–µ–º –≤ –¥—Ä—É–≥–æ–π —Ñ—É–Ω–∫—Ü–∏–∏, –Ω–æ –ø–æ–∫–∞ —Ç–∞–∫)
     Statistics score;
     for (unsigned short i{}; i < players_ammount; i++) {
         score.names[i] = input_players_name(i, score);
@@ -285,7 +287,7 @@ void Start() {
     Resaults_screen(score, players_ammount);
 }
 
-//ÙÛÌÍˆËˇ ‰Îˇ ‚‚Ó‰‡ ËÏ∏Ì Ë„ÓÍÓ‚
+//—Ñ—É–Ω–∫—Ü–∏—è –¥–ª—è –≤–≤–æ–¥–∞ –∏–º—ë–Ω –∏–≥—Ä–æ–∫–æ–≤
 string input_players_name(short which_player, Statistics score) {
     string name;
     const int width = 156;
@@ -296,16 +298,16 @@ string input_players_name(short which_player, Statistics score) {
         cout << endl;
         cout << endl;
         if (!stupid_player) {
-            cout << setw(80) << "*** »√–Œ : " << which_player + 1 << " ***" << "\n        ¬‚Â‰ËÚÂ Ò‚Ó∏ ËÏˇ(¡≈« ÁÌ‡ÍÓ‚ ÔÛÌÍÚÛ‡ˆËË Ë ÔÓ·ÂÎÓ‚): ";
+            cout << setw(80) << "*** –ò–ì–†–û–ö: " << which_player + 1 << " ***" << "\n        –í–≤–µ–¥–∏—Ç–µ —Å–≤–æ—ë –∏–º—è(–ë–ï–ó –∑–Ω–∞–∫–æ–≤ –ø—É–Ω–∫—Ç—É–∞—Ü–∏–∏ –∏ –ø—Ä–æ–±–µ–ª–æ–≤): ";
         }
         else {
-            cout << setw(80) << "*** »√–Œ : " << which_player + 1 << " ***" << "\n\n        ¬‚Â‰ËÚÂ Ò‚Ó∏ ËÏˇ(¡≈« ÁÌ‡ÍÓ‚ ÔÛÌÍÚÛ‡ˆËË Ë ÔÓ·ÂÎÓ‚) Ë Õ≈ ÔÓ‚ÚÓˇˇ ËÏÂÌ‡ ‰Û„Ëı Ë„ÓÍÓ‚ : ";
+            cout << setw(80) << "*** –ò–ì–†–û–ö: " << which_player + 1 << " ***" << "\n\n        –í–≤–µ–¥–∏—Ç–µ —Å–≤–æ—ë –∏–º—è(–ë–ï–ó –∑–Ω–∞–∫–æ–≤ –ø—É–Ω–∫—Ç—É–∞—Ü–∏–∏ –∏ –ø—Ä–æ–±–µ–ª–æ–≤) –∏ –ù–ï –ø–æ–≤—Ç–æ—Ä—è—è –∏–º–µ–Ω–∞ –¥—Ä—É–≥–∏—Ö –∏–≥—Ä–æ–∫–æ–≤ : ";
 
         }
         getline(cin, name);
         if (!name.empty()) {
             for (char c : name) {
-                if (!((c >= '¿' && c <= 'ˇ') || (c == '∏') || (c == '®')) && (ispunct(c) || isspace(c))) {
+                if (!((c >= '–ê' && c <= '—è') || (c == '—ë') || (c == '–Å')) && (ispunct(c) || isspace(c))) {
                     check_complited = false;
                     break;
                 }
@@ -326,21 +328,21 @@ string input_players_name(short which_player, Statistics score) {
     return name;
 }
 
-// ÙÛÌÍˆËˇ ‚‚Ó‰‡ ÍÓÎ-‚‡ Ë„ÓÍÓ‚
+// —Ñ—É–Ω–∫—Ü–∏—è –≤–≤–æ–¥–∞ –∫–æ–ª-–≤–∞ –∏–≥—Ä–æ–∫–æ–≤
 int input_number_of_players() {
     string num_of_players{};
     bool not_dumb = false, already_stupid = false;
     while (true) {
         if (!already_stupid)
-            cout << "\n        œÓÊ‡ÎÛÈÒÚ‡ ‚‚Â‰ËÚÂ ÍÓÎË˜ÂÒÚ‚Ó Ë„ÓÍÓ‚, ÍÓÚÓ˚Â ·Û‰ÛÚ Û˜‡ÒÚ‚Ó‚‡Ú¸(ÌÂ ·ÓÎÂÂ 7 (ÌÂ ÏÂÌÂÂ 2)): ";
+            cout << "\n        –ü–æ–∂–∞–ª—É–π—Å—Ç–∞ –≤–≤–µ–¥–∏—Ç–µ –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ –∏–≥—Ä–æ–∫–æ–≤, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥—É—Ç —É—á–∞—Å—Ç–≤–æ–≤–∞—Ç—å(–Ω–µ –±–æ–ª–µ–µ 7 (–Ω–µ –º–µ–Ω–µ–µ 2)): ";
         getline(cin, num_of_players);
         if (!num_of_players.empty()) {
             if (num_of_players.length() == 1) {
                 for (char c : num_of_players) {
-                    if ((c >= '¿' && c <= 'ˇ') || (c == '∏') || (c == '®') || !isdigit(c)) {
+                    if ((c >= '–ê' && c <= '—è') || (c == '—ë') || (c == '–Å') || !isdigit(c)) {
                         not_dumb = false;
                         already_stupid = true;
-                        cout << "\n        ¬‚Â‰ËÚÂ ◊»—ÀŒ Ë„ÓÍÓ‚, ÍÓÚÓ˚Â ·Û‰ÛÚ Û˜‡ÒÚ‚Ó‚‡Ú¸(ÌÂ ·ÓÎÂÂ 7 (ÌÂ ÏÂÌÂÂ 2)): ";
+                        cout << "\n        –í–≤–µ–¥–∏—Ç–µ –ß–ò–°–õ–û –∏–≥—Ä–æ–∫–æ–≤, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥—É—Ç —É—á–∞—Å—Ç–≤–æ–≤–∞—Ç—å(–Ω–µ –±–æ–ª–µ–µ 7 (–Ω–µ –º–µ–Ω–µ–µ 2)): ";
                         break;
                     }
                     else {
@@ -351,19 +353,19 @@ int input_number_of_players() {
                     return stoi(num_of_players);
                 else if (not_dumb) {
                     already_stupid = true;
-                    cout << "\n        ¬‚Â‰ËÚÂ ◊»—ÀŒ Ë„ÓÍÓ‚, ÍÓÚÓ˚Â ·Û‰ÛÚ Û˜‡ÒÚ‚Ó‚‡Ú¸(ÌÂ ·ÓÎÂÂ 7 (ÌÂ ÏÂÌÂÂ 2)): ";
+                    cout << "\n        –í–≤–µ–¥–∏—Ç–µ –ß–ò–°–õ–û –∏–≥—Ä–æ–∫–æ–≤, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥—É—Ç —É—á–∞—Å—Ç–≤–æ–≤–∞—Ç—å(–Ω–µ –±–æ–ª–µ–µ 7 (–Ω–µ –º–µ–Ω–µ–µ 2)): ";
                     cout << endl;
                 }
             }
             else {
                 already_stupid = true;
-                cout << "        ¬‚Â‰ËÚÂ ◊»—ÀŒ Ë„ÓÍÓ‚, ÍÓÚÓ˚Â ·Û‰ÛÚ Û˜‡ÒÚ‚Ó‚‡Ú¸(ÌÂ ·ÓÎÂÂ 7 (ÌÂ ÏÂÌÂÂ 2)): ";
+                cout << "        –í–≤–µ–¥–∏—Ç–µ –ß–ò–°–õ–û –∏–≥—Ä–æ–∫–æ–≤, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥—É—Ç —É—á–∞—Å—Ç–≤–æ–≤–∞—Ç—å(–Ω–µ –±–æ–ª–µ–µ 7 (–Ω–µ –º–µ–Ω–µ–µ 2)): ";
                 cout << endl;
             }
         }
         else {
             already_stupid = true;
-            cout << "        ¬‚Â‰ËÚÂ ◊»—ÀŒ Ë„ÓÍÓ‚, ÍÓÚÓ˚Â ·Û‰ÛÚ Û˜‡ÒÚ‚Ó‚‡Ú¸(ÌÂ ·ÓÎÂÂ 7 (ÌÂ ÏÂÌÂÂ 2)): ";
+            cout << "        –í–≤–µ–¥–∏—Ç–µ –ß–ò–°–õ–û –∏–≥—Ä–æ–∫–æ–≤, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥—É—Ç —É—á–∞—Å—Ç–≤–æ–≤–∞—Ç—å(–Ω–µ –±–æ–ª–µ–µ 7 (–Ω–µ –º–µ–Ω–µ–µ 2)): ";
             cout << endl;
         }
     }
@@ -374,33 +376,33 @@ Statistics game(int players_ammount, Statistics names)
     const int width = 156;
     Statistics score = names;
     //132
-    const int Bank_size = 173; //‰Îˇ ‡Ì‰ÓÏ‡ÈÁÂ‡ ÌÛÊÂÌ ·‡ÌÍ Ì‡ 1 ÒËÏ‚ÓÎ ·ÓÎ¸¯Â
-    char Bank_of_latters[Bank_size]{}; // ·‡ÌÍ ·ÛÍ‚ ËÁ ‡ÎÙ‡‚ËÚ‡ ÔÓ 4 ‡Á‡
+    const int Bank_size = 173; //–¥–ª—è —Ä–∞–Ω–¥–æ–º–∞–π–∑–µ—Ä–∞ –Ω—É–∂–µ–Ω –±–∞–Ω–∫ –Ω–∞ 1 —Å–∏–º–≤–æ–ª –±–æ–ª—å—à–µ
+    char Bank_of_latters[Bank_size]{}; // –±–∞–Ω–∫ –±—É–∫–≤ –∏–∑ –∞–ª—Ñ–∞–≤–∏—Ç–∞ –ø–æ 4 —Ä–∞–∑–∞
     for (unsigned short i{}; i < Bank_size; i++) {
         Bank_of_latters[i] = '-';
     }
-    alphabet_zapolnenie(Bank_of_latters); // Á‡ÔÓÎÌÂÌËÂ ·‡ÌÍ‡ ·ÛÍ‚
+    alphabet_zapolnenie(Bank_of_latters); // –∑–∞–ø–æ–ª–Ω–µ–Ω–∏–µ –±–∞–Ω–∫–∞ –±—É–∫–≤
 
     Player player_arr[7];
-    string last_word = "0"; //·ÛÙÂ ı‡Ìˇ˘ËÈ ÔÓÒÎÂ‰ÌÂÂ ‚‚Â‰∏ÌÌÓÂ ÒÎÓ‚Ó
+    string last_word = "0"; //–±—É—Ñ–µ—Ä —Ö—Ä–∞–Ω—è—â–∏–π –ø–æ—Å–ª–µ–¥–Ω–µ–µ –≤–≤–µ–¥—ë–Ω–Ω–æ–µ —Å–ª–æ–≤–æ
     string word;
     bool first_round = true;
-    int step = 0; //ÌÓÏÂ ıÓ‰‡
+    int step = 0; //–Ω–æ–º–µ—Ä —Ö–æ–¥–∞
 
     for (int i = 0; i < players_ammount; i++)
     {
         player_arr[i].last_word_of_player = "1";
     }
-    //ËÌËˆË‡ÎËÁ‡ˆËˇ Ë„‡˛˘Ëı Ë„ÓÍÓ‚(ËÏ ‚ÏÂÒÚÓ ÔÛÒÚÓ„Ó ÓÚ‚ÂÚ‡ ÒÚ‡‚ËÚÒˇ 1, ˜ÚÓ·˚ Û Í‡Ê‰Ó„Ó ·˚Î ıÓÚˇ ·˚ 1 ıÓ‰)
+    //–∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è –∏–≥—Ä–∞—é—â–∏—Ö –∏–≥—Ä–æ–∫–æ–≤(–∏–º –≤–º–µ—Å—Ç–æ –ø—É—Å—Ç–æ–≥–æ –æ—Ç–≤–µ—Ç–∞ —Å—Ç–∞–≤–∏—Ç—Å—è 1, —á—Ç–æ–±—ã —É –∫–∞–∂–¥–æ–≥–æ –±—ã–ª —Ö–æ—Ç—è –±—ã 1 —Ö–æ–¥)
     while (true)
     {
         for (int i = 0; i < players_ammount; i++)
         {
             add_letters_to_player(player_arr[i].letters, Bank_of_latters);
-        } //‚˚‰‡˜‡ ÌÓ‚˚ı ·ÛÍ‚ Í‡Ê‰ÓÏÛ Ë„ÓÍÛ ‚ Ì‡˜‡ÎÂ ıÓ‰‡
+        } //–≤—ã–¥–∞—á–∞ –Ω–æ–≤—ã—Ö –±—É–∫–≤ –∫–∞–∂–¥–æ–º—É –∏–≥—Ä–æ–∫—É –≤ –Ω–∞—á–∞–ª–µ —Ö–æ–¥–∞
 
 
-        int letters_ammount = 0; //Ì‡˜‡ÎÓ ÔÓ‰Ò˜∏Ú‡ ÓÒÚ‡‚¯ËıÒˇ ·ÛÍ‚ ‚ Ó·˘ÂÏ ·‡ÌÍÂ
+        int letters_ammount = 0; //–Ω–∞—á–∞–ª–æ –ø–æ–¥—Å—á—ë—Ç–∞ –æ—Å—Ç–∞–≤—à–∏—Ö—Å—è –±—É–∫–≤ –≤ –æ–±—â–µ–º –±–∞–Ω–∫–µ
         cout << endl;
         printBorder(width);
 
@@ -412,41 +414,41 @@ Statistics game(int players_ammount, Statistics names)
             }
         }
         cout << endl;
-        cout << setw(82) << "¬ ·‡ÌÍÂ ÓÒÚ‡ÎÓÒ¸: " << letters_ammount << " ·ÛÍ‚\n\n\n\n\n\n\n\n";
-        cout << "        Õ‡ÊÏËÚÂ Enter ‰Îˇ ÔÓ‰ÓÎÊÂÌËˇ......";
+        cout << setw(82) << "–í –±–∞–Ω–∫–µ –æ—Å—Ç–∞–ª–æ—Å—å: " << letters_ammount << " –±—É–∫–≤\n\n\n\n\n\n\n\n";
+        cout << "        –ù–∞–∂–º–∏—Ç–µ Enter –¥–ª—è –ø—Ä–æ–¥–æ–ª–∂–µ–Ω–∏—è......";
 
         cin.ignore();
         clearScreen();
 
-        // ıÓ‰ Ë„ÓÍ‡
+        // —Ö–æ–¥ –∏–≥—Ä–æ–∫–∞
         while (true)
         {
             int id = (step) % players_ammount;
             vuvod_igroka(first_round, names, id, last_word);
             cout << "\n";
-            cout << setw(90) << "****** ¬‡¯Ë ·ÛÍ‚˚ ****** \n\n" << setw(41) << " | ";
+            cout << setw(90) << "****** –í–∞—à–∏ –±—É–∫–≤—ã ****** \n\n" << setw(41) << " | ";
             for (int i = 0; i < 10; i++)
             {
                 cout << player_arr[id].letters[i] << "   |   ";
             }
             cout << endl;
-            // ‚˚‚Ó‰ ËÌÙÓÏ‡ˆËË ÚÂÍÛ˘ÂÏÛ Ë„ÓÍÛ
+            // –≤—ã–≤–æ–¥ –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏–∏ —Ç–µ–∫—É—â–µ–º—É –∏–≥—Ä–æ–∫—É
             word = word_input_simpel_check(player_arr[id], player_arr, Bank_of_latters, players_ammount, names, id, letters_ammount, last_word);
             if (word == "0")
             {
                 player_arr[id].last_word_of_player = "0";
-                cout << endl << "                                                                   ...ÔÓÔÛÒÍ ıÓ‰‡..." << endl;
+                cout << endl << "                                                                   ...–ø—Ä–æ–ø—É—Å–∫ —Ö–æ–¥–∞..." << endl;
                 if (letters_ammount == 0)
                     player_arr[id].bank_null = check_for_null_bank(player_arr[id].letters, id);
                 break;
             }
-            //ÔÓÔÛÒÍ ıÓ‰‡
+            //–ø—Ä–æ–ø—É—Å–∫ —Ö–æ–¥–∞
 
-            bool check = big_check(word, player_arr[id]);
+            bool check = big_check(word, names, players_ammount, id, player_arr[id]);
             if (check)
             {
                 score.points[id] += scoring_of_players(check, word, last_word);
-                cout << "\n   —ÎÓ‚Ó ÔËÌˇÚÓ\n                                                               ¬‡¯Ë ·‡ÎÎ˚ ÒÂÈ˜‡Ò: " << score.points[id] << " (+" << scoring_of_players(check, word, last_word) << ") " << endl;
+                cout << "\n   –°–ª–æ–≤–æ –ø—Ä–∏–Ω—è—Ç–æ\n                                                               –í–∞—à–∏ –±–∞–ª–ª—ã —Å–µ–π—á–∞—Å: " << score.points[id] << " (+" << scoring_of_players(check, word, last_word) << ") " << endl;
                 last_word = word;
                 player_arr[id].last_word_of_player = word;
                 remove_letters(word, player_arr[id].letters);
@@ -459,7 +461,7 @@ Statistics game(int players_ammount, Statistics names)
                 if (big_check1(word, player_arr[id]))
                 {
                     score.points[id] += scoring_of_players(check, word, last_word);
-                    cout << "   \n—ÎÓ‚Ó ·˚ÎÓ ‚‚Â‰ÂÌÓ ÌÂ‚ÂÌÓÂ\n                                                                  ¬‡¯Ë ·‡ÎÎ˚ ÒÂÈ˜‡Ò: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
+                    cout << "   \n–°–ª–æ–≤–æ –±—ã–ª–æ –≤–≤–µ–¥–µ–Ω–æ –Ω–µ–≤–µ—Ä–Ω–æ–µ\n                                                                  –í–∞—à–∏ –±–∞–ª–ª—ã —Å–µ–π—á–∞—Å: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
                     if (letters_ammount == 0)
                         player_arr[id].bank_null = check_for_null_bank(player_arr[id].letters, id);
                     break;
@@ -467,8 +469,8 @@ Statistics game(int players_ammount, Statistics names)
                 else
                 {
                     score.points[id] += scoring_of_players(check, word, last_word);
-                    cout << "\n                                                   ¬ ÒÎÂ‰Û˛˘ËÈ ‡Á ‚‚Â‰ËÚÂ ÒÎÓ‚Ó ÚÓÎ¸ÍÓ ËÁ Ò‚ÓËı ·ÛÍ‚\n";
-                    cout << "   \n—ÎÓ‚Ó ÌÂ‚ÂÌÓÂ\n                                                                ¬‡¯Ë ·‡ÎÎ˚ ÒÂÈ˜‡Ò: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
+                    cout << "\n                                                   –í —Å–ª–µ–¥—É—é—â–∏–π —Ä–∞–∑ –≤–≤–µ–¥–∏—Ç–µ —Å–ª–æ–≤–æ —Ç–æ–ª—å–∫–æ –∏–∑ —Å–≤–æ–∏—Ö –±—É–∫–≤\n";
+                    cout << "   \n–°–ª–æ–≤–æ –Ω–µ–≤–µ—Ä–Ω–æ–µ\n                                                                –í–∞—à–∏ –±–∞–ª–ª—ã —Å–µ–π—á–∞—Å: " << score.points[id] << " (" << scoring_of_players(check, word, last_word) << ") " << endl;
                     if (letters_ammount == 0)
                         player_arr[id].bank_null = check_for_null_bank(player_arr[id].letters, id);
                     break;
@@ -476,7 +478,7 @@ Statistics game(int players_ammount, Statistics names)
             }
         }
 
-        // ÔÂÂÔËÒ‡Î ÔÓ‚ÂÍÛ Ì‡ ÒÍËÔ˚
+        // –ø–µ—Ä–µ–ø–∏—Å–∞–ª –ø—Ä–æ–≤–µ—Ä–∫—É –Ω–∞ —Å–∫–∏–ø—ã
         int counter_for_skip_end{};
         for (unsigned short i{}; i < players_ammount; i++) {
             if (player_arr[i].last_word_of_player == "0") {
@@ -484,10 +486,10 @@ Statistics game(int players_ammount, Statistics names)
             }
         }
         if (counter_for_skip_end == players_ammount) {
-            cout << endl << "                                                                ¬ÒÂ Ë„ÓÍË ÔÓÔÛÒÚËÎË ıÓ‰\n" << endl;
+            cout << endl << "                                                                –í—Å–µ –∏–≥—Ä–æ–∫–∏ –ø—Ä–æ–ø—É—Å—Ç–∏–ª–∏ —Ö–æ–¥\n" << endl;
             printBorder(width);
             cout << "\n\n\n\n\n\n";
-            cout << "   Õ‡ÊÏËÚÂ Enter ‰Îˇ ÔÓ‰ÓÎÊÂÌËˇ... ";
+            cout << "   –ù–∞–∂–º–∏—Ç–µ Enter –¥–ª—è –ø—Ä–æ–¥–æ–ª–∂–µ–Ω–∏—è... ";
             break;
         }
         step++;
@@ -497,42 +499,39 @@ Statistics game(int players_ammount, Statistics names)
     cin.ignore();
     clearScreen();
 }
-//Û·‡Î cin.ignore ‚ ÍÓÌˆÂ
+//—É–±—Ä–∞–ª cin.ignore –≤ –∫–æ–Ω—Ü–µ
 void Resaults_screen(Statistics full_stat, short ammount_of_players) {
     cin.ignore();
     clearScreen();
     const int width = 156;
-    short max_score_id[7]{ 0,-1,-1,-1,-1,-1,-1 }, nulevue{}, max_points = full_stat.points[0], sovpodenie{ 1 }, counter{ 1 };
+    short max_score_id[7]{ 0,-1,-1,-1,-1,-1,-1 }, nulevue{}, sovpodenie{ 1 };
     for (unsigned short i{ 1 }; i < ammount_of_players; i++) {
         if (full_stat.points[max_score_id[0]] < full_stat.points[i]) {
-            for (unsigned short j{}; j < counter; j++) {
+            for (unsigned short j{}; j < sovpodenie; j++) {
                 max_score_id[j] = -1;
             }
             max_score_id[0] = i;
-            counter = 1;
             sovpodenie = 1;
         }
-        else if (max_points == full_stat.points[i]) {
-            max_score_id[counter] = i;
+        else if (full_stat.points[max_score_id[0]] == full_stat.points[i]) {
+            max_score_id[sovpodenie] = i;
             sovpodenie++;
-            counter++;
         }
         else if (full_stat.points[i] == 0)
             nulevue++;
     }
     printBorder(width);
     cout << endl;
-    cout << setw(87) << "~~~~~ œŒ¡≈ƒ¿! ~~~~~ \n\n";
+    cout << setw(87) << "~~~~~ –ü–û–ë–ï–î–ê! ~~~~~ \n\n";
     printBorder(width);
     cout << "\n\n\n\n\n";   ///////////////////////////////////////////////////////////////////
     if (nulevue == ammount_of_players || sovpodenie == ammount_of_players) {
-        cout << setw(96) << "*** »„‡ Á‡‚Â¯ËÎ‡Ò¸ ÌË˜¸ÂÈ ***\n\n\n";
+        cout << setw(96) << "*** –ò–≥—Ä–∞ –∑–∞–≤–µ—Ä—à–∏–ª–∞—Å—å –Ω–∏—á—å–µ–π ***\n\n\n";
     }
-    else if (counter == 1)
-        cout << setw(87) << "*** »„‡ Á‡‚Â¯ËÎ‡Ò¸, ÔÓ·Â‰ËÎ " << full_stat.names[max_score_id[0]] << " ***\n\n";
+    else if (sovpodenie == 1)
+        cout << setw(87) << "*** –ò–≥—Ä–∞ –∑–∞–≤–µ—Ä—à–∏–ª–∞—Å—å, –ø–æ–±–µ–¥–∏–ª " << full_stat.names[max_score_id[0]] << " ***\n\n";
     else {
-        cout << setw(87) << "*** »„‡ Á‡‚Â¯ËÎ‡Ò¸, ÔÓ·Â‰ËÎË: " << full_stat.names[max_score_id[0]] << ", " << full_stat.names[max_score_id[1]];
-        cout << " ***\n\n\n";
+        cout << setw(87) << "*** –ò–≥—Ä–∞ –∑–∞–≤–µ—Ä—à–∏–ª–∞—Å—å, –ø–æ–±–µ–¥–∏–ª–∏: " << full_stat.names[max_score_id[0]] << ", " << full_stat.names[max_score_id[1]];
         if (ammount_of_players > 2) {
             for (unsigned short i{ 2 }; i < ammount_of_players; i++) {
                 if (max_score_id[i] != -1) {
@@ -541,9 +540,10 @@ void Resaults_screen(Statistics full_stat, short ammount_of_players) {
                 }
             }
         }
+        cout << " ***\n\n\n";
     }
     for (int i{}; i < ammount_of_players; i++) {
-        cout << setw(60) << i + 1 << ". »„ÓÍ " << full_stat.names[i] << " Ì‡·‡Î: " << full_stat.points[i] << " ·‡ÎÎ‡(-Ó‚)\n";
+        cout << setw(60) << i + 1 << ". –ò–≥—Ä–æ–∫ " << full_stat.names[i] << " –Ω–∞–±—Ä–∞–ª: " << full_stat.points[i] << " –±–∞–ª–ª–∞(-–æ–≤)\n";
     }
     cout << "\n\n\n\n\n";
     /*cin.ignore(1);*/
@@ -556,26 +556,26 @@ int bonuses(Player player, string word, short letter_ammount, bool player_with_l
     if (word.empty()) {
         if (player.bonuces == 0 && letter_ammount >= 5 && player_with_letters) {
             cout << endl << endl;
-            cout << setw(90) << " ” ‚‡Ò ÂÒÚ¸ 2 ·ÓÌÛÒ‡: \n\n"
-                << "                                                                      1. 50 Ì‡ 50 \n\n "
-                << "                                                                    2. œÓÏÓ˘¸ ‰Û„‡ \n\n ";
+            cout << setw(90) << " –£ –≤–∞—Å –µ—Å—Ç—å 2 –±–æ–Ω—É—Å–∞: \n\n"
+                << "                                                                      1. 50 –Ω–∞ 50 \n\n "
+                << "                                                                    2. –ü–æ–º–æ—â—å –¥—Ä—É–≥–∞ \n\n ";
         }
         else if (player.bonuces == 0 && player_with_letters) {
             cout << endl;
-            cout << "                                          ” ‚‡Ò ÓÒÚ‡ÎÒˇ ·ÓÌÛÒ 'œÓÏÓ˘¸ ‰Û„‡', ÂÒÎË ıÓÚËÚÂ Â„Ó ËÒÔÓÎ¸ÁÓ‚‡Ú¸ ‚‚Â‰ËÚÂ 2.\n\n";
+            cout << "                                          –£ –≤–∞—Å –æ—Å—Ç–∞–ª—Å—è –±–æ–Ω—É—Å '–ü–æ–º–æ—â—å –¥—Ä—É–≥–∞', –µ—Å–ª–∏ —Ö–æ—Ç–∏—Ç–µ –µ–≥–æ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –≤–≤–µ–¥–∏—Ç–µ 2.\n\n";
         }
         else if (player.bonuces == 1) {
             cout << endl;
-            cout << "                                          ” ‚‡Ò ÓÒÚ‡ÎÒˇ ·ÓÌÛÒ 'œÓÏÓ˘¸ ‰Û„‡', ÂÒÎË ıÓÚËÚÂ Â„Ó ËÒÔÓÎ¸ÁÓ‚‡Ú¸ ‚‚Â‰ËÚÂ 2.\n\n";
+            cout << "                                          –£ –≤–∞—Å –æ—Å—Ç–∞–ª—Å—è –±–æ–Ω—É—Å '–ü–æ–º–æ—â—å –¥—Ä—É–≥–∞', –µ—Å–ª–∏ —Ö–æ—Ç–∏—Ç–µ –µ–≥–æ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –≤–≤–µ–¥–∏—Ç–µ 2.\n\n";
         }
         else if (player.bonuces == 2 && letter_ammount >= 5) {
 
             cout << endl;
-            cout << "                                             ” ‚‡Ò ÓÒÚ‡ÎÒˇ ·ÓÌÛÒ 50 Ì‡ 50. ¬‚Â‰ËÚÂ 1 ÂÒÎË ıÓÚËÚÂ ‚ÓÒÔÓÎ¸ÁÓ‚‡Ú¸Òˇ\n\n";
+            cout << "                                             –£ –≤–∞—Å –æ—Å—Ç–∞–ª—Å—è –±–æ–Ω—É—Å 50 –Ω–∞ 50. –í–≤–µ–¥–∏—Ç–µ 1 –µ—Å–ª–∏ —Ö–æ—Ç–∏—Ç–µ –≤–æ—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å—Å—è\n\n";
         }
         else {
             cout << endl;
-            cout << "   ” ‚‡Ò ÌÂ ÓÒÚ‡ÎÓÒ¸ ·ÓÌÛÒÓ‚\n";
+            cout << "   –£ –≤–∞—Å –Ω–µ –æ—Å—Ç–∞–ª–æ—Å—å –±–æ–Ω—É—Å–æ–≤\n";
             cout << endl;
         }
         return 0;
@@ -584,7 +584,7 @@ int bonuses(Player player, string word, short letter_ammount, bool player_with_l
     else {
         int counter{};
         for (char c : word) {
-            if (!(c >= '¿' && c <= 'ˇ') && !(c == '∏') && !(c == '®') && isdigit(c)) {
+            if (!(c >= '–ê' && c <= '—è') && !(c == '—ë') && !(c == '–Å') && isdigit(c)) {
                 counter++;
             }
         }
@@ -611,10 +611,10 @@ void fifty_fifty(Player& player, char letter_bank[], string last_word, short id,
 
     while (stupid_igrok) {
         cout << endl;
-        cout << "                                Õ‡ÔË¯ËÚÂ 5 ·ÛÍ‚(·ÂÁ ÔÓ·ÂÎÓ‚ Ë ÁÌ‡ÍÓ‚ ÔËÔÂÌ‡ÌË˛) ËÁ Ò‚ÓÂ„Ó Ì‡·Ó‡, ÍÓÚÓ˚Â ‚˚ ıÓÚËÚÂ Á‡ÏÂÌËÚ¸:\n ";
+        cout << "                                –ù–∞–ø–∏—à–∏—Ç–µ 5 –±—É–∫–≤(–±–µ–∑ –ø—Ä–æ–±–µ–ª–æ–≤ –∏ –∑–Ω–∞–∫–æ–≤ –ø—Ä–∏–ø–µ–Ω–∞–Ω–∏—é) –∏–∑ —Å–≤–æ–µ–≥–æ –Ω–∞–±–æ—Ä–∞, –∫–æ—Ç–æ—Ä—ã–µ –≤—ã —Ö–æ—Ç–∏—Ç–µ –∑–∞–º–µ–Ω–∏—Ç—å:\n ";
         cout << setw(73) << " ";
         getline(cin, letters);
-        for (int i = 0; i < 10; i++)        // ·ÛÙÂËÁ‡ˆËˇ ·ÛÍ‚ Ë„ÓÍ‡
+        for (int i = 0; i < 10; i++)        // –±—É—Ñ–µ—Ä–∏–∑–∞—Ü–∏—è –±—É–∫–≤ –∏–≥—Ä–æ–∫–∞
         {
             player_letters[i] = player.letters[i];
         }
@@ -651,7 +651,7 @@ void fifty_fifty(Player& player, char letter_bank[], string last_word, short id,
     vuvod_igroka(false, names, id, last_word);   ////////////////////////////////////////////////////////////////////////////////
     cout << endl;
     cout << endl;
-    cout << setw(90) << "***** ¬‡¯Ë ·ÛÍ‚˚ ***** \n\n" << setw(40) << "   |   ";
+    cout << setw(90) << "***** –í–∞—à–∏ –±—É–∫–≤—ã ***** \n\n" << setw(40) << "   |   ";
     for (int i = 0; i < 10; i++)
     {
         cout << player.letters[i] << "  |    ";
@@ -667,9 +667,9 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     for (unsigned short i{}; i < player_ammount; i++) {
         if (i != player_id) {
             cout << endl;
-            cout << "   »„ÓÍ " << i + 1 << ": " << score.names[i] << "\n";
-            cout << setw(10) << "¡‡ÎÎ˚: " << score.points[i] << "\n";
-            cout << setw(10) << "¡ÛÍ‚˚: ";
+            cout << "   –ò–≥—Ä–æ–∫ " << i + 1 << ": " << score.names[i] << "\n";
+            cout << setw(10) << "–ë–∞–ª–ª—ã: " << score.points[i] << "\n";
+            cout << setw(10) << "–ë—É–∫–≤—ã: ";
             for (int j = 0; j < 10; j++)
             {
                 cout << player_arr[i].letters[j] << " | ";
@@ -679,10 +679,10 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     while (true) {
         cout << endl;
-        cout << "                                                  ¬‚Â‰ËÚÂ ÌÓÏÂ Ë„ÓÍ‡ Ò ÍÓÚÓ˚Ï ıÓÚËÚÂ ÔÓÏÂÌˇÚ¸Òˇ ·ÛÍ‚ÓÈ:\n ";
+        cout << "                                                  –í–≤–µ–¥–∏—Ç–µ –Ω–æ–º–µ—Ä –∏–≥—Ä–æ–∫–∞ —Å –∫–æ—Ç–æ—Ä—ã–º —Ö–æ—Ç–∏—Ç–µ –ø–æ–º–µ–Ω—è—Ç—å—Å—è –±—É–∫–≤–æ–π:\n ";
         cout << setw(76) << " ";
         getline(cin, id_str);
-        if (id_str.length() == 1 && !((id_str[0] >= '‡' && id_str[0] <= 'ˇ') || (id_str[0] == '∏')) && isdigit(id_str[0])) {
+        if (id_str.length() == 1 && !((id_str[0] >= '–∞' && id_str[0] <= '—è') || (id_str[0] == '—ë')) && isdigit(id_str[0])) {
             id = stoi(id_str);
             if (id > 0 && id <= player_ammount && id != player_id + 1 && !player_arr[id].bank_null) { ///////////////////////////////////////////
                 id--;
@@ -692,7 +692,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     while (true) {
         cout << endl;
-        cout << "                                                        ¬‚Â‰ËÚÂ ·ÛÍ‚Û ÍÓÚÓÛ˛ ıÓÚËÚÂ ÔÓÏÂÌˇÚ¸ Û ÒÂ·ˇ:\n ";
+        cout << "                                                        –í–≤–µ–¥–∏—Ç–µ –±—É–∫–≤—É –∫–æ—Ç–æ—Ä—É—é —Ö–æ—Ç–∏—Ç–µ –ø–æ–º–µ–Ω—è—Ç—å —É —Å–µ–±—è:\n ";
         cout << setw(76) << " ";
         getline(cin, my_letter);
         if (my_letter.length() == 1) {
@@ -710,7 +710,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     }
     while (true) {
         cout << endl;
-        cout << "                                            ¬‚Â‰ËÚÂ ·ÛÍ‚Û ÍÓÚÓÛ˛ ıÓÚËÚÂ ÔÓÏÂÌˇÚ¸ Û ‚˚·‡ÌÌÓ„Ó ‚‡ÏË ÔÓÎ¸ÁÓ‚‡ÚÂÎˇ:\n ";
+        cout << "                                            –í–≤–µ–¥–∏—Ç–µ –±—É–∫–≤—É –∫–æ—Ç–æ—Ä—É—é —Ö–æ—Ç–∏—Ç–µ –ø–æ–º–µ–Ω—è—Ç—å —É –≤—ã–±—Ä–∞–Ω–Ω–æ–≥–æ –≤–∞–º–∏ –ø–æ–ª—å–∑–æ–≤–∞—Ç–µ–ª—è:\n ";
         cout << setw(76) << " ";
         getline(cin, his_letter);
         if (his_letter.length() == 1) {
@@ -733,7 +733,7 @@ void spizdi_letter(Player& player, Player player_arr[], short player_ammount, St
     cout << "\n";
     vuvod_igroka(false, score, player_id, last_word);
     cout << "\n";
-    cout << setw(90) << "***** ¬‡¯Ë ·ÛÍ‚˚ ***** \n\n" << setw(40) << "  |   ";
+    cout << setw(90) << "***** –í–∞—à–∏ –±—É–∫–≤—ã ***** \n\n" << setw(40) << "  |   ";
     for (int i = 0; i < 10; i++)
     {
         cout << player.letters[i] << "  |    ";
@@ -747,8 +747,8 @@ void alphabet_zapolnenie(char massive_alphabet[])
     SetConsoleOutputCP(1251);
     const int Bank_size = 173;
     char buffer_alphabet[Bank_size];
-    char c[] = { '·','‚','„','‰','Ê','Á','È','Í','Î','Ï','Ì','Ô','','Ò','Ú','Ù','ı','ˆ','˜','¯','˘','¸','˙' };
-    char g[] = { '‡','Â','∏','Ë','Ó','Û','˚','˝','˛','ˇ' };
+    char c[] = { '–±','–≤','–≥','–¥','–∂','–∑','–π','–∫','–ª','–º','–Ω','–ø','—Ä','—Å','—Ç','—Ñ','—Ö','—Ü','—á','—à','—â','—å','—ä' };
+    char g[] = { '–∞','–µ','—ë','–∏','–æ','—É','—ã','—ç','—é','—è' };
     short counter{};
     for (unsigned short i{ 1 }; i < 13; i++) {
         if (i % 3 == 0) {
@@ -764,13 +764,13 @@ void alphabet_zapolnenie(char massive_alphabet[])
             }
         }
     }
-    //Á‡ÔÓÎÌÂÌËÂ Ó·˘Â„Ó ‡ÎÙ‡‚ËÚ‡ ‡Ì‰ÓÏÌÓ
+    //–∑–∞–ø–æ–ª–Ω–µ–Ω–∏–µ –æ–±—â–µ–≥–æ –∞–ª—Ñ–∞–≤–∏—Ç–∞ —Ä–∞–Ω–¥–æ–º–Ω–æ
     srand(time(0));
     int letter_ammount = Bank_size - 1;
     for (int i = 0; i < Bank_size - 2; i++)
     {
         massive_alphabet[i] = buffer_alphabet[rand() % letter_ammount];
-        //ÒÓÚËÓ‚Í‡ ·‡ÌÍ‡
+        //—Å–æ—Ä—Ç–∏—Ä–æ–≤–∫–∞ –±–∞–Ω–∫–∞
         for (int j = 0; j < Bank_size - 1; j++)
         {
             if (buffer_alphabet[j] == '-')
@@ -785,9 +785,7 @@ void alphabet_zapolnenie(char massive_alphabet[])
     }
 
 }
-
-
-//œÂÂÔËÒ‡ÌÓ ÔÓ ÔÎ‡ÌÛ
+//–ü–µ—Ä–µ–ø–∏—Å–∞–Ω–æ –ø–æ –ø–ª–∞–Ω—É
 void add_letters_to_player(char pl_letters[], char Bank[])
 {
     const int Bank_size = 173;
@@ -809,8 +807,6 @@ void add_letters_to_player(char pl_letters[], char Bank[])
         }
     }
 }
-
-
 string word_input_simpel_check(Player& player, Player player_arr[], char letter_bank[], short player_ammount, Statistics score, short player_id, short letter_ammount, string last_word) {
     string user_word{};
     const int width = 156;
@@ -828,13 +824,13 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
         user_word = "";
         bonuses(player, user_word, letter_ammount, players_with_letters, already_dumb);
         if (!already_dumb && player.bonuces != 3) {
-            cout << "                                           ¬‚Â‰ËÚÂ ÒÎÓ‚Ó, ÒÓÒÚ‡‚ÎÂÌÌÓÂ ËÁ ‚‡¯Ëı ·ÛÍ‚, ËÎË ‚ÓÒÔÓÎ¸ÁÛÈÚÂÒ¸ ·ÓÌÛÒÓÏ:\n\n ";
+            cout << "                                           –í–≤–µ–¥–∏—Ç–µ —Å–ª–æ–≤–æ, —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–Ω–æ–µ –∏–∑ –≤–∞—à–∏—Ö –±—É–∫–≤, –∏–ª–∏ –≤–æ—Å–ø–æ–ª—å–∑—É–π—Ç–µ—Å—å –±–æ–Ω—É—Å–æ–º:\n\n ";
             cout << " ";
         }
         else if (already_dumb && player.bonuces != 3)
-            cout << "                                            ¬‚Â‰ËÚÂ ÒÎÓ‚Ó, ÒÓÒÚ‡‚ÎÂÌÌÓÂ ËÁ ‚‡¯Ëı ·ÛÍ‚, ËÎË ‚ÓÒÔÓÎ¸ÁÛÈÚÂÒ¸ ·ÓÌÛÒÓÏ: ";
+            cout << "                                            –í–≤–µ–¥–∏—Ç–µ —Å–ª–æ–≤–æ, —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–Ω–æ–µ –∏–∑ –≤–∞—à–∏—Ö –±—É–∫–≤, –∏–ª–∏ –≤–æ—Å–ø–æ–ª—å–∑—É–π—Ç–µ—Å—å –±–æ–Ω—É—Å–æ–º: ";
         else
-            cout << setw(93) << "¬‚Â‰ËÚÂ ÒÎÓ‚Ó, ÒÓÒÚ‡‚ÎÂÌÌÓÂ ËÁ ‚‡¯Ëı ·ÛÍ‚: \n\n";
+            cout << setw(93) << "–í–≤–µ–¥–∏—Ç–µ —Å–ª–æ–≤–æ, —Å–æ—Å—Ç–∞–≤–ª–µ–Ω–Ω–æ–µ –∏–∑ –≤–∞—à–∏—Ö –±—É–∫–≤: \n\n";
         cout << setw(73) << " ";
         getline(cin, user_word);
         if (user_word.empty()) {
@@ -875,12 +871,12 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
         for (char c : user_word) {
             if (user_word.length() > 10) {
                 cout << endl;
-                cout << setw(110) << "—ÎÓ‚Ó ‰ÓÎÊÌÓ ÒÓÒÚÓˇÚ¸ ËÁ ÌÂ ·ÓÎÂÂ ˜ÂÏ 10-ÚË ·ÛÍ‚ \n\n";
+                cout << setw(110) << "–°–ª–æ–≤–æ –¥–æ–ª–∂–Ω–æ —Å–æ—Å—Ç–æ—è—Ç—å –∏–∑ –Ω–µ –±–æ–ª–µ–µ —á–µ–º 10-—Ç–∏ –±—É–∫–≤ \n\n";
                 already_dumb = true;
                 break;
             }
-            if (!(c >= '‡' && c <= 'ˇ') /*&& !(c == '®')*/ && !(c == '∏')) {
-                cout << "¬‚Â‰ËÚÂ ÒÎÓ‚Ó ·ÂÁ ÔÓ·ÂÎÓ‚ Ë ÚÓÎ¸ÍÓ ÒÚÓ˜Ì˚ÏË ÛÒÒÍËÏË ·ÛÍ‚‡ÏË: ";
+            else if (!(c >= '–∞' && c <= '—è') /*&& !(c == '–Å')*/ && !(c == '—ë')) {
+                cout << "–í–≤–µ–¥–∏—Ç–µ —Å–ª–æ–≤–æ –±–µ–∑ –ø—Ä–æ–±–µ–ª–æ–≤ –∏ —Ç–æ–ª—å–∫–æ —Å—Ç—Ä–æ—á–Ω—ã–º–∏ —Ä—É—Å—Å–∫–∏–º–∏ –±—É–∫–≤–∞–º–∏: ";
                 check_complited = false;
                 already_dumb = true;
                 break;
@@ -891,10 +887,6 @@ string word_input_simpel_check(Player& player, Player player_arr[], char letter_
     }
     return user_word;
 }
-
-
-
-
 int scoring_of_players(bool correct_answer, string answer, string answer_previous_player)
 {
     if (correct_answer == true)
@@ -909,7 +901,6 @@ int scoring_of_players(bool correct_answer, string answer, string answer_previou
         return answer.length() * -1;
     }
 }
-
 void remove_letters(string word, char letters_bank[])
 {
     int size = word.length();
@@ -927,29 +918,58 @@ void remove_letters(string word, char letters_bank[])
         }
     }
 }
-
-//œÂÂÔËÒ‡ÌÓ ÔÓ ÔÎ‡ÌÛ
-bool opros_players_about_new_word(string word) {
+//–ü–µ—Ä–µ–ø–∏—Å–∞–Ω–æ –ø–æ –ø–ª–∞–Ω—É
+bool opros_players_about_new_word(string word, Statistics names, short player_ammount, short id) {
+    {
+        int count_of_plus = { 0 };
+        string answer;
+        for (int i = 0; i < player_ammount; i++)
+        {
+            if (i != id)
+            {
+                cout << "–ò–≥—Ä–æ–∫ " << names.names[i] << " —Å–æ–≥–ª–∞—Å–Ω—ã –ª–∏ –≤—ã —Å —Ç–µ–º —á—Ç–æ —Å–ª–æ–≤–æ " << word << " –¥–æ–ª–∂–Ω–æ –≤–æ–π—Ç–∏ –≤ —Å–ª–æ–≤–∞—Ä—å –∏ –∑–∞—Å—á–∏—Ç–∞—Ç—å—Å—è –∏–≥—Ä–æ–∫—É " << names.names[id] << " (–¥–∞/–Ω–µ—Ç): ";
+                getline(cin, answer);
+                if (answer == "–¥–∞")
+                {
+                    count_of_plus += 1;
+                }
+                else if (answer == "–Ω–µ—Ç")
+                {
+                    return false;
+                }
+                else
+                {
+                    cout << "–í–≤–µ–¥–µ–Ω–Ω–æ –Ω–µ–∫–∫–æ—Ä–µ–∫—Ç–Ω–æ–µ –∑–Ω–∞—á–µ–Ω–∏–µ –ø–æ–∂–∞–ª—É–π—Å—Ç–∞ –ø–µ—Ä–µ–≥–æ–ª–æ—Å—É–π—Ç–µ " << endl;
+                    i--;
+                }
+            }
+        }
+        if (count_of_plus == player_ammount - 1);
+        {
+            ofstream out("user_words.txt", ios::app);
+            out << word << "\n";
+            return true;
+        }
+    }
     string answ{};
     while (true) {
         cout << endl;
-        cout << setw(105) << "—ËÚ‡ÂÚÂ ÎË ‚˚, ˜ÚÓ ÒÎÓ‚Ó ·˚ÎÓ Ô‡‚ËÎ¸ÌÓ Ô‡‚ËÎ¸ÌÓ(‰‡/ÌÂÚ):  ";
+        cout << setw(105) << "–°–∏—Ç–∞–µ—Ç–µ –ª–∏ –≤—ã, —á—Ç–æ —Å–ª–æ–≤–æ –±—ã–ª–æ –ø—Ä–∞–≤–∏–ª—å–Ω–æ –ø—Ä–∞–≤–∏–ª—å–Ω–æ(–¥–∞/–Ω–µ—Ç):  ";
         cout << setw(127) << " ";
         getline(cin, answ);
-        if (answ == "‰‡") {
+        if (answ == "–¥–∞") {
             ofstream fin;
             fin.open("user_words.txt", ios::app);
             fin << word << "\n";
             fin.close();
             return true;
         }
-        else if (answ == "ÌÂÚ")
+        else if (answ == "–Ω–µ—Ç")
             return false;
     }
 }
-
-//œÂÂÔËÒ‡ÌÓ ÔÓ ÔÎ‡ÌÛ
-bool big_check(string user_word, Player player) {
+//–ü–µ—Ä–µ–ø–∏—Å–∞–Ω–æ –ø–æ –ø–ª–∞–Ω—É
+bool big_check(string user_word, Statistics names, short player_ammount, short id, Player player) {
     int counter{};
     char player_letters[10]{};
     for (unsigned short i{}; i < 10; i++) {
@@ -966,48 +986,77 @@ bool big_check(string user_word, Player player) {
         }
     }
     if (counter == user_word.length()) {
-        fstream file;
-        file.open("singular_and_plural.txt");
-        string out;
-
-        while (getline(file, out))
-        {
-
-            if (out[0] == user_word[0])
-            {
-                if (user_word == out)
+        fstream fin;
+        string stroka{};
+        if (user_word[0] >= '–∞' && user_word[0] < '–∑' || user_word[0] == '—ë') {
+            fin.open("russian1.txt");
+            while (getline(fin, stroka)) {
+                if (stroka == user_word)
                 {
-                    file.close();
+                    fin.close();
                     return true;
                 }
-
             }
+            fin.close();
         }
-        file.close();
+        else if (user_word[0] >= '–∑' && user_word[0] < '–º') {
+            fin.open("russian2.txt");
+            while (getline(fin, stroka)) {
+                if (stroka == user_word)
+                {
+                    fin.close();
+                    return true;
+                }
+            }
+            fin.close();
+        }
+        else if (user_word[0] >= '–º' && user_word[0] < '–ø') {
+            fin.open("russian3.txt");
+            while (getline(fin, stroka)) {
+                if (stroka == user_word)
+                {
+                    fin.close();
+                    return true;
+                }
+            }
+            fin.close();
+        }
+        else if (user_word[0] >= '–ø' && user_word[0] <= '—è') {
+            fin.open("russian4.txt");
+            while (getline(fin, stroka)) {
+                if (stroka == user_word)
+                {
+                    fin.close();
+                    return true;
+                }
+            }
+            fin.close();
+        }
+
         fstream file2;
         file2.open("user_words.txt");
 
-        while (getline(file2, out))
+        while (getline(file2, stroka))
         {
 
-            if (out[0] == user_word[0])
+            // if (out[0] == user_word[0])
+             //{
+            if (user_word == stroka)
             {
-                if (user_word == out)
-                {
-                    file2.close();
-                    return true;
-                }
-
+                file2.close();
+                return true;
             }
+
+            // }
         }
         file2.close();
-        return opros_players_about_new_word(user_word);
+        return opros_players_about_new_word(user_word, names, player_ammount, id);
 
     }
     else
         return false;
 }
-//ÛÍÓÓ˜ÂÌÌ‡ˇ ‚ÂÒËˇ
+//—É–∫–æ–æ—á–µ–Ω–Ω–∞—è –≤–µ—Ä—Å–∏—è
 bool big_check1(string user_word, Player player) {
     int counter{};
     char player_letters[10]{};
