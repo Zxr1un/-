@@ -1,8 +1,0 @@
-﻿  Alpha_code.cpp
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(775,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(939,36): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(941,33): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(945,32): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(951,14): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\Alpha_code.cpp(604,1): warning C4715: bonuses: значение возвращается не при всех путях выполнения
-  Alpha version.vcxproj -> D:\Zaxar_sd\_БГУИР учёба\C++ проекты\_Erudit\Erudit_ZXR\all code\Alpha version\x64\Debug\Alpha version.exe
